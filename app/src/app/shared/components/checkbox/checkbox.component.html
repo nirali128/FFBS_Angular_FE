@@ -1,0 +1,11 @@
+<mat-checkbox
+  [checked]="checked"
+  [disabled]="disabled"
+  (change)="onChange($event)"
+  [ngClass]="{
+    'checkbox-small': size === 'small',
+    'checkbox-large': size === 'large'
+  }"
+  [color]="color">
+  {{ label }}
+</mat-checkbox>
