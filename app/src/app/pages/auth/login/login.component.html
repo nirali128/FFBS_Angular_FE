@@ -1,1 +1,33 @@
-<p>login works!</p>
+<div class="login-container">
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <mat-card>
+        <mat-card-title>Login</mat-card-title>
+        <app-common-input
+          label="Email"
+          [formControl]="getFormControl('email')"
+          placeholder="Enter your email"
+          [errorMessages]="errorMessages.email"
+        ></app-common-input>
+  
+        <app-common-input
+          label="Password"
+          [formControl]="getFormControl('password')"
+          placeholder="Enter your password"
+          type="password"
+          [errorMessages]="errorMessages.password"
+        ></app-common-input>
+  
+        <mat-checkbox formControlName="rememberMe">Remember Me</mat-checkbox>
+  
+        <div class="form-actions">
+          <app-button
+            buttonType="normal"
+            text="Login"
+            [color]="'btn btn-info'"
+            (buttonClick)="onSubmit()"
+          ></app-button>
+        </div>
+      </mat-card>
+    </form>
+  </div>
+  
