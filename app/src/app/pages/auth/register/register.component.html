@@ -1,1 +1,69 @@
-<p>register works!</p>
+<div class="registration-container mt-5">
+  <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
+    <mat-card>
+      <mat-card-title>Register</mat-card-title>
+      <app-input
+        label="First Name"
+        [formControl]="getFormControl('firstName')"
+        placeholder="Enter your first name"
+        [errorMessages]="errorMessages.firstName"
+      ></app-input>
+
+      <app-input
+        label="Last Name"
+        [formControl]="getFormControl('lastName')"
+        placeholder="Enter your last name"
+        [errorMessages]="errorMessages.lastName"
+      ></app-input>
+
+      <app-input
+        label="Email"
+        [formControl]="getFormControl('email')"
+        placeholder="Enter your email"
+        type="email"
+        [errorMessages]="errorMessages.email"
+      ></app-input>
+
+      <app-input
+        label="Phone Number"
+        [formControl]="getFormControl('phoneNumber')"
+        placeholder="Enter your phone number"
+        [errorMessages]="errorMessages.phoneNumber"
+      ></app-input>
+
+      <app-select
+        label="Role"
+        placeholder="Select your role"
+        [options]="roleOptions"
+        [formControl]="getFormControl('role')"
+        [errorMessages]="errorMessages.role"
+      ></app-select>
+
+      <app-input
+        label="Password"
+        [formControl]="getFormControl('password')"
+        placeholder="Enter your password"
+        type="password"
+        [errorMessages]="errorMessages.password"
+      ></app-input>
+
+      <app-input
+        label="Confirm Password"
+        [formControl]="getFormControl('confirmPassword')"
+        placeholder="Confirm your password"
+        type="password"
+        [errorMessages]="errorMessages.confirmPassword"
+      ></app-input>
+
+      <div class="form-actions">
+        <app-button
+          [text]="'Register'"
+          [buttonType]="'normal'"
+          [color]="'btn btn-info'"
+          (buttonClick)="onSubmit()"
+        >
+        </app-button>
+      </div>
+    </mat-card>
+  </form>
+</div>

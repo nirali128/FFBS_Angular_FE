@@ -1,0 +1,26 @@
+.registration-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* 100% of the viewport height */
+    background-color: #f4f7fa; /* optional background color */
+  }
+  
+  mat-card {
+    width: 100%;
+    max-width: 800px; /* Set a maximum width for the form */
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .form-actions {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  mat-card-title {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  

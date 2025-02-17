@@ -1,8 +1,13 @@
 import { Routes } from '@angular/router';
 import { LayoutComponent } from './layout/layout.component';
+import { RegisterComponent } from './pages/auth/register/register.component';
 
 export const routes: Routes = [
-    {path: '', pathMatch: 'full', redirectTo: 'dashboard'},
+    {path: '', pathMatch: 'full', redirectTo: 'register'},
+    {
+        path: 'register',
+        component: RegisterComponent
+    },
     {
         path: '',
         component: LayoutComponent,

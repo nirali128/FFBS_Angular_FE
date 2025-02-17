@@ -5,8 +5,7 @@
         'mat-stroked': buttonType === 'outline',
         'mat-fab': buttonType === 'icon' || buttonType === 'text-icon'
     }"
-    [color]="color"
-    *ngIf="buttonType !== 'text-icon'"
+    [class]="color"
     (click)="onClick()"
 >
     <ng-container *ngIf="buttonType !== 'icon' && buttonType !== 'text-icon'">
