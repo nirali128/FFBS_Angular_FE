@@ -2,3 +2,20 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.bg-success.mdc-snackbar.mat-mdc-snack-bar-container {
+    --mdc-snackbar-container-color: #33d633;
+    --mdc-snackbar-supporting-text-color: white;
+}
+  
+.bg-error.mdc-snackbar.mat-mdc-snack-bar-container {
+    --mdc-snackbar-supporting-text-color: white;
+    --mdc-snackbar-container-color: #d11a1a;
+    --mdc-snackbar-action-ink-color: white; 
+}
+
+.mat-mdc-snack-bar-container app-snackbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}

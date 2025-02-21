@@ -7,7 +7,6 @@ import {
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AuthService } from '../service/authentication.service';
-import * as momentTimezone from 'moment-timezone';
 import { GlobalConstant } from '../constants/global-const';
 
 @Injectable()
@@ -24,16 +23,9 @@ export class AuthInterceptor implements HttpInterceptor {
                     Authorization: `${
                         GlobalConstant.BEARER
                     } ${this.authService.getToken()}`,
-                    TimeZone: momentTimezone.tz.guess(),
                 },
             });
-        } else {
-            request = request.clone({
-                setHeaders: {
-                    TimeZone: momentTimezone.tz.guess(),
-                },
-            });
-        }
+        } 
         return next.handle(request);
     }
 }
