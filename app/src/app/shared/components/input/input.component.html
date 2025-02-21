@@ -1,24 +1,29 @@
 <mat-form-field appearance="fill" class="form-field">
-    <mat-label>{{ label }}</mat-label>
-    <input matInput [formControl]="formControl" [type]="type" [placeholder]="placeholder" />
-    
-    <!-- Display error messages dynamically -->
-    <mat-error *ngIf="formControl?.hasError('required')">
-      {{ errorMessages['required'] || 'This field is required' }}
-    </mat-error>
-    <mat-error *ngIf="formControl?.hasError('email')">
-      {{ errorMessages['email'] || 'Please enter a valid email' }}
-    </mat-error>
-    <mat-error *ngIf="formControl?.hasError('pattern')">
-      {{ errorMessages['pattern'] || 'Invalid format' }}
-    </mat-error>
-    <mat-error *ngIf="formControl?.hasError('minlength')">
-      {{ errorMessages['minlength'] || 'Minimum length not met' }}
-    </mat-error>
-    <mat-error *ngIf="formControl?.hasError('maxlength')">
-      {{ errorMessages['maxlength'] || 'Maximum length exceeded' }}
-    </mat-error>
-    <mat-error *ngIf="formControl?.hasError('mismatch')">
-      {{ errorMessages['mismatch'] || 'Passwords do not match' }}
-    </mat-error>
-  </mat-form-field>  
+  <mat-label>{{ label }}</mat-label>
+  <input
+    matInput
+    [formControl]="formControl"
+    [type]="type"
+    [placeholder]="placeholder"
+  />
+
+  <!-- Display error messages dynamically -->
+  <mat-error *ngIf="formControl?.hasError('required')">
+    {{ errorMessages["required"] || "This field is required" }}
+  </mat-error>
+  <mat-error *ngIf="formControl?.hasError('email')">
+    {{ errorMessages["email"] || "Please enter a valid email" }}
+  </mat-error>
+  <mat-error *ngIf="formControl?.hasError('pattern')">
+    {{ errorMessages["pattern"] || "Invalid format" }}
+  </mat-error>
+  <mat-error *ngIf="formControl?.hasError('minlength')">
+    {{ errorMessages["minlength"] || "Minimum length not met" }}
+  </mat-error>
+  <mat-error *ngIf="formControl?.hasError('maxlength')">
+    {{ errorMessages["maxlength"] || "Maximum length exceeded" }}
+  </mat-error>
+  <mat-error *ngIf="formControl?.hasError('mismatch')">
+    {{ errorMessages["mismatch"] || "Passwords do not match" }}
+  </mat-error>
+</mat-form-field>

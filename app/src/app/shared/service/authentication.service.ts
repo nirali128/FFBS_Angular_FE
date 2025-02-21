@@ -1,32 +1,52 @@
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, Injector } from '@angular/core';
-import { Router } from '@angular/router';
+import { Register } from '../interfaces/register';
+import { ApiResponse } from '../interfaces/api.response';
+import { Observable } from 'rxjs';
+import { GlobalConstant } from '../constants/global-const';
 //import { jwtDecode } from 'jwt-decode';
 
 @Injectable({
-    providedIn: 'root',
+  providedIn: 'root',
 })
 export class AuthService {
-    constructor(private router: Router) {}
+  public getHeaders() {
+    const headerDict = {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+    };
 
-    isLoggedIn(): boolean {
-        return !!localStorage.getItem('');
-    }
+    const requestOptions = {
+      headers: new HttpHeaders(headerDict),
+    };
+    return requestOptions;
+  }
 
-    getToken(): string {
-        return localStorage.getItem('') ?? '';
-    }
+  constructor(private httpClient: HttpClient) {}
 
-    clearToken() {
-        localStorage.clear();
-    }
+  isLoggedIn(): boolean {
+    return !!localStorage.getItem('');
+  }
 
-    decodedToken() {
-        //return jwtDecode(this.getToken());
-    }
+  getToken(): string {
+    return localStorage.getItem('') ?? '';
+  }
 
-    register(data: any) {
-    }
+  clearToken() {
+    localStorage.clear();
+  }
 
-    login(data: any) {
-    }
+  decodedToken() {
+    //return jwtDecode(this.getToken());
+  }
+
+  register(data: Register): Observable<ApiResponse<Register[]>> {
+    return this.httpClient.post<ApiResponse<Register[]>>(
+      `${GlobalConstant.AUTH_API_URL}/register`,
+      data,
+      this.getHeaders()
+    );
+  }
+
+  login(data: any) {}
 }
