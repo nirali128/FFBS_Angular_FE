@@ -1,18 +1,36 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { AuthService } from '../../../shared/service/authentication.service';
 import { MatCardModule } from '@angular/material/card';
 import { ButtonComponent } from '../../../shared/components/button/button.component';
 import { InputComponent } from '../../../shared/components/input/input.component';
 import { SelectComponent } from '../../../shared/components/select/select.component';
 import { CommonModule } from '@angular/common';
+import { Login } from '../../../shared/interfaces/login';
+import { SnackbarService } from '../../../shared/service/snackbar.service';
+import { SnackbarConfig } from '../../../shared/constants/snackbar-config.const';
+import { Router } from '@angular/router';
+import { CheckboxComponent } from '../../../shared/components/checkbox/checkbox.component';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [InputComponent, ButtonComponent, SelectComponent, ReactiveFormsModule, MatCardModule, CommonModule],
+  imports: [
+    InputComponent,
+    ButtonComponent,
+    ReactiveFormsModule,
+    MatCardModule,
+    CommonModule,
+    CheckboxComponent
+  ],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.scss'
+  styleUrl: './login.component.scss',
 })
 export class LoginComponent {
   loginForm: FormGroup;
@@ -20,33 +38,39 @@ export class LoginComponent {
   errorMessages = {
     email: {
       required: 'Email is required',
-      email: 'Enter a valid email address'
+      email: 'Enter a valid email address',
     },
     password: {
-      required: 'Password is required'
-    }
+      required: 'Password is required',
+    },
   };
 
-  constructor(private fb: FormBuilder, public authService: AuthService) {}
+  constructor(private fb: FormBuilder, public authService: AuthService, private snackBarService: SnackbarService, private router: Router) {}
 
   ngOnInit(): void {
     this.loginForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]], 
-      password: ['', [Validators.required]], 
-      rememberMe: [false] 
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required]],
+      rememberMe: [false],
     });
   }
 
-    getFormControl(controlName: string): FormControl {
-      return this.loginForm.get(controlName) as FormControl;
-    }
+  getFormControl(controlName: string): FormControl {
+    return this.loginForm.get(controlName) as FormControl;
+  }
 
   onSubmit(): void {
     if (this.loginForm.valid) {
-      const formValues = this.loginForm.value;
-      this.authService.login(formValues);
+      this.authService.login(this.loginForm.value as Login).subscribe((res) => {
+        if (res.success) {
+          this.snackBarService.show(
+            new SnackbarConfig({ message: 'User logged in successfully.' })
+          );
+          this.router.navigateByUrl('admin/dashboard');
+        }
+      });
     } else {
-      console.log('Form is invalid!');
+      this.loginForm.markAllAsTouched();
     }
   }
 }

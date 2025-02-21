@@ -19,6 +19,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
 import { routes } from '../app.routes';
 import { RouteData } from '../shared/interfaces/route.data';
+import { AuthService } from '../shared/service/authentication.service';
 
 @Component({
   selector: 'app-layout',
@@ -46,6 +47,7 @@ export class LayoutComponent implements OnInit {
   private breakpointObserver = inject(BreakpointObserver);
   private router: Router = inject(Router);
   private route: ActivatedRoute = inject(ActivatedRoute);
+  private authService: AuthService = inject(AuthService);
   routes: Routes =
     routes[1]?.children?.filter((r) => r.path && r.path !== '**') ?? [];
   actualRoute!: RouteData;
@@ -67,4 +69,9 @@ export class LayoutComponent implements OnInit {
       map((result) => result.matches),
       shareReplay()
     );
+
+    signOut() {
+      this.authService.clearToken();
+      this.router.navigateByUrl("/login");
+    }
 }

@@ -1,10 +1,12 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable, Injector } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Register } from '../interfaces/register';
 import { ApiResponse } from '../interfaces/api.response';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { GlobalConstant } from '../constants/global-const';
-//import { jwtDecode } from 'jwt-decode';
+import { Login } from '../interfaces/login';
+import { Token } from '../interfaces/token';
+import { jwtDecode } from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root',
@@ -25,28 +27,58 @@ export class AuthService {
   constructor(private httpClient: HttpClient) {}
 
   isLoggedIn(): boolean {
-    return !!localStorage.getItem('');
+    return !!localStorage.getItem('token');
   }
 
   getToken(): string {
-    return localStorage.getItem('') ?? '';
+    return localStorage.getItem('token') ?? '';
+  }
+
+  getRefreshToken(): string {
+    return localStorage.getItem('refreshToken') ?? '';
   }
 
   clearToken() {
     localStorage.clear();
   }
 
-  decodedToken() {
-    //return jwtDecode(this.getToken());
+  decodedToken(data: string): string {
+    return jwtDecode(data);
   }
 
-  register(data: Register): Observable<ApiResponse<Register[]>> {
-    return this.httpClient.post<ApiResponse<Register[]>>(
+  setToken(data: Token) {
+    localStorage.setItem('token', data.token);
+    localStorage.setItem('refreshToken', data.refreshToken);
+  }
+
+  setRememberMe(isRememberMe: boolean) {
+    localStorage.setItem("rememberMe", isRememberMe.toString());
+  }
+
+  register(data: Register): Observable<ApiResponse<Register>> {
+    return this.httpClient.post<ApiResponse<Register>>(
       `${GlobalConstant.AUTH_API_URL}/register`,
       data,
       this.getHeaders()
     );
   }
 
-  login(data: any) {}
+  login(data: Login): Observable<ApiResponse<Token>> {
+    return this.httpClient
+      .post<ApiResponse<Token>>(
+        `${GlobalConstant.AUTH_API_URL}/login`,
+        data,
+        this.getHeaders()
+      )
+      .pipe(
+        tap((res) => {
+          {
+            if (res.success && res.data) {
+              this.setRememberMe(data.rememberMe);
+              this.setToken(res.data as Token);
+            }
+          }
+        })
+      );
+  }
 }
