@@ -33,29 +33,24 @@ export class InputComponent implements ControlValueAccessor {
   onChange: (value: any) => void = () => {};
   onTouched: () => void = () => {};
 
-  // Write value method to set the value
   writeValue(value: any): void {
     if (value !== undefined) {
       this.value = value;
     }
   }
 
-  // Register the change callback function
   registerOnChange(fn: (value: any) => void): void {
     this.onChange = fn;
   }
 
-  // Register the touched callback function
   registerOnTouched(fn: () => void): void {
     this.onTouched = fn;
   }
 
-  // Optional: Handling the disabled state of the control
   setDisabledState?(isDisabled: boolean): void {
     this.disabled = isDisabled;
   }
 
-  // Trigger change event
   onInputChange(event: Event): void {
     const input = event.target as HTMLInputElement;
     this.onChange(input.value);
