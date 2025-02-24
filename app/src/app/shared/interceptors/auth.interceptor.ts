@@ -8,9 +8,11 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AuthService } from '../service/authentication.service';
 import { GlobalConstant } from '../constants/global-const';
+import { Role } from '../enum/role';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
+    private refreshTokenInProgress = false;
     constructor(public authService: AuthService) {}
 
     intercept(
@@ -25,6 +27,36 @@ export class AuthInterceptor implements HttpInterceptor {
                     } ${this.authService.getToken()}`,
                 },
             });
+
+            let expiryTimeValue = this.authService.getExpiryTime();
+            let role = this.authService.getRole();
+            if (expiryTimeValue) {
+                const expiryTime = new Date(expiryTimeValue);
+                if (
+                  new Date(new Date().toUTCString()) > expiryTime &&
+                  !this.refreshTokenInProgress
+                ) {
+                  this.refreshTokenInProgress = true;
+          
+                  if (role == Role.Admin) {
+                    this.authService.refreshToken(localStorage.getItem('refreshToken') || '')
+                    .subscribe((res) => {
+                        if (res.success) {
+                          this.authService.setToken(res.data);
+                          this.refreshTokenInProgress = false;
+                        }
+                      });
+                  } else if (role == Role.Customer) {
+                    this.authService.refreshToken(localStorage.getItem('refreshToken') || '')
+                      .subscribe((res) => {
+                        if (res.success) {
+                          this.authService.setToken(res.data);
+                          this.refreshTokenInProgress = false;
+                        }
+                      });
+                  }
+                }
+              }
         } 
         return next.handle(request);
     }

@@ -6,7 +6,8 @@ import { Observable, tap } from 'rxjs';
 import { GlobalConstant } from '../constants/global-const';
 import { Login } from '../interfaces/login';
 import { Token } from '../interfaces/token';
-import { jwtDecode } from 'jwt-decode';
+import { jwtDecode, JwtPayload } from 'jwt-decode';
+import { DecodedToken } from '../interfaces/decoded.token';
 
 @Injectable({
   providedIn: 'root',
@@ -24,7 +25,7 @@ export class AuthService {
     return requestOptions;
   }
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(private http: HttpClient) {}
 
   isLoggedIn(): boolean {
     return !!localStorage.getItem('token');
@@ -38,17 +39,28 @@ export class AuthService {
     return localStorage.getItem('refreshToken') ?? '';
   }
 
+  getRole(): string {
+    return localStorage.getItem('role') ?? '';
+  }
+
+  getExpiryTime(): string {
+    return localStorage.getItem('expiryTime') ?? '';
+  }
+
   clearToken() {
     localStorage.clear();
   }
 
-  decodedToken(data: string): string {
+  decodedToken(data: string): DecodedToken {
     return jwtDecode(data);
   }
 
   setToken(data: Token) {
+    let token = this.decodedToken(data.token);
     localStorage.setItem('token', data.token);
     localStorage.setItem('refreshToken', data.refreshToken);
+    localStorage.setItem('expiryTime', new Date(token.exp * 1000).toString())
+    localStorage.setItem('role', token.role);
   }
 
   setRememberMe(isRememberMe: boolean) {
@@ -56,17 +68,17 @@ export class AuthService {
   }
 
   register(data: Register): Observable<ApiResponse<Register>> {
-    return this.httpClient.post<ApiResponse<Register>>(
-      `${GlobalConstant.AUTH_API_URL}/register`,
+    return this.http.post<ApiResponse<Register>>(
+      `${GlobalConstant.AUTH_API_URL + GlobalConstant.AUTH.REGISTER}`,
       data,
       this.getHeaders()
     );
   }
 
   login(data: Login): Observable<ApiResponse<Token>> {
-    return this.httpClient
+    return this.http
       .post<ApiResponse<Token>>(
-        `${GlobalConstant.AUTH_API_URL}/login`,
+        `${GlobalConstant.AUTH_API_URL + GlobalConstant.AUTH.LOGIN}`,
         data,
         this.getHeaders()
       )
@@ -80,5 +92,9 @@ export class AuthService {
           }
         })
       );
+  }
+
+  refreshToken(refresh: string): Observable<ApiResponse<Token>> {
+    return this.http.post<ApiResponse<Token>>(`${GlobalConstant.AUTH_API_URL + GlobalConstant.AUTH.REFRESH_TOKEN}`, {refreshToken: refresh}, this.getHeaders());
   }
 }
