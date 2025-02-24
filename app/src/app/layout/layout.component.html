@@ -1,0 +1,68 @@
+<mat-drawer-container>
+  <mat-drawer-content #drawerContent>
+    <mat-toolbar
+      color="primary"
+      class="d-flex align-items-center justify-content-between w-100"
+    >
+      <app-button
+        buttonType="icon"
+        color="primary"
+        [icon]="'menu'"
+        (buttonClick)="drawer.toggle()"
+      >
+      </app-button>
+      <div class="d-flex align-items-center gap-3">
+        <app-button
+          buttonType="outline"
+          [matMenuTriggerFor]="menu"
+          text="admin@admin.com"
+          [icon]="'account_circle'"
+        >
+        </app-button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item>
+            <mat-icon class="material-symbols-outlined">person</mat-icon>
+            <span>My Profile</span>
+          </button>
+          <button mat-menu-item>
+            <mat-icon class="material-symbols-outlined">logout</mat-icon>
+            <span>Sign Out</span>
+          </button>
+        </mat-menu>
+      </div>
+    </mat-toolbar>
+    <div class="sidenav-scroll-wrapper">
+      <div class="sidenav-content">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </mat-drawer-content>
+
+  <mat-drawer
+    #drawer
+    class="sidenav"
+    [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+    [mode]="(isHandset$ | async) ? 'over' : 'side'"
+    [opened]="(isHandset$ | async) === false"
+  >
+    <mat-toolbar>
+      <h1>FBS</h1>
+    </mat-toolbar>
+    <mat-nav-list>
+      @for (item of routes; track $index) {
+      <a
+        mat-list-item
+        [routerLink]="item.path"
+        #link="routerLinkActive"
+        routerLinkActive
+        [activated]="link.isActive"
+      >
+        <mat-icon matListItemIcon class="material-symbols-outlined">{{
+          item.data["icon"]
+        }}</mat-icon>
+        <span>{{ item.title }}</span>
+      </a>
+      }
+    </mat-nav-list>
+  </mat-drawer>
+</mat-drawer-container>
