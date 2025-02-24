@@ -89,7 +89,7 @@ export class RegisterComponent {
           [
             Validators.required,
             Validators.maxLength(ValidationRules.FIELD_NAME_MAX_LENGTH),
-            Validators.pattern('^[a-zA-Z0-9 ]*$'),
+            Validators.pattern('^[a-zA-Z ]*$'),
           ],
         ],
         lastName: [
@@ -97,7 +97,7 @@ export class RegisterComponent {
           [
             Validators.required,
             Validators.maxLength(ValidationRules.FIELD_NAME_MAX_LENGTH),
-            Validators.pattern('^[a-zA-Z0-9 ]*$'),
+            Validators.pattern('^[a-zA-Z ]*$'),
           ],
         ],
         email: [
@@ -130,10 +130,16 @@ export class RegisterComponent {
   passwordMatchValidator(group: FormGroup): { [key: string]: boolean } | null {
     const password = group.get('password');
     const confirmPassword = group.get('confirmPassword');
+    let mismatch = { mismatch: true };
+
+    if(!confirmPassword.errors && password.value !== confirmPassword.value) {
+      confirmPassword.setErrors(mismatch)
+    }
+
     return password &&
       confirmPassword &&
       password.value !== confirmPassword.value
-      ? { mismatch: true }
+      ? mismatch
       : null;
   }
 
