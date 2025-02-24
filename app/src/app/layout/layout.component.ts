@@ -19,6 +19,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
 import { routes } from '../app.routes';
 import { RouteData } from '../shared/interfaces/route.data';
+import { ButtonComponent } from '../shared/components/button/button.component';
 import { AuthService } from '../shared/service/authentication.service';
 
 @Component({
@@ -38,7 +39,8 @@ import { AuthService } from '../shared/service/authentication.service';
     MatMenuTrigger,
     MatMenu,
     MatMenuItem,
-    CommonModule
+    CommonModule,
+    ButtonComponent
   ],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.scss',

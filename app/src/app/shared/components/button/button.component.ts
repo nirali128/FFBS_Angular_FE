@@ -13,7 +13,8 @@ import { MatIconModule } from '@angular/material/icon';
 export class ButtonComponent {
   @Input() public text: string = '';
   @Input() public buttonType: 'normal' | 'outline' | 'icon' | 'flat' | 'text-icon' = 'normal';
-  @Input() public color: 'btn btn-info' | 'btn btn-danger' = 'btn btn-info';
+  @Input() public color: 'primary' | 'secondary' | 'info' | 'danger' = 'primary';
+  @Input() public icon: string = 'delete';
   @Output() public buttonClick = new EventEmitter<void>();
 
   onClick(): void {
