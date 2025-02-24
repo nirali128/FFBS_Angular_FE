@@ -26,11 +26,19 @@ export class ErrorInterceptor implements HttpInterceptor {
     return next.handle(request).pipe(
       catchError((error: HttpErrorResponse) => {
         const message = error.error?.message;
-        if (!error.error.success) {
+        if (!error.error.success && message) {
           this.snackBarService.show(
             new SnackbarConfig({
               status: 'error',
               message: message,
+              icon: 'warning_amber',
+            })
+          );
+        } else {
+          this.snackBarService.show(
+            new SnackbarConfig({
+              status: 'error',
+              message: "Something went wrong. Please try again!",
               icon: 'warning_amber',
             })
           );
