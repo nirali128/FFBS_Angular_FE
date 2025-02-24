@@ -1,4 +1,10 @@
-<mat-form-field appearance="fill" class="form-field">
+<mat-form-field
+  appearance="fill"
+  class="form-field"
+  [class]="{
+    'mb-5': formControl?.hasError('pattern') && formControlName == 'password'
+  }"
+>
   <mat-label>{{ label }}</mat-label>
   <input
     matInput

@@ -26,6 +26,7 @@ export class InputComponent implements ControlValueAccessor {
   @Input() type: string = 'text';
   @Input() errorMessages: { [key: string]: string } = {};
   @Input() disabled: boolean = false;
+  @Input() formControlName: string = '';
 
   value: any = '';
   constructor() {}
