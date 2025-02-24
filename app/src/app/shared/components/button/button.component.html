@@ -5,8 +5,7 @@
         'mat-stroked': buttonType === 'outline',
         'mat-fab': buttonType === 'icon' || buttonType === 'text-icon'
     }"
-    [color]="color"
-    *ngIf="buttonType !== 'text-icon'"
+    [class]="'btn btn-' + color"
     (click)="onClick()"
 >
     <ng-container *ngIf="buttonType !== 'icon' && buttonType !== 'text-icon'">
@@ -14,10 +13,10 @@
     </ng-container>
 
     <ng-container *ngIf="buttonType === 'icon'">
-        <mat-icon>delete</mat-icon>
+        <mat-icon class="material-symbols-outlined">{{icon}}</mat-icon>
     </ng-container>
 
     <ng-container *ngIf="buttonType === 'text-icon'">
-        <mat-icon>delete</mat-icon> {{ text }}
+        <mat-icon class="material-symbols-outlined">{{icon}}</mat-icon> {{ text }}
     </ng-container>
 </button>
