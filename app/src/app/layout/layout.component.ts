@@ -19,6 +19,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
 import { routes } from '../app.routes';
 import { RouteData } from '../shared/interfaces/route.data';
+import { ButtonComponent } from '../shared/components/button/button.component';
 
 @Component({
   selector: 'app-layout',
@@ -37,7 +38,8 @@ import { RouteData } from '../shared/interfaces/route.data';
     MatMenuTrigger,
     MatMenu,
     MatMenuItem,
-    CommonModule
+    CommonModule,
+    ButtonComponent
   ],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.scss',
