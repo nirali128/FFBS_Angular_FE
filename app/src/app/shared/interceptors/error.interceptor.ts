@@ -1,66 +1,51 @@
 import {
-    HttpErrorResponse,
-    HttpHandler,
-    HttpInterceptor,
-    HttpRequest,
+  HttpErrorResponse,
+  HttpEvent,
+  HttpHandler,
+  HttpInterceptor,
+  HttpRequest,
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { AuthService } from '../service/authentication.service';
-import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { SnackbarService } from '../service/snackbar.service';
+import { SnackbarConfig } from '../constants/snackbar-config.const';
+import { ErrorMessages } from '../constants/messages-const';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
-    constructor(
-        public authService: AuthService,
-        private dialog: MatDialog,
-        public matSnackBar: MatSnackBar
-    ) {}
+  constructor(
+    public authService: AuthService,
+    private snackBarService: SnackbarService
+  ) {}
 
-    intercept(request: HttpRequest<any>, next: HttpHandler) {
-        return next.handle(request).pipe(
-            catchError((error: HttpErrorResponse) => {
-                if (error.status === 401 || error.status === 403) {
-                    return this.handleUnauthorized();
-                } else if (error.status === 390) {
-                    return this.handleErrorCode390(error);
-                } else if (error.status === 400) {
-                    return this.handleBadRequest(error);
-                }
-                return throwError(error);
+  intercept(
+    request: HttpRequest<any>,
+    next: HttpHandler
+  ): Observable<HttpEvent<any>> {
+    return next.handle(request).pipe(
+      catchError((error: HttpErrorResponse) => {
+        const message = error.error?.message;
+        if (!error.error.success && message) {
+          this.snackBarService.show(
+            new SnackbarConfig({
+              status: 'error',
+              message: message,
+              icon: 'warning_amber',
             })
-        );
-    }
-
-    private handleUnauthorized(): Observable<never> {
-        this.showSnackbar('Unauthorized or Forbidden access');
-        return throwError('Unauthorized or Forbidden access');
-    }
-
-    private handleErrorCode390(error: HttpErrorResponse): Observable<never> {
-        const errorCode = error.error?.errorCode;
-        if (errorCode) {
-            this.showSnackbar(`Error code: ${errorCode}`);
-            return throwError(`error.${errorCode}`);
-        }
-        return throwError(error); // If no specific errorCode, return the original error
-    }
-
-    private handleBadRequest(error: HttpErrorResponse): Observable<never> {
-        const errorParams = error.error?.invalidParams;
-        if (errorParams && errorParams.length > 0) {
-            const message = errorParams[0].description;
-            this.showSnackbar(message);
+          );
+        } else {
+          this.snackBarService.show(
+            new SnackbarConfig({
+              status: 'error',
+              message: ErrorMessages.SOMETHING_WENT_WRONG,
+              icon: 'warning_amber',
+            })
+          );
         }
         return throwError(error);
-    }
-
-    private showSnackbar(message: string): void {
-        this.matSnackBar.open(message, '', {
-            duration: 5000,
-            panelClass: 'snackbar-error',
-        });
-    }
+      })
+    );
+  }
 }

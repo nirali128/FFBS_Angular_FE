@@ -1,0 +1,15 @@
+<div class="form-group">
+  <mat-form-field class="form-field mb-1">
+    <mat-label>{{ label }}</mat-label>
+    <input
+      matInput
+      [formControl]="formControl"
+      [type]="type"
+      [placeholder]="placeholder"
+      appFormErrors
+      [controlValue]="formControl"
+      [label]="label"
+    />
+  </mat-form-field>
+  <div class="error-messages mb-3"></div>
+</div>

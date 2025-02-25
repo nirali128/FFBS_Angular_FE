@@ -1,1 +1,74 @@
-<p>register works!</p>
+<div
+  class="registration-container d-flex align-items-center justify-content-center"
+>
+  <form
+    [formGroup]="registrationForm"
+    class="registration-form p-4 rounded shadow bg-white"
+  >
+    <h2 class="text-center mb-4">Register</h2>
+    <app-input
+      label="First Name"
+      [formControl]="getFormControl('firstName')"
+      placeholder="Enter your first name"
+      formControlName="firstName"
+    ></app-input>
+    <app-input
+      label="Last Name"
+      [formControl]="getFormControl('lastName')"
+      placeholder="Enter your last name"
+      formControlName="lastName"
+    ></app-input>
+    <app-input
+      label="Email"
+      [formControl]="getFormControl('email')"
+      placeholder="Enter your email"
+      formControlName="email"
+      type="email"
+    ></app-input>
+
+    <app-input
+      label="Phone Number"
+      [formControl]="getFormControl('phoneNumber')"
+      placeholder="Enter your phone number"
+      formControlName="phoneNumber"
+    ></app-input>
+
+    <app-select
+      label="Role"
+      placeholder="Select your role"
+      [options]="roleOptions"
+      [formControl]="getFormControl('role')"
+      formControlName="role"
+    ></app-select>
+
+    <app-input
+      label="Password"
+      [formControl]="getFormControl('password')"
+      formControlName="password"
+      placeholder="Enter your password"
+      type="password"
+      formControlName="password"
+    ></app-input>
+
+    <app-input
+      label="Confirm Password"
+      [formControl]="getFormControl('confirmPassword')"
+      placeholder="Confirm your password"
+      type="password"
+      formControlName="confirmPassword"
+    ></app-input>
+
+    <div class="form-actions text-center mt-4">
+      <app-button
+        [text]="'Register'"
+        [buttonType]="'normal'"
+        (buttonClick)="onSubmit()"
+      ></app-button>
+    </div>
+
+    <p class="text-center mt-2">Have an account? 
+      <a href="/login">
+        <span>Sign In</span>
+      </a></p>
+  </form>
+</div>
