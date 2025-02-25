@@ -1,3 +1,5 @@
+import { ErrorMessages } from "./messages-const";
+
 export const ValidationPatterns = {
   EMAIL: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
   PHONE: /^[1-9]\d{9}$/,
@@ -18,4 +20,19 @@ export const ValidationRules = {
   DESCRIPTION_MAX_LENGTH: 100,
   FIELD_NAME_MAX_LENGTH: 50,
   FIELD_ADDRESS_MAX_LENGTH: 100,
+};
+
+export const ErrorLabel = {
+  PASSWORD: "password",
+  Role: "role"
+}
+
+export const ValidationErrors: Record<string, string | ((error: any, label?: string) => string)> = {
+  required: (label = 'This field') => label.toLowerCase() === ErrorLabel.Role ? ErrorMessages.ROLE_SELECTION : `${label} is required`,
+  minlength: (error) => `Minimum length of ${error.requiredLength} characters`,
+  maxlength: (error) => `Maximum length of ${error.requiredLength} characters`,
+  pattern: (label = 'This field') =>  label.toLowerCase() === ErrorLabel.PASSWORD
+  ? ErrorMessages.PASSWORD_INVALID
+  : `Please enter a valid ${label}`,
+  mismatch: ErrorMessages.PASSWORD_MISMATCH
 };

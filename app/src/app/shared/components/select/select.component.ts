@@ -1,13 +1,14 @@
 import { ChangeDetectionStrategy, Component, EventEmitter, forwardRef, Input, Output } from '@angular/core';
 import { DropdownOption } from '../../interfaces/dropdown.options';
-import { MatError, MatOption, MatSelectChange, MatSelectModule } from '@angular/material/select'
+import { MatOption, MatSelectChange, MatSelectModule } from '@angular/material/select'
 import { CommonModule } from '@angular/common';
-import { ControlValueAccessor, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
+import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
+import { FormErrorsDirective } from '../../directives/form-error.directive';
 
 @Component({
   selector: 'app-select',
   standalone: true,
-  imports: [CommonModule, MatError, MatOption, MatSelectModule, ReactiveFormsModule],
+  imports: [CommonModule, MatOption, MatSelectModule, ReactiveFormsModule, FormErrorsDirective],
   templateUrl: './select.component.html',
   styleUrl: './select.component.scss',
   providers: [
@@ -24,9 +25,9 @@ export class SelectComponent implements ControlValueAccessor {
   @Input() placeholder: string = ''; 
   @Input() label: string = '';
   @Input() selectedValue: string | number | null = null;
-  @Input() errorMessages: { [key: string]: string } = {};
-  @Input() formControl: any; 
+  @Input() formControl!: FormControl; 
   @Output() selectionChange = new EventEmitter<string | number>();  
+  @Input() formControlName!: string;
 
   @Input() disabled: boolean = false;
 

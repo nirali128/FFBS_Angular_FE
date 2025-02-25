@@ -21,6 +21,8 @@ import { Register } from '../../../shared/interfaces/register';
 import { SnackbarService } from '../../../shared/service/snackbar.service';
 import { SnackbarConfig } from '../../../shared/constants/snackbar-config.const';
 import { Router } from '@angular/router';
+import { passwordMatchValidator } from '../../../shared/validators/custom.validator';
+import { SuccessMessages } from '../../../shared/constants/messages-const';
 
 @Component({
   selector: 'app-register',
@@ -30,44 +32,13 @@ import { Router } from '@angular/router';
     ButtonComponent,
     SelectComponent,
     ReactiveFormsModule,
-    MatCardModule,
+    MatCardModule
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
 })
 export class RegisterComponent {
   registrationForm: FormGroup;
-  errorMessages = {
-    firstName: {
-      required: 'First name is required',
-      pattern: 'Only alphabetic characters are allowed',
-    },
-    lastName: {
-      required: 'Last name is required',
-      pattern: 'Only alphabetic characters are allowed',
-    },
-    email: {
-      required: 'Email is required',
-      email: 'Please enter a valid email',
-    },
-    phoneNumber: {
-      required: 'Phone number is required',
-      pattern: 'Enter a valid phone number',
-    },
-    role: {
-      required: 'Role is required',
-    },
-    password: {
-      required: 'Password is required',
-      minlength: 'Password must be at least 8 characters long',
-      pattern:
-        'Password must be 8-16 characters long and include at least one uppercase letter, one lowercase letter, one number, and one special character.',
-    },
-    confirmPassword: {
-      required: 'Confirm password is required',
-      mismatch: 'Passwords do not match',
-    },
-  };
 
   roleOptions: DropdownOption[];
 
@@ -123,24 +94,8 @@ export class RegisterComponent {
         ],
         confirmPassword: ['', [Validators.required]],
       },
-      { validator: this.passwordMatchValidator }
+      { validator: passwordMatchValidator }
     );
-  }
-
-  passwordMatchValidator(group: FormGroup): { [key: string]: boolean } | null {
-    const password = group.get('password');
-    const confirmPassword = group.get('confirmPassword');
-    let mismatch = { mismatch: true };
-
-    if(!confirmPassword.errors && password.value !== confirmPassword.value) {
-      confirmPassword.setErrors(mismatch)
-    }
-
-    return password &&
-      confirmPassword &&
-      password.value !== confirmPassword.value
-      ? mismatch
-      : null;
   }
 
   getFormControl(controlName: string): FormControl {
@@ -154,7 +109,7 @@ export class RegisterComponent {
         .subscribe((res) => {
           if (res.success) {
             this.snackBarService.show(
-              new SnackbarConfig({ message: 'User registered successfully.' })
+              new SnackbarConfig({ message: SuccessMessages.USER_REGISTRATION_SUCCESS })
             );
             this.router.navigateByUrl('admin/login');
           }
