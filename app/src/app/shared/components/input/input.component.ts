@@ -1,13 +1,14 @@
 import { ChangeDetectionStrategy, Component, forwardRef, Input } from '@angular/core';
-import { ControlValueAccessor, FormControl, FormsModule, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
+import { ControlValueAccessor, FormControl, NG_VALUE_ACCESSOR, ReactiveFormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
-import { MatError, MatFormFieldModule, MatLabel } from '@angular/material/form-field';
+import { MatFormFieldModule, MatLabel } from '@angular/material/form-field';
 import { CommonModule } from '@angular/common';
+import { FormErrorsDirective } from '../../directives/form-error.directive';
 
 @Component({
   selector: 'app-input',
   standalone: true,
-  imports: [MatFormFieldModule, MatInputModule, MatError, MatLabel, CommonModule, ReactiveFormsModule],
+  imports: [MatFormFieldModule, MatInputModule, MatLabel, CommonModule, ReactiveFormsModule, FormErrorsDirective],
   templateUrl: './input.component.html',
   styleUrl: './input.component.scss',
   providers: [
@@ -21,12 +22,11 @@ import { CommonModule } from '@angular/common';
 })
 export class InputComponent implements ControlValueAccessor {
   @Input() label: string = '';
-  @Input() formControl: FormControl | null = null;
   @Input() placeholder: string = '';
   @Input() type: string = 'text';
-  @Input() errorMessages: { [key: string]: string } = {};
   @Input() disabled: boolean = false;
-  @Input() formControlName: string = '';
+  @Input() formControl!: FormControl;
+  @Input() formControlName!: string;
 
   value: any = '';
   constructor() {}

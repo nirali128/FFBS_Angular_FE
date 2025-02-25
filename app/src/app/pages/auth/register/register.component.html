@@ -10,27 +10,27 @@
       label="First Name"
       [formControl]="getFormControl('firstName')"
       placeholder="Enter your first name"
-      [errorMessages]="errorMessages.firstName"
+      formControlName="firstName"
     ></app-input>
     <app-input
       label="Last Name"
       [formControl]="getFormControl('lastName')"
       placeholder="Enter your last name"
-      [errorMessages]="errorMessages.lastName"
+      formControlName="lastName"
     ></app-input>
     <app-input
       label="Email"
       [formControl]="getFormControl('email')"
       placeholder="Enter your email"
+      formControlName="email"
       type="email"
-      [errorMessages]="errorMessages.email"
     ></app-input>
 
     <app-input
       label="Phone Number"
       [formControl]="getFormControl('phoneNumber')"
       placeholder="Enter your phone number"
-      [errorMessages]="errorMessages.phoneNumber"
+      formControlName="phoneNumber"
     ></app-input>
 
     <app-select
@@ -38,16 +38,16 @@
       placeholder="Select your role"
       [options]="roleOptions"
       [formControl]="getFormControl('role')"
-      [errorMessages]="errorMessages.role"
+      formControlName="role"
     ></app-select>
 
     <app-input
       label="Password"
-      formControlName="password"
       [formControl]="getFormControl('password')"
+      formControlName="password"
       placeholder="Enter your password"
       type="password"
-      [errorMessages]="errorMessages.password"
+      formControlName="password"
     ></app-input>
 
     <app-input
@@ -55,7 +55,7 @@
       [formControl]="getFormControl('confirmPassword')"
       placeholder="Confirm your password"
       type="password"
-      [errorMessages]="errorMessages.confirmPassword"
+      formControlName="confirmPassword"
     ></app-input>
 
     <div class="form-actions text-center mt-4">

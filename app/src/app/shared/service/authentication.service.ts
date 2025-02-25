@@ -11,6 +11,7 @@ import { DecodedToken } from '../interfaces/decoded.token';
 
 @Injectable({
   providedIn: 'root',
+  providedIn: 'root',
 })
 export class AuthService {
   public getHeaders() {
@@ -47,6 +48,9 @@ export class AuthService {
     return localStorage.getItem('expiryTime') ?? '';
   }
 
+  clearToken() {
+    localStorage.clear();
+  }
   clearToken() {
     localStorage.clear();
   }

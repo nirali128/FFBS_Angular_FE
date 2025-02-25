@@ -11,6 +11,7 @@ import { catchError } from 'rxjs/operators';
 import { AuthService } from '../service/authentication.service';
 import { SnackbarService } from '../service/snackbar.service';
 import { SnackbarConfig } from '../constants/snackbar-config.const';
+import { ErrorMessages } from '../constants/messages-const';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
@@ -38,7 +39,7 @@ export class ErrorInterceptor implements HttpInterceptor {
           this.snackBarService.show(
             new SnackbarConfig({
               status: 'error',
-              message: "Something went wrong. Please try again!",
+              message: ErrorMessages.SOMETHING_WENT_WRONG,
               icon: 'warning_amber',
             })
           );
