@@ -6,7 +6,7 @@
       label="Email"
       [formControl]="getFormControl('email')"
       placeholder="Enter your email"
-      [errorMessages]="errorMessages.email"
+      formControlName="email"
     ></app-input>
 
     <div class="my-2">
@@ -15,7 +15,7 @@
       [formControl]="getFormControl('password')"
       placeholder="Enter your password"
       type="password"
-      [errorMessages]="errorMessages.password"
+      formControlName="password"
     ></app-input>
   </div>
     <app-checkbox

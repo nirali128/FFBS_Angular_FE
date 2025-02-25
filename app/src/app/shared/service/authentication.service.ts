@@ -6,11 +6,10 @@ import { Observable, tap } from 'rxjs';
 import { GlobalConstant } from '../constants/global-const';
 import { Login } from '../interfaces/login';
 import { Token } from '../interfaces/token';
-import { jwtDecode, JwtPayload } from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 import { DecodedToken } from '../interfaces/decoded.token';
 
 @Injectable({
-  providedIn: 'root',
   providedIn: 'root',
 })
 export class AuthService {
@@ -48,9 +47,6 @@ export class AuthService {
     return localStorage.getItem('expiryTime') ?? '';
   }
 
-  clearToken() {
-    localStorage.clear();
-  }
   clearToken() {
     localStorage.clear();
   }

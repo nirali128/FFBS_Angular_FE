@@ -17,6 +17,7 @@ import { SnackbarService } from '../../../shared/service/snackbar.service';
 import { SnackbarConfig } from '../../../shared/constants/snackbar-config.const';
 import { Router } from '@angular/router';
 import { CheckboxComponent } from '../../../shared/components/checkbox/checkbox.component';
+import { SuccessMessages } from '../../../shared/constants/messages-const';
 
 @Component({
   selector: 'app-login',
@@ -34,22 +35,11 @@ import { CheckboxComponent } from '../../../shared/components/checkbox/checkbox.
 })
 export class LoginComponent {
   loginForm: FormGroup;
-
-  errorMessages = {
-    email: {
-      required: 'Email is required',
-      email: 'Enter a valid email address',
-    },
-    password: {
-      required: 'Password is required',
-    },
-  };
-
   constructor(private fb: FormBuilder, public authService: AuthService, private snackBarService: SnackbarService, private router: Router) {}
 
   ngOnInit(): void {
     this.loginForm = this.fb.group({
-      email: ['', [Validators.required, Validators.email]],
+      email: ['', [Validators.required]],
       password: ['', [Validators.required]],
       rememberMe: [false],
     });
@@ -64,7 +54,7 @@ export class LoginComponent {
       this.authService.login(this.loginForm.value as Login).subscribe((res) => {
         if (res.success) {
           this.snackBarService.show(
-            new SnackbarConfig({ message: 'User logged in successfully.' })
+            new SnackbarConfig({ message: SuccessMessages.USER_LOGIN_SUCCESS })
           );
           this.router.navigateByUrl('admin/dashboard');
         }
