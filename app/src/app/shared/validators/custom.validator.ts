@@ -11,7 +11,7 @@ export function passwordMatchValidator(
     return null;
   }
 
-  if (!confirmPassword.hasError('mismatch')) {
+  if (confirmPassword.value && !confirmPassword.hasError('mismatch')) {
     password.valueChanges.subscribe(() => {
       confirmPassword.updateValueAndValidity();
     });

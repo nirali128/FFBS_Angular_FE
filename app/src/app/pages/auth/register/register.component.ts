@@ -83,7 +83,7 @@ export class RegisterComponent {
           '',
           [Validators.required, Validators.pattern(ValidationPatterns.PHONE)],
         ],
-        role: ['', [Validators.required]],
+        role: ['', Validators.required],
         password: [
           '',
           [
@@ -92,7 +92,7 @@ export class RegisterComponent {
             Validators.pattern(ValidationPatterns.PASSWORD),
           ],
         ],
-        confirmPassword: ['', [Validators.required]],
+        confirmPassword: ['', Validators.required],
       },
       { validator: passwordMatchValidator }
     );
