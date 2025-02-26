@@ -8,6 +8,7 @@ import { Login } from '../interfaces/login';
 import { Token } from '../interfaces/token';
 import { jwtDecode } from 'jwt-decode';
 import { DecodedToken } from '../interfaces/decoded.token';
+import * as CryptoJS from 'crypto-js';
 
 @Injectable({
   providedIn: 'root',
@@ -32,19 +33,22 @@ export class AuthService {
   }
 
   getToken(): string {
-    return localStorage.getItem('token') ?? '';
+    let encryptedToken = localStorage.getItem('token');
+    return this.decrypt(encryptedToken) ?? '';
   }
 
   getRefreshToken(): string {
-    return localStorage.getItem('refreshToken') ?? '';
-  }
-
-  getRole(): string {
-    return localStorage.getItem('role') ?? '';
+    const encryptedRefreshToken = localStorage.getItem('refreshToken');
+    return encryptedRefreshToken ? this.decrypt(encryptedRefreshToken) : '';
   }
 
   getExpiryTime(): string {
-    return localStorage.getItem('expiryTime') ?? '';
+    let decodedToken: DecodedToken;
+    let token = this.getToken();
+    if(token) {
+      decodedToken = this.decodedToken(token);
+    }
+    return  new Date(decodedToken.exp * 1000).toString() ?? '';
   }
 
   clearToken() {
@@ -56,11 +60,11 @@ export class AuthService {
   }
 
   setToken(data: Token) {
-    let token = this.decodedToken(data.token);
-    localStorage.setItem('token', data.token);
-    localStorage.setItem('refreshToken', data.refreshToken);
-    localStorage.setItem('expiryTime', new Date(token.exp * 1000).toString())
-    localStorage.setItem('role', token.role);
+    const encryptedToken = this.encrypt(data.token);
+    const encryptedRefreshToken = this.encrypt(data.refreshToken);
+    
+    localStorage.setItem('token', encryptedToken);
+    localStorage.setItem('refreshToken', encryptedRefreshToken);
   }
 
   setRememberMe(isRememberMe: boolean) {
@@ -96,5 +100,14 @@ export class AuthService {
 
   refreshToken(refresh: string): Observable<ApiResponse<Token>> {
     return this.http.post<ApiResponse<Token>>(`${GlobalConstant.AUTH_API_URL + GlobalConstant.AUTH.REFRESH_TOKEN}`, {refreshToken: refresh}, this.getHeaders());
+  }
+
+  private encrypt(data: string): string {
+    return CryptoJS.AES.encrypt(data, GlobalConstant.ENCRYPTION_KEY).toString();
+  }
+
+  private decrypt(data: string): string {
+    const bytes = CryptoJS.AES.decrypt(data, GlobalConstant.ENCRYPTION_KEY);
+    return bytes.toString(CryptoJS.enc.Utf8);
   }
 }

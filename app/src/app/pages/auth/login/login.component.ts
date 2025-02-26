@@ -18,6 +18,8 @@ import { SnackbarConfig } from '../../../shared/constants/snackbar-config.const'
 import { Router } from '@angular/router';
 import { CheckboxComponent } from '../../../shared/components/checkbox/checkbox.component';
 import { SuccessMessages } from '../../../shared/constants/messages-const';
+import { ApiResponse } from '../../../shared/interfaces/api.response';
+import { Token } from '../../../shared/interfaces/token';
 
 @Component({
   selector: 'app-login',
@@ -51,12 +53,12 @@ export class LoginComponent {
 
   onSubmit(): void {
     if (this.loginForm.valid) {
-      this.authService.login(this.loginForm.value as Login).subscribe((res) => {
+      this.authService.login(this.loginForm.value as Login).subscribe((res: ApiResponse<Token>) => {
         if (res.success) {
           this.snackBarService.show(
             new SnackbarConfig({ message: SuccessMessages.USER_LOGIN_SUCCESS })
           );
-          this.router.navigateByUrl('admin/dashboard');
+          this.router.navigateByUrl('dashboard');
         }
       });
     } else {

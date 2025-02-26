@@ -23,6 +23,7 @@ import { SnackbarConfig } from '../../../shared/constants/snackbar-config.const'
 import { Router } from '@angular/router';
 import { passwordMatchValidator } from '../../../shared/validators/custom.validator';
 import { SuccessMessages } from '../../../shared/constants/messages-const';
+import { ApiResponse } from '../../../shared/interfaces/api.response';
 
 @Component({
   selector: 'app-register',
@@ -88,7 +89,6 @@ export class RegisterComponent {
           '',
           [
             Validators.required,
-            Validators.minLength(8),
             Validators.pattern(ValidationPatterns.PASSWORD),
           ],
         ],
@@ -106,16 +106,30 @@ export class RegisterComponent {
     if (this.registrationForm.valid) {
       this.authService
         .register(this.registrationForm.value as Register)
-        .subscribe((res) => {
+        .subscribe((res: ApiResponse<Register>) => {
           if (res.success) {
             this.snackBarService.show(
               new SnackbarConfig({ message: SuccessMessages.USER_REGISTRATION_SUCCESS })
             );
-            this.router.navigateByUrl('admin/login');
+            this.router.navigateByUrl('login');
           }
         });
     } else {
       this.registrationForm.markAllAsTouched();
     }
   }
+
+  restrictTextInput(event: KeyboardEvent) {
+    const allowedKeys = ['Backspace', 'ArrowLeft', 'ArrowRight', 'Tab', ' '];
+    if (!/^[A-Za-z ]$/.test(event.key) && !allowedKeys.includes(event.key)) {
+      event.preventDefault();
+    }
+  }  
+
+  restrictPhoneInput(event: KeyboardEvent) {
+    const allowedKeys = ['Backspace', 'ArrowLeft', 'ArrowRight', 'Tab'];
+    if (ValidationPatterns.PHONE.test(event.key) && !allowedKeys.includes(event.key)) {
+      event.preventDefault();
+    }
+  }  
 }

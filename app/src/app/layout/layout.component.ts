@@ -46,13 +46,19 @@ import { AuthService } from '../shared/service/authentication.service';
   styleUrl: './layout.component.scss',
 })
 export class LayoutComponent implements OnInit {
-  private breakpointObserver = inject(BreakpointObserver);
-  private router: Router = inject(Router);
-  private route: ActivatedRoute = inject(ActivatedRoute);
-  private authService: AuthService = inject(AuthService);
   routes: Routes =
     routes[1]?.children?.filter((r) => r.path && r.path !== '**') ?? [];
   actualRoute!: RouteData;
+  isHandset$: Observable<boolean>;
+
+  constructor(public breakpointObserver: BreakpointObserver, public router: Router, public route: ActivatedRoute, public authService: AuthService) {
+    this.isHandset$ = this.breakpointObserver
+    .observe(Breakpoints.Handset)
+    .pipe(
+      map((result) => result.matches),
+      shareReplay()
+    );
+  }
 
   ngOnInit() {
     this.router.events.subscribe(() => {
@@ -64,13 +70,6 @@ export class LayoutComponent implements OnInit {
       }
     });
   }
-
-  isHandset$: Observable<boolean> = this.breakpointObserver
-    .observe(Breakpoints.Handset)
-    .pipe(
-      map((result) => result.matches),
-      shareReplay()
-    );
 
     signOut() {
       this.authService.clearToken();
