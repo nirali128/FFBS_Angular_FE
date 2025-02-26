@@ -11,12 +11,14 @@
       [formControl]="getFormControl('firstName')"
       placeholder="Enter your first name"
       formControlName="firstName"
+      (keypress)="restrictTextInput($event)"
     ></app-input>
     <app-input
       label="Last Name"
       [formControl]="getFormControl('lastName')"
       placeholder="Enter your last name"
       formControlName="lastName"
+      (keypress)="restrictTextInput($event)"
     ></app-input>
     <app-input
       label="Email"
@@ -31,6 +33,7 @@
       [formControl]="getFormControl('phoneNumber')"
       placeholder="Enter your phone number"
       formControlName="phoneNumber"
+      (keypress)="restrictPhoneInput($event)"
     ></app-input>
 
     <app-select
@@ -60,7 +63,7 @@
 
     <div class="form-actions text-center mt-4">
       <app-button
-        [text]="'Register'"
+        [text]="'Sign Up'"
         [buttonType]="'normal'"
         (buttonClick)="onSubmit()"
       ></app-button>

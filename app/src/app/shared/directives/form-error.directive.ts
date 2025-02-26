@@ -24,6 +24,11 @@ export class FormErrorsDirective implements OnChanges {
     this.updateErrorMessages();
   }
 
+  @HostListener('document:submit', ['$event'])
+  onFormSubmit(): void {
+    this.updateErrorMessages();
+  }
+
   private updateErrorMessages(): void {
     const errorMessages = this.getErrorMessages();
     this.toggleErrorVisibility(errorMessages);

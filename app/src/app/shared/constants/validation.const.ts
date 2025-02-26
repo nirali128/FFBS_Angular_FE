@@ -1,7 +1,7 @@
 import { ErrorMessages } from "./messages-const";
 
 export const ValidationPatterns = {
-  EMAIL: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
+  EMAIL: /^[a-zA-Z0-9._%+-]+@[a-zA-Z.-]+\.[a-zA-Z]{2,4}$/,
   PHONE: /^[1-9]\d{9}$/,
   PASSWORD:
     /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{7,15}$/,

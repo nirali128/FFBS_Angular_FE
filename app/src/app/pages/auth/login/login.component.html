@@ -1,1 +1,39 @@
-<p>login works!</p>
+<div class="login-container d-flex align-items-center justify-content-center">
+  <form [formGroup]="loginForm" class="login-form p-4 rounded shadow bg-white">
+    <h2 class="text-center mb-4">Login</h2>
+
+    <app-input
+      label="Email"
+      [formControl]="getFormControl('email')"
+      placeholder="Enter your email"
+      formControlName="email"
+    ></app-input>
+
+    <div class="my-2">
+    <app-input 
+      label="Password"
+      [formControl]="getFormControl('password')"
+      placeholder="Enter your password"
+      type="password"
+      formControlName="password"
+    ></app-input>
+  </div>
+    <app-checkbox
+      label="Remember Me"
+      [checked]="loginForm.get('rememberMe')?.value"
+      (checkedChange)="loginForm.get('rememberMe')?.setValue($event)"
+    ></app-checkbox>
+
+    <div class="form-actions text-center mt-4">
+      <app-button
+        buttonType="normal"
+        text="Sign In"
+        (buttonClick)="onSubmit()"
+      ></app-button>
+    </div>
+    <p class="text-center mt-2">Don't have an account? 
+      <a href="/register">
+        <span>Sign up</span>
+      </a></p>
+  </form>
+</div>

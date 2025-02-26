@@ -20,6 +20,7 @@ import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
 import { routes } from '../app.routes';
 import { RouteData } from '../shared/interfaces/route.data';
 import { ButtonComponent } from '../shared/components/button/button.component';
+import { AuthService } from '../shared/service/authentication.service';
 
 @Component({
   selector: 'app-layout',
@@ -45,12 +46,19 @@ import { ButtonComponent } from '../shared/components/button/button.component';
   styleUrl: './layout.component.scss',
 })
 export class LayoutComponent implements OnInit {
-  private breakpointObserver = inject(BreakpointObserver);
-  private router: Router = inject(Router);
-  private route: ActivatedRoute = inject(ActivatedRoute);
   routes: Routes =
     routes[1]?.children?.filter((r) => r.path && r.path !== '**') ?? [];
   actualRoute!: RouteData;
+  isHandset$: Observable<boolean>;
+
+  constructor(public breakpointObserver: BreakpointObserver, public router: Router, public route: ActivatedRoute, public authService: AuthService) {
+    this.isHandset$ = this.breakpointObserver
+    .observe(Breakpoints.Handset)
+    .pipe(
+      map((result) => result.matches),
+      shareReplay()
+    );
+  }
 
   ngOnInit() {
     this.router.events.subscribe(() => {
@@ -63,10 +71,8 @@ export class LayoutComponent implements OnInit {
     });
   }
 
-  isHandset$: Observable<boolean> = this.breakpointObserver
-    .observe(Breakpoints.Handset)
-    .pipe(
-      map((result) => result.matches),
-      shareReplay()
-    );
+    signOut() {
+      this.authService.clearToken();
+      this.router.navigateByUrl("/login");
+    }
 }

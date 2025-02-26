@@ -1,5 +1,6 @@
 export const SuccessMessages = {
-    USER_REGISTRATION_SUCCESS: "User registered successfully."
+    USER_REGISTRATION_SUCCESS: "User registered successfully.",
+    USER_LOGIN_SUCCESS: "User logged in successfully."
 }
 
 export const ErrorMessages = {

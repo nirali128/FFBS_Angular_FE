@@ -1,10 +1,14 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable, Injector } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Register } from '../interfaces/register';
 import { ApiResponse } from '../interfaces/api.response';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { GlobalConstant } from '../constants/global-const';
-//import { jwtDecode } from 'jwt-decode';
+import { Login } from '../interfaces/login';
+import { Token } from '../interfaces/token';
+import { jwtDecode } from 'jwt-decode';
+import { DecodedToken } from '../interfaces/decoded.token';
+import * as CryptoJS from 'crypto-js';
 
 @Injectable({
   providedIn: 'root',
@@ -22,31 +26,88 @@ export class AuthService {
     return requestOptions;
   }
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(private http: HttpClient) {}
 
   isLoggedIn(): boolean {
-    return !!localStorage.getItem('');
+    return !!localStorage.getItem('token');
   }
 
   getToken(): string {
-    return localStorage.getItem('') ?? '';
+    let encryptedToken = localStorage.getItem('token');
+    return this.decrypt(encryptedToken) ?? '';
+  }
+
+  getRefreshToken(): string {
+    const encryptedRefreshToken = localStorage.getItem('refreshToken');
+    return encryptedRefreshToken ? this.decrypt(encryptedRefreshToken) : '';
+  }
+
+  getExpiryTime(): string {
+    let decodedToken: DecodedToken;
+    let token = this.getToken();
+    if(token) {
+      decodedToken = this.decodedToken(token);
+    }
+    return  new Date(decodedToken.exp * 1000).toString() ?? '';
   }
 
   clearToken() {
     localStorage.clear();
   }
 
-  decodedToken() {
-    //return jwtDecode(this.getToken());
+  decodedToken(data: string): DecodedToken {
+    return jwtDecode(data);
   }
 
-  register(data: Register): Observable<ApiResponse<Register[]>> {
-    return this.httpClient.post<ApiResponse<Register[]>>(
-      `${GlobalConstant.AUTH_API_URL}/register`,
+  setToken(data: Token) {
+    const encryptedToken = this.encrypt(data.token);
+    const encryptedRefreshToken = this.encrypt(data.refreshToken);
+    
+    localStorage.setItem('token', encryptedToken);
+    localStorage.setItem('refreshToken', encryptedRefreshToken);
+  }
+
+  setRememberMe(isRememberMe: boolean) {
+    localStorage.setItem("rememberMe", isRememberMe.toString());
+  }
+
+  register(data: Register): Observable<ApiResponse<Register>> {
+    return this.http.post<ApiResponse<Register>>(
+      `${GlobalConstant.AUTH_API_URL + GlobalConstant.AUTH.REGISTER}`,
       data,
       this.getHeaders()
     );
   }
 
-  login(data: any) {}
+  login(data: Login): Observable<ApiResponse<Token>> {
+    return this.http
+      .post<ApiResponse<Token>>(
+        `${GlobalConstant.AUTH_API_URL + GlobalConstant.AUTH.LOGIN}`,
+        data,
+        this.getHeaders()
+      )
+      .pipe(
+        tap((res) => {
+          {
+            if (res.success && res.data) {
+              this.setRememberMe(data.rememberMe);
+              this.setToken(res.data as Token);
+            }
+          }
+        })
+      );
+  }
+
+  refreshToken(refresh: string): Observable<ApiResponse<Token>> {
+    return this.http.post<ApiResponse<Token>>(`${GlobalConstant.AUTH_API_URL + GlobalConstant.AUTH.REFRESH_TOKEN}`, {refreshToken: refresh}, this.getHeaders());
+  }
+
+  private encrypt(data: string): string {
+    return CryptoJS.AES.encrypt(data, GlobalConstant.ENCRYPTION_KEY).toString();
+  }
+
+  private decrypt(data: string): string {
+    const bytes = CryptoJS.AES.decrypt(data, GlobalConstant.ENCRYPTION_KEY);
+    return bytes.toString(CryptoJS.enc.Utf8);
+  }
 }

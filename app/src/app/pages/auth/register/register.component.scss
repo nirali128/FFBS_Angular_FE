@@ -2,7 +2,7 @@
   min-height: 100vh;
   background: url('/assets/images/grass-2616911_1280.jpg') no-repeat center center;
   background-size: cover;
-  padding: 20px;
+  padding: 10px;
 }
 
 .registration-form {
@@ -11,11 +11,17 @@
   background: rgba(255, 255, 255, 0.9);
   border-radius: 8px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  padding: 20px;
+  padding: 10px;
+}
+
+::ng-deep{
+  div.mat-mdc-select-panel {
+    background-color: white !important;
+  }
 }
 
 @media (max-height: 600px) {
-  .login-container {
+  .registration-container {
     align-items: flex-start;
     padding-top: 50px;
     padding-bottom: 50px;
@@ -23,8 +29,8 @@
 }
 
 @media (max-width: 576px) {
-  .login-form {
+  .registration-form {
     max-width: 90%;
-    padding: 15px;
+    padding: 10px;
   }
 }
