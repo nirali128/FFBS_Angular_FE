@@ -1,11 +1,11 @@
 .login-container {
-  min-height: 100vh; // Ensures full height without overflow issues
+  min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
   background: url('/assets/images/football-pitch-4994688_1280.jpg') no-repeat center center;
   background-size: cover;
-  padding: 20px; // Adds some spacing for small screens
+  padding: 20px;
 }
 
 .login-form {

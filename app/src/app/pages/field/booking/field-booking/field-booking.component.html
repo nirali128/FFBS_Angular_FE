@@ -1,0 +1,47 @@
+<div class="container mt-4">
+  <div class="card shadow-sm p-4">
+    <div class="row">
+      <div class="col-md-6 text-center">
+        <img
+          src="assets/images/football-pitch.jpg"
+          class="img-fluid rounded shadow-sm"
+          alt="Field Image"
+        />
+      </div>
+
+      <div class="col-md-6">
+        <h2 class="fw-bold">Field 1</h2>
+        <p class="text-muted">A spacious field for events.</p>
+
+        <ul class="list-unstyled">
+          <li class="d-flex align-items-center mb-2">
+            <span class="me-2">📍</span>
+            <strong>Address:</strong> 123 Main St, Cityville
+          </li>
+          <li class="d-flex align-items-center mb-2">
+            <span class="me-2">📏</span>
+            <strong>Area:</strong> 500.00 sq ft
+          </li>
+          <li class="d-flex align-items-center mb-2">
+            <span class="me-2">📞</span>
+            <strong>Phone:</strong> 1234567890
+          </li>
+          <li class="d-flex align-items-center mb-2">
+            <span class="me-2">📜</span>
+            <strong>Rules:</strong> No smoking allowed.
+          </li>
+        </ul>
+
+        <button class="btn btn-warning mt-3">Book Now</button>
+      </div>
+    </div>
+  </div>
+
+  <app-calendar
+    *ngIf="days && slots && slotsByField"
+    [days]="days"
+    [slots]="slots"
+    [slotsByField]="slotsByField"
+    (selectedSlotsEvent)="selectedEvents($event)"
+  ></app-calendar>
+</div>

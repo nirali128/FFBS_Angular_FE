@@ -1,0 +1,68 @@
+<div class="container-fluid">
+  <div class="card p-3">
+    <div class="d-flex justify-content-between align-items-center">
+      <div>
+        <button class="btn btn-primary" (click)="navigate(-1)">
+          <mat-icon>chevron_left</mat-icon>
+        </button>
+        <button class="btn btn-light border-primary ms-2" [disabled]="isTodayButtonDisabled()" (click)="goToToday()">
+          Today
+        </button>
+        <button class="btn btn-primary ms-2" (click)="navigate(1)">
+          <mat-icon>chevron_right</mat-icon>
+        </button>
+      </div>
+
+      <div>
+        <button
+          class="btn"
+          [class.btn-primary]="isDayView"
+          (click)="toggleView(true)"
+        >
+          Day
+        </button>
+        <button
+          class="btn"
+          [class.btn-primary]="!isDayView"
+          (click)="toggleView(false)"
+        >
+          Week
+        </button>
+      </div>
+    </div>
+    <div class="table-responsive" style="max-height: 500px; overflow-y: auto">
+      <table class="table table-bordered mt-3">
+        <thead class="table-primary">
+          <tr>
+            <th>Time Slot</th>
+            <th *ngFor="let day of displayedDays">
+              {{ day.description }}, {{ day.date | date: 'dd-MM-yyyy'  }}
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let slot of slots">
+            <td>{{ slot.startTime }} - {{ slot.endTime }}</td>
+            <td
+              *ngFor="let day of displayedDays"
+              (click)="
+                getSlotStatus(day, slot).status === 'available' &&
+                  handleSlotClick(day.guid, slot.guid, day.date)
+              "
+              [ngClass]="getSlotClass(day, slot)"
+            >
+              {{ getSlotDisplayText(day, slot) }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div
+    class="d-flex justify-content-between align-items-center p-3 bg-primary text-white rounded mt-3"
+  >
+    <span>Total Time Slots: {{ getSelectedSlotCount() }}</span>
+    <button class="btn btn-danger" (click)="bookNow()">BOOK NOW</button>
+  </div>
+</div>
