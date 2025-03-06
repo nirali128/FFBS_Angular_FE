@@ -1,0 +1,35 @@
+<div class="container mt-4">
+    <!-- Button to toggle views -->
+    <button class="btn btn-primary" (click)="toggleView()">
+      Switch to {{ isGridView ? 'List' : 'Grid' }} View
+    </button>
+  
+    <!-- Grid View -->
+    <div *ngIf="isGridView" class="row mt-3">
+      <div class="col-md-4 mb-3" *ngFor="let item of items">
+        <div class="card">
+          <!-- Iterate over the properties of the item dynamically -->
+          <div *ngFor="let key of objectKeys(item)">
+            <div *ngIf="key !== 'image'" class="card-body">
+              <h5 class="card-title">{{ key }}: {{ item[key] }}</h5>
+            </div>
+            <img *ngIf="key === 'image'" class="card-img-top" [src]="item[key]" alt="Item image">
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <!-- List View -->
+    <div *ngIf="!isGridView" class="list-group mt-3">
+      <div class="list-group-item" *ngFor="let item of items">
+        <!-- Iterate over the properties of the item dynamically -->
+        <div *ngFor="let key of objectKeys(item)">
+          <div *ngIf="key !== 'image'" class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">{{ key }}: {{ item[key] }}</h5>
+          </div>
+          <small *ngIf="key === 'image'">Image: <img [src]="item[key]" alt="Item image" width="50"></small>
+        </div>
+      </div>
+    </div>
+  </div>
+  
