@@ -1,0 +1,22 @@
+::ng-deep {
+    .mat-mdc-slide-toggle.mat-mdc-slide-toggle-checked:not(.mat-disabled) .mdc-switch__shadow {
+      background-color: #25476a !important;
+    }
+  
+    .mat-mdc-slide-toggle.mat-mdc-slide-toggle-checked:not(.mat-disabled) .mdc-switch__track::after {
+      background-color: #aeafb1 !important;
+    }
+  }
+  
+  .btnClass {
+    background-color: #25476a !important;
+    color: white !important;
+  }
+  
+  .w-15 {
+    width: 15% !important;
+  }
+  
+  .disabled-color {
+    color: darkgray !important;
+  }
