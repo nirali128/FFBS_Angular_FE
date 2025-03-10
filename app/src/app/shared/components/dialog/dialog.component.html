@@ -1,0 +1,6 @@
+<div class="ps-4 pb-4" mat-dialog-title *ngIf="title">{{title}}</div>
+<mat-dialog-content class="text-wrap text-dark">{{message}}</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-stroked-button (click)="onDismiss()">{{ btnCancelText }}</button>
+  <button mat-raised-button cdkFocusInitial color="primary" (click)="onConfirm()">{{ btnOkText }}</button>
+</mat-dialog-actions>
