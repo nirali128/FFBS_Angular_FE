@@ -2,12 +2,12 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import dayjs from 'dayjs';
 import { MatTableModule } from '@angular/material/table';
 import { CommonModule } from '@angular/common';
-import { MatIcon } from '@angular/material/icon';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { Day, SelectableSlot, Slot, SlotByField } from '../../interfaces/field';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogComponent } from './dialog/dialog.component';
 import { convertSelectableSlotsToDialogTable } from '../../mapper/mapper';
+import { ButtonComponent } from '../button/button.component';
 
 interface CalendarDay extends Day {
   id: string;
@@ -16,7 +16,7 @@ interface CalendarDay extends Day {
 @Component({
   selector: 'app-calendar',
   standalone: true,
-  imports: [MatTableModule, CommonModule, MatButtonToggleModule, MatIcon],
+  imports: [MatTableModule, CommonModule, MatButtonToggleModule, ButtonComponent],
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.scss'],
 })
