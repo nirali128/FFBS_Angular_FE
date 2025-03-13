@@ -3,36 +3,34 @@
     <div class="row">
       <div class="col-md-6 text-center">
         <img
-          src="assets/images/football-pitch.jpg"
+          src="assets/images/football-pitch-4994688_1280.jpg"
           class="img-fluid rounded shadow-sm"
           alt="Field Image"
         />
       </div>
 
-      <div class="col-md-6">
-        <h2 class="fw-bold">Field 1</h2>
-        <p class="text-muted">A spacious field for events.</p>
+      <div class="col-md-6 d-flex flex-column justify-content-center">
+        <h2 class="field-title">{{ field.fieldName }}</h2>
+        <p class="field-description">{{ field.description }}</p>
 
         <ul class="list-unstyled">
-          <li class="d-flex align-items-center mb-2">
-            <span class="me-2">📍</span>
-            <strong>Address:</strong> 123 Main St, Cityville
+          <li>
+            <mat-icon class="icon">location_on</mat-icon>
+            <strong>Address:</strong> {{ field.address }}
           </li>
-          <li class="d-flex align-items-center mb-2">
-            <span class="me-2">📏</span>
-            <strong>Area:</strong> 500.00 sq ft
+          <li *ngIf="field.area">
+            <mat-icon class="icon">grid_on</mat-icon>
+            <strong>Area:</strong> {{ field.area }} sq ft
           </li>
-          <li class="d-flex align-items-center mb-2">
-            <span class="me-2">📞</span>
-            <strong>Phone:</strong> 1234567890
+          <li *ngIf="field.phoneNumber">
+            <mat-icon class="icon">call</mat-icon>
+            <strong>Phone:</strong> {{ field.phoneNumber }}
           </li>
-          <li class="d-flex align-items-center mb-2">
-            <span class="me-2">📜</span>
-            <strong>Rules:</strong> No smoking allowed.
+          <li *ngIf="field.rulesPolicies">
+            <mat-icon class="icon">article</mat-icon>
+            <strong>Rules:</strong> {{ field.rulesPolicies }}
           </li>
         </ul>
-
-        <button class="btn btn-warning mt-3">Book Now</button>
       </div>
     </div>
   </div>

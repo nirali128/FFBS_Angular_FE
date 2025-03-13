@@ -15,10 +15,11 @@ import { ActivatedRoute } from '@angular/router';
 import { EventInput } from '@fullcalendar/core/index.js';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../../shared/service/authentication.service';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-field-booking',
-  imports: [CalendarComponent, CommonModule],
+  imports: [CalendarComponent, CommonModule, MatIcon],
   templateUrl: './field-booking.component.html',
   styleUrl: './field-booking.component.scss',
 })
