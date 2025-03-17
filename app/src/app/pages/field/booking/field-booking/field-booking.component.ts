@@ -12,7 +12,6 @@ import {
 } from '../../../../shared/interfaces/field';
 import { ApiResponse } from '../../../../shared/interfaces/api.response';
 import { ActivatedRoute } from '@angular/router';
-import { EventInput } from '@fullcalendar/core/index.js';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../../../shared/service/authentication.service';
 
@@ -27,7 +26,6 @@ export class FieldBookingComponent {
   slots: Slot[];
   slotsByField: SlotByField[];
   fieldId: string;
-  calendarEvents: EventInput[] = [];
   selectedDateRange: { startDate: string; endDate: string } = {
     startDate: '',
     endDate: '',
