@@ -1,4 +1,4 @@
-@import 'bootstrap/dist/css/bootstrap.min.css';
+@import "bootstrap/dist/css/bootstrap.min.css";
 
 .container-fluid {
   padding: 20px;
@@ -33,8 +33,7 @@
 }
 
 a {
-    
-    text-decoration: none !important;
+  text-decoration: none !important;
 }
 
 .selected {
@@ -55,10 +54,8 @@ a {
   background-color: #e3797b !important;
 }
 
-.mat-header-cell, .mat-cell {
+.mat-header-cell,
+.mat-cell {
   text-align: center;
   border: 1px solid gray;
 }
-
-
-
