@@ -9,6 +9,7 @@ import { Token } from '../interfaces/token';
 import { jwtDecode } from 'jwt-decode';
 import { DecodedToken } from '../interfaces/decoded.token';
 import * as CryptoJS from 'crypto-js';
+import { environment } from '../../../environment/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -35,6 +36,12 @@ export class AuthService {
   getToken(): string {
     let encryptedToken = localStorage.getItem('token');
     return this.decrypt(encryptedToken) ?? '';
+  }
+
+  getUserId(): string {
+    let token = this.getToken()
+    let a = this.decodedToken(token);
+    return a.guid;
   }
 
   getRefreshToken(): string {
@@ -73,7 +80,7 @@ export class AuthService {
 
   register(data: Register): Observable<ApiResponse<Register>> {
     return this.http.post<ApiResponse<Register>>(
-      `${GlobalConstant.AUTH_API_URL + GlobalConstant.AUTH.REGISTER}`,
+      `${environment.baseUrl + GlobalConstant.AUTH.REGISTER}`,
       data,
       this.getHeaders()
     );
@@ -82,7 +89,7 @@ export class AuthService {
   login(data: Login): Observable<ApiResponse<Token>> {
     return this.http
       .post<ApiResponse<Token>>(
-        `${GlobalConstant.AUTH_API_URL + GlobalConstant.AUTH.LOGIN}`,
+        `${environment.baseUrl + GlobalConstant.AUTH.LOGIN}`,
         data,
         this.getHeaders()
       )
@@ -99,7 +106,7 @@ export class AuthService {
   }
 
   refreshToken(refresh: string): Observable<ApiResponse<Token>> {
-    return this.http.post<ApiResponse<Token>>(`${GlobalConstant.AUTH_API_URL + GlobalConstant.AUTH.REFRESH_TOKEN}`, {refreshToken: refresh}, this.getHeaders());
+    return this.http.post<ApiResponse<Token>>(`${environment.baseUrl + GlobalConstant.AUTH.REFRESH_TOKEN}`, {refreshToken: refresh}, this.getHeaders());
   }
 
   private encrypt(data: string): string {

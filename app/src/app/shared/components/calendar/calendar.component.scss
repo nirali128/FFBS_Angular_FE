@@ -1,0 +1,90 @@
+@import "bootstrap/dist/css/bootstrap.min.css";
+
+.container-fluid {
+  padding: 20px;
+  background-color: #f8f9fa;
+}
+
+.card {
+  border-radius: 12px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  background: #fff;
+}
+
+.booking-summary {
+  background: #343a40;
+  color: white;
+  padding: 15px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.btn-success {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+  transition: all 0.3s;
+}
+
+.btn-success:hover {
+  background: #218838 !important;
+}
+
+a {
+  text-decoration: none !important;
+}
+
+.selected {
+  background-color: #50960f !important;
+}
+
+.available {
+  background-color: #d4edda !important;
+  cursor: pointer;
+}
+
+.booked {
+  background-color: #a3a3a3cc !important;
+  cursor: not-allowed;
+}
+
+.past {
+  background-color: #e3797b !important;
+}
+
+td {
+  text-align: center;
+  border: 1px solid rgb(116, 114, 114);
+  border-left: 0px !important;
+}
+
+.calendar-table {
+  max-height: 500px;
+  overflow-y: auto;
+
+  th {
+    position: sticky;
+    top: 0;
+  }
+}
+
+.calendar-border {
+  border: 1px solid rgb(116, 114, 114) !important;
+  border-top: 0px !important;
+  border-left: 0px !important;
+  border-bottom: 1px solid rgb(116, 114, 114);
+}
+
+::ng-deep {
+  .calendar-button {
+    .btn {
+      border-radius: 0% !important;
+    }
+  }
+}
+
+.width-200 {
+  width: 200px;
+}

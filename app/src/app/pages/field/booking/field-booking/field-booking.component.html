@@ -1,0 +1,45 @@
+<div class="container mt-4">
+  <div class="card shadow-sm p-3">
+    <div class="row">
+      <div class="col-md-6 text-center">
+        <img
+          src="assets/images/football-pitch-4994688_1280.jpg"
+          class="img-fluid rounded shadow-sm"
+          alt="Field Image"
+        />
+      </div>
+
+      <div class="col-md-6 d-flex flex-column justify-content-center">
+        <h2 class="field-title">{{ field.fieldName }}</h2>
+        <p class="field-description">{{ field.description }}</p>
+
+        <ul class="list-unstyled">
+          <li>
+            <mat-icon class="icon">location_on</mat-icon>
+            <strong>Address:</strong> {{ field.address }}
+          </li>
+          <li *ngIf="field.area">
+            <mat-icon class="icon">grid_on</mat-icon>
+            <strong>Area:</strong> {{ field.area }} sq ft
+          </li>
+          <li *ngIf="field.phoneNumber">
+            <mat-icon class="icon">call</mat-icon>
+            <strong>Phone:</strong> {{ field.phoneNumber }}
+          </li>
+          <li *ngIf="field.rulesPolicies">
+            <mat-icon class="icon">article</mat-icon>
+            <strong>Rules:</strong> {{ field.rulesPolicies }}
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <app-calendar
+    *ngIf="days && slots && slotsByField"
+    [days]="days"
+    [slots]="slots"
+    [slotsByField]="slotsByField"
+    (selectedSlotsEvent)="selectedEvents($event)"
+  ></app-calendar>
+</div>
