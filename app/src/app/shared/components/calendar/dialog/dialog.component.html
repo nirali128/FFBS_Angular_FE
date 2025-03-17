@@ -1,0 +1,28 @@
+<div >
+  <h2 mat-dialog-title>Selected Time Slots</h2>
+  <mat-dialog-content>
+    <table class="table table-bordered mt-3">
+      <thead class="table-primary">
+        <tr>
+          <th>Time Slot</th>
+          <th>Date</th>
+          <th>Day</th>
+          <th>Rate</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of dialogTableData">
+          <td>{{ item.timeSlot }}</td>
+          <td>{{ item.date }}</td>
+          <td>{{ item.day }}</td>
+          <td>{{ item.rate }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </mat-dialog-content>
+
+  <mat-dialog-actions align="end">
+    <button class="btn btn-secondary" mat-dialog-close (click)="bookNow(false)">Back to View</button>
+    <button class="btn btn-success ms-1" (click)="bookNow(true)">Confirm Booking</button>
+  </mat-dialog-actions>
+</div>

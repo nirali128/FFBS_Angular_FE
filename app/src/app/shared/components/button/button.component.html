@@ -6,6 +6,8 @@
         'mat-fab': buttonType === 'icon' || buttonType === 'text-icon'
     }"
     [class]="'btn btn-' + color"
+    class="d-flex align-items-center justify-content-center"
+    [disabled]="disable"
     (click)="onClick()"
 >
     <ng-container *ngIf="buttonType !== 'icon' && buttonType !== 'text-icon'">
@@ -16,7 +18,15 @@
         <mat-icon class="material-symbols-outlined">{{icon}}</mat-icon>
     </ng-container>
 
-    <ng-container *ngIf="buttonType === 'text-icon'">
-        <mat-icon class="material-symbols-outlined">{{icon}}</mat-icon> {{ text }}
+    <ng-container *ngIf="buttonType === 'text-icon'" >
+        <ng-container *ngIf="iconPosition === 'left'">
+            <mat-icon *ngIf="icon" class="material-symbols-outlined me-2">{{ icon }}</mat-icon>
+        </ng-container>
+
+        {{ text }}
+
+        <ng-container *ngIf="iconPosition === 'right'">
+            <mat-icon *ngIf="icon" class="material-symbols-outlined ms-2">{{ icon }}</mat-icon>
+        </ng-container>
     </ng-container>
 </button>
