@@ -8,10 +8,11 @@ import { ConfirmDialogComponent } from '../dialog/dialog.component';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { ButtonComponent } from '../button/button.component';
 
 @Component({
   selector: 'app-table',
-  imports: [MatTableModule],
+  imports: [MatTableModule, ButtonComponent],
   templateUrl: './table.component.html',
   styleUrl: './table.component.scss'
 })

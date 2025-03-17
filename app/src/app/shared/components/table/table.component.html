@@ -38,8 +38,12 @@
             </button>
   
             <!-- For Delete button -->
-            <button *ngIf="item.name == 'delete'" mat-icon-button
-              (click)="delete(element.id)"><mat-icon *ngIf="item.src" color="primary" [fontIcon]="item.src"></mat-icon></button>
+            <app-button *ngIf="item.name == 'delete'" 
+            buttonType="icon"
+            [icon]="item.src"
+            (buttonClick)="delete(element.id)"
+          ></app-button>
+            
           </ng-container>
         </span>
       </td>
