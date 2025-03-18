@@ -21,6 +21,7 @@ import { routes } from '../app.routes';
 import { RouteData } from '../shared/interfaces/route.data';
 import { ButtonComponent } from '../shared/components/button/button.component';
 import { AuthService } from '../shared/service/authentication.service';
+import { AppSpinnerComponent } from '../shared/components/app-spinner/app-spinner.component';
 
 @Component({
   selector: 'app-layout',
@@ -40,7 +41,8 @@ import { AuthService } from '../shared/service/authentication.service';
     MatMenu,
     MatMenuItem,
     CommonModule,
-    ButtonComponent
+    ButtonComponent,
+    AppSpinnerComponent
   ],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.scss',

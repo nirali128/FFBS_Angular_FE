@@ -1,0 +1,18 @@
+.custom-spinner::ng-deep circle {
+  stroke: #25476a !important;
+}
+
+.spinner-overlay {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(163, 163, 163, 0.7);
+  z-index: 9999;
+  left: 0;
+  top: 0;
+}
+
+.spinnerCircle {
+  left: 50%;
+  top: 45%;
+}
