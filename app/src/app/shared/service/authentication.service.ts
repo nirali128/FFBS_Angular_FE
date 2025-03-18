@@ -109,6 +109,10 @@ export class AuthService {
     return this.http.post<ApiResponse<Token>>(`${environment.baseUrl + GlobalConstant.AUTH.REFRESH_TOKEN}`, {refreshToken: refresh}, this.getHeaders());
   }
 
+  changePassword() {
+    return "Not implemented";
+  }
+
   private encrypt(data: string): string {
     return CryptoJS.AES.encrypt(data, GlobalConstant.ENCRYPTION_KEY).toString();
   }

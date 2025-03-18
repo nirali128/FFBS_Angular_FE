@@ -1,0 +1,67 @@
+<div class="container">
+  <form
+    [formGroup]="registrationForm"
+    class="registration-form p-4 rounded shadow bg-white"
+  >
+    <h2 class="text-center mb-4">Profile</h2>
+    <app-input
+      label="First Name"
+      [formControl]="getFormControl('firstName')"
+      placeholder="Enter your first name"
+      formControlName="firstName"
+      (keypress)="restrictTextInput($event)"
+    ></app-input>
+    <app-input
+      label="Last Name"
+      [formControl]="getFormControl('lastName')"
+      placeholder="Enter your last name"
+      formControlName="lastName"
+      (keypress)="restrictTextInput($event)"
+    ></app-input>
+    <app-input
+      label="Email"
+      disabled="true"
+      [formControl]="getFormControl('email')"
+      placeholder="Enter your email"
+      formControlName="email"
+      type="email"
+    ></app-input>
+
+    <app-input
+      label="Phone Number"
+      [formControl]="getFormControl('phoneNumber')"
+      placeholder="Enter your phone number"
+      formControlName="phoneNumber"
+      (keypress)="restrictPhoneInput($event)"
+    ></app-input>
+
+    <mat-form-field>
+        <mat-label>Choose a date</mat-label>
+        <input matInput [matDatepicker]="picker">
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <app-textarea
+      label="Address"
+      [formControl]="getFormControl('address')"
+      formControlName="address"
+      placeholder="Enter Address"
+      formControlName="address"
+    ></app-textarea>
+
+    <app-button
+      [text]="'Change Password'"
+      [buttonType]="'normal'"
+      (buttonClick)="changePassword()"
+    ></app-button>
+
+    <div class="form-actions text-center mt-4">
+      <app-button
+        [text]="'Submit'"
+        [buttonType]="'normal'"
+        (buttonClick)="onSubmit()"
+      ></app-button>
+    </div>
+  </form>
+</div>
