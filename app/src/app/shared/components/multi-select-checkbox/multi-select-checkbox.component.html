@@ -1,0 +1,18 @@
+<mat-form-field class="full-width">
+  <mat-label>{{ placeholder }}</mat-label>
+  <mat-select
+    multiple
+    [disabled]="disabled"
+    [(value)]="selectedValues"
+    (selectionChange)="onChange(selectedValues)"
+  >
+    <mat-option *ngFor="let option of options" [value]="option.value">
+      <mat-checkbox
+        [checked]="isSelected(option.value)"
+        (click)="toggleSelection(option.value)"
+      >
+        {{ option.label }}
+      </mat-checkbox>
+    </mat-option>
+  </mat-select>
+</mat-form-field>

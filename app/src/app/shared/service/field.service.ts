@@ -91,4 +91,20 @@ export class FieldService {
       this.getHeaders()
     );
   }
+
+  addField(data: FieldDetail) {
+    return this.httpClient.post(
+      `${GlobalConstant.FIELD_API_URL + GlobalConstant.FIELD.ADD_FIELD}`,
+      data,
+      this.getHeaders()
+    );
+  }
+
+  editField(data: FieldDetail) {
+    return this.httpClient.put(
+      `${GlobalConstant.FIELD_API_URL + GlobalConstant.FIELD.EDIT_FIELD}`,
+      data,
+      this.getHeaders()
+    );
+  }
 }

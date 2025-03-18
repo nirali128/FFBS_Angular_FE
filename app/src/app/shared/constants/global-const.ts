@@ -26,6 +26,8 @@ export class GlobalConstant {
     GET_ALL_FIELDS: "/get-all-fields-detail",
     GET_SLOT_BY_FIELD: "/get-slot-by-field",
     GET_FIELD_DETAIL: "/get-field-detail",
+    ADD_FIELD: "/add-field",
+    EDIT_FIELD: "/edit-field",
   }
 
   public static readonly BOOKING = {
