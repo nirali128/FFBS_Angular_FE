@@ -35,16 +35,16 @@ export class AuthInterceptor implements HttpInterceptor {
           new Date(new Date().toUTCString()) > expiryTime &&
           !this.refreshTokenInProgress
         ) {
-          // this.refreshTokenInProgress = true;
+          this.refreshTokenInProgress = true;
 
-          // this.authService
-          //   .refreshToken(localStorage.getItem('refreshToken') || '')
-          //   .subscribe((res) => {
-          //     if (res.success) {
-          //       this.authService.setToken(res.data);
-          //       this.refreshTokenInProgress = false;
-          //     }
-          //   });
+          this.authService
+            .refreshToken(localStorage.getItem('refreshToken') || '')
+            .subscribe((res) => {
+              if (res.success) {
+                this.authService.setToken(res.data);
+                this.refreshTokenInProgress = false;
+              }
+            });
         }
       }
     }

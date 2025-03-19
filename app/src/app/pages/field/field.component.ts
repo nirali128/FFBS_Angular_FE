@@ -4,11 +4,10 @@ import { FieldService } from '../../shared/service/field.service';
 import { ApiPaginatedResponse } from '../../shared/interfaces/api.response';
 import { DataViewComponent } from '../../shared/components/data-view/data-view.component';
 import { Router } from '@angular/router';
-import { ButtonComponent } from '../../shared/components/button/button.component';
 
 @Component({
   selector: 'app-field',
-  imports: [DataViewComponent, ButtonComponent],
+  imports: [DataViewComponent],
   templateUrl: './field.component.html',
   styleUrl: './field.component.scss'
 })
@@ -32,9 +31,5 @@ export class FieldComponent {
 
   navigate(guid: string) {
     this.router.navigateByUrl("/field/booking/" + guid)
-  }
-  
-  navigateToAddField() {
-    this.router.navigateByUrl("/field/add");
   }
 }

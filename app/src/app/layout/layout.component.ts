@@ -46,7 +46,8 @@ import { AuthService } from '../shared/service/authentication.service';
   styleUrl: './layout.component.scss',
 })
 export class LayoutComponent implements OnInit {
-  routes!: Routes;
+  routes: Routes =
+    routes[1]?.children?.filter((r) => r.path && r.path !== '**') ?? [];
   actualRoute!: RouteData;
   isHandset$: Observable<boolean>;
 
@@ -60,8 +61,6 @@ export class LayoutComponent implements OnInit {
   }
 
   ngOnInit() {
-    let arr = routes.filter(x => x?.children && x?.children.length > 0);
-    this.routes = arr[0]?.children?.filter((r) => r.path && r.path !== '**');
     this.router.events.subscribe(() => {
       if (this.routes.length) {
         const data = this.routes.find(

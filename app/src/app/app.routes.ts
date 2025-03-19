@@ -3,7 +3,6 @@ import { LayoutComponent } from './layout/layout.component';
 import { RegisterComponent } from './pages/auth/register/register.component';
 import { LoginComponent } from './pages/auth/login/login.component';
 import { CalendarComponent } from './shared/components/calendar/calendar.component';
-import { NotFoundComponent } from './pages/not-found/not-found.component';
 
 export const routes: Routes = [
     {path: '', pathMatch: 'full', redirectTo: 'register'},
@@ -41,8 +40,7 @@ export const routes: Routes = [
                 },
                 loadChildren: () => import('./pages/field/field.routes')
             },
-            {path: '', pathMatch: 'full', redirectTo: 'dashboard'},
+            {path: '**', redirectTo: 'dashboard', pathMatch: 'full'}
         ]
     },
-    {path: '**', component: NotFoundComponent}
 ];

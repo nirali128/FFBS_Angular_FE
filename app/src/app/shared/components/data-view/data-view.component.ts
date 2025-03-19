@@ -57,12 +57,4 @@ export class DataViewComponent<T> {
   disability(item: T) {
     return !(item as any).isAvailable;
   }
-
-  getImageUrl(imageData: string): string {
-    if (!imageData) {
-      return 'assets/images/default-image.jpg'; // Fallback image
-    }
-    return imageData.startsWith('data:image') ? imageData : 'data:image/jpeg;base64,' + imageData;
-  }
-  
 }

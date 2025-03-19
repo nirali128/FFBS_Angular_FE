@@ -1,18 +1,1 @@
-<div class="container mt-4">
-  <div class="d-flex justify-content-between mb-2">
-    <h2 class="fw-bold">All Fields</h2>
-    <app-button
-      buttonType="text-icon"
-      text="Add"
-      icon="add"
-      (buttonClick)="navigateToAddField()"
-    >
-    </app-button>
-  </div>
-  <app-data-view
-    [items]="fields"
-    [fieldIcons]="fieldIcons"
-    [columns]="fieldColumns"
-    (buttonEvent)="navigate($event)"
-  ></app-data-view>
-</div>
+<app-data-view [items]="fields" [fieldIcons]="fieldIcons" [columns]="fieldColumns" (buttonEvent)="navigate($event)"></app-data-view>
