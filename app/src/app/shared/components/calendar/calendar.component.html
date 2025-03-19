@@ -1,86 +1,70 @@
-<div class="card p-3 mt-3">
-  <div class="d-flex justify-content-between align-items-center">
-    <div class="d-flex justify-content-between align-items-center">
-      <app-button class="calendar-button"
-        [buttonType]="'icon'"
-        [color]="'primary'"
-        [icon]="'chevron_left'"
-        (buttonClick)="navigate(-1)"
-      >
-      </app-button>
-      <app-button class="calendar-button"
-        [buttonType]="'normal'"
-        [color]="'primary'"
-        [text]="'Today'"
-        [disable]="isTodayButtonDisabled()"
-        (buttonClick)="goToToday()"
-      >
-      </app-button>
-      <app-button class="calendar-button"
-        [buttonType]="'icon'"
-        [color]="'primary'"
-        [icon]="'chevron_right'"
-        (buttonClick)="navigate(1)"
-      >
-      </app-button>
-    </div>
-
-    <div class="d-flex justify-content-between align-items-center">
-      <app-button class="calendar-button"
-        [buttonType]="'normal'"
-        [color]="isDayView ? 'primary' : 'secondary'"
-        [text]="'Day'"
-        (buttonClick)="toggleView(true)"
-      >
-      </app-button>
-
-      <app-button class="calendar-button"
-        [buttonType]="'normal'"
-        [color]="!isDayView ? 'primary' : 'secondary'"
-        [text]="'Week'"
-        (buttonClick)="toggleView(false)"
-      >
-      </app-button>
-    </div>
-  </div>
-  <div class="table-responsive calendar-table mt-3 border border-dark">
-    <table class="table">
-      <thead class="table-primary">
-        <tr class="text-center" >
-          <th class="width-200 calendar-border">Time Slot</th>
-          <th *ngFor="let day of displayedDays" class="calendar-border">
-            {{ day.description }}, <br>{{ day.date | date : "dd-MM-yyyy" }}
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let slot of slots">
-          <td class="width-200">{{ slot.startTime }} - {{ slot.endTime }}</td>
-          <td
-            *ngFor="let day of displayedDays"
-            (click)="
-              getSlotStatus(day, slot).status === 'available' &&
-                handleSlotClick(day.guid, slot.guid, day.date)
-            "
-            [ngClass]="getSlotClass(day, slot)"
-          >
-            {{ getSlotDisplayText(day, slot) }}
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+<div class="col-12 d-flex justify-content-between">
+  <div></div>
+</div>
+<div
+  *ngIf="fieldSlotAvailability && slots"
+  class="table-responsive calendar-table mt-3 border border-dark px-0"
+  [ngClass]="{ 'width-500': dayView, container: dayView }"
+>
+  <table class="table">
+    <thead class="table-primary">
+      <tr class="text-center">
+        <th class="calendar-border">Time Slot</th>
+        <th
+          *ngFor="let day of displayedDays"
+          class="calendar-border"
+          [ngClass]="{ 'width-200': !dayView }"
+        >
+          {{ day | date : "EEEE" }}, <br />{{ day | date : "dd-MM-yyyy" }}
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let slot of slots">
+        <td>
+          {{ getFormattedTimeString(slot.startTime) }} -
+          {{ getFormattedTimeString(slot.endTime) }}
+        </td>
+        <td
+          *ngFor="let day of displayedDays"
+          class="width-200"
+          (click)="
+            getSlotStatus(day, slot).status === 'available' &&
+              handleSlotClick(slot.slotId, day)
+          "
+          [ngClass]="getSlotClass(day, slot)"
+        >
+          {{ getSlotDisplayText(day, slot) }}
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </div>
 
 <div
   class="d-flex justify-content-between align-items-center p-3 bg-primary text-white rounded mt-3"
 >
-  <span>Total Time Slots: {{ getSelectedSlotCount() }}</span>
-  <app-button
-    [buttonType]="'normal'"
-    [color]="'danger'"
-    [text]="'BOOK NOW'"
-    (buttonClick)="bookNow()"
-  >
-  </app-button>
+  <div class="d-flex flex-column">
+    <span>Total Time Slots: {{ getSelectedSlotCount() }}</span>
+    <span>Total Price: {{ getSelectedSlotTotalPrice() }}</span>
+  </div>
+  <div class="d-flex">
+    <app-button
+      class="me-2"
+      [buttonType]="'normal'"
+      [color]="'warning'"
+      [disable]="!getSelectedSlotCount()"
+      [text]="'Clear All'"
+      (buttonClick)="removeAll()"
+    >
+    </app-button>
+    <app-button
+      [buttonType]="'normal'"
+      [color]="'danger'"
+      [text]="'BOOK NOW'"
+      [disable]="!getSelectedSlotCount()"
+      (buttonClick)="bookNow()"
+    >
+    </app-button>
+  </div>
 </div>

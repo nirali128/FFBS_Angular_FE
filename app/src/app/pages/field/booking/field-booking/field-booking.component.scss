@@ -1,16 +1,26 @@
-.field-title {
-    font-size: 1.75rem;
-    font-weight: bold;
-    margin-bottom: 0.5rem;
+
+.field-description {
+  font-size: 1rem;
+  color: #666;
+}
+
+.icon {
+  font-size: 1.2rem;
+  margin-right: 5px;
+  vertical-align: middle;
+}
+
+.height-400 {
+  height: 400px !important;
+}
+
+::ng-deep {
+  .mat-datepicker-content {
+    background-color: #fff !important;
   }
-  
-  .field-description {
-    font-size: 1rem;
-    color: #666;
+
+  .mat-calendar-body-disabled {
+    cursor: not-allowed !important;
+    background-color: #cfcccc !important;
   }
-  
-  .icon {
-    font-size: 1.2rem;
-    margin-right: 5px;
-    vertical-align: middle;
-  }
+}

@@ -60,13 +60,36 @@ td {
   border-left: 0px !important;
 }
 
+td:first-child, th:first-child {
+  white-space: nowrap;
+  width: 250px;
+}
+
+td:not(:first-child), th:not(:first-child) {
+  white-space: nowrap;
+  width: 200px;
+}
+
 .calendar-table {
   max-height: 500px;
-  overflow-y: auto;
+  overflow-y: scroll;
+  overflow-x: scroll;
 
-  th {
+  th:not(:first-child) {
     position: sticky;
     top: 0;
+  }
+
+  th:first-child {
+    z-index: 1;
+    position: sticky;
+    left: 0;
+    top: 0;
+  }
+  
+  td:first-child {
+    position: sticky;
+    left: 0;
   }
 }
 
@@ -87,4 +110,8 @@ td {
 
 .width-200 {
   width: 200px;
+}
+
+.width-500 {
+  width: 500px;
 }

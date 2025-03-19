@@ -4,7 +4,6 @@ import { FieldBookingComponent } from './booking/field-booking/field-booking.com
 import { AddFieldComponent } from './add-field/add-field.component';
 import { EditFieldComponent } from './edit-field/edit-field.component';
 
-
 export default [
     {
         path: '',

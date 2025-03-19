@@ -3,30 +3,34 @@ import dayjs from 'dayjs';
 import { MatTableModule } from '@angular/material/table';
 import { CommonModule } from '@angular/common';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { Day, SelectableSlot, Slot, SlotByField } from '../../interfaces/field';
 import { MatDialog } from '@angular/material/dialog';
-import { DialogComponent } from './dialog/dialog.component';
-import { convertSelectableSlotsToDialogTable } from '../../mapper/mapper';
+import { provideNativeDateAdapter } from '@angular/material/core';
+import { getFormattedTime } from '../../common/common';
+import { FieldSlotRateData, SelectableSlot, CalendarSlot } from '../../interfaces/field';
+import { convertSelectableSlotToDialogTable } from '../../mapper/mapper';
 import { ButtonComponent } from '../button/button.component';
+import { DialogComponent } from './dialog/dialog.component';
 
-interface CalendarDay extends Day {
-  id: string;
-}
 
 @Component({
   selector: 'app-calendar',
   standalone: true,
-  imports: [MatTableModule, CommonModule, MatButtonToggleModule, ButtonComponent],
+  imports: [
+    MatTableModule,
+    CommonModule,
+    MatButtonToggleModule,
+    ButtonComponent,
+  ],
+  providers: [provideNativeDateAdapter()],
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.scss'],
 })
 export class CalendarComponent {
-  isDayView: boolean = false;
   showTable: boolean = false;
-  @Input() days: Day[] = [];
-  @Input() slots: Slot[] = [];
-  @Input() slotsByField: SlotByField[] = [];
-  displayedDays: CalendarDay[];
+  @Input() fieldSlotAvailability: FieldSlotRateData[];
+  @Input() dayView: boolean = false;
+
+  displayedDays: string[];
   @Output() selectedSlotsEvent = new EventEmitter<{
     [key: string]: SelectableSlot[];
   }>();
@@ -35,85 +39,40 @@ export class CalendarComponent {
   currentDate = dayjs();
   selectedSlots: { [key: string]: SelectableSlot[] } = {};
   displayedColumns: string[] = [];
+  slots: CalendarSlot[];
 
   constructor(public dialog: MatDialog) {}
 
-  ngOnInit() {
+  ngOnChanges() {
     this.getDays();
+    this.getSlots();
   }
 
   getDays() {
     this.displayedDays = [];
-
-    if (this.isDayView) {
-      const selectedDate = this.currentDate.format('YYYY-MM-DD');
-      const selectedDayName = this.currentDate.format('dddd');
-      const matchingDay = this.days.find(
-        (day) => day.description === selectedDayName
-      );
-
-      if (matchingDay) {
-        this.displayedDays.push({
-          id: crypto.randomUUID(),
-          guid: matchingDay.guid,
-          description: matchingDay.description,
-          date: selectedDate,
-        } as CalendarDay);
-      }
-    } else {
-      const startOfWeek = this.currentDate.startOf('week').add(1, 'day');
-
-      this.displayedDays = this.days.slice(0, 7).map(
-        (day, index) =>
-          ({
-            id: crypto.randomUUID(),
-            guid: day.guid,
-            description: day.description,
-            date: startOfWeek.add(index, 'day').format('YYYY-MM-DD'),
-          } as CalendarDay)
-      );
+    if (this.fieldSlotAvailability) {
+      this.fieldSlotAvailability.forEach((res) => {
+        this.displayedDays.push(res.date);
+      });
     }
   }
 
-  generateGuid(): string {
-    return crypto.randomUUID();
-  }
-
-  isTodayButtonDisabled(): boolean {
-    if (this.isDayView) {
-      return this.currentDate.isSame(dayjs(), 'day');
-    } else {
-      const startOfCurrentWeek = dayjs().startOf('week').add(1, 'day');
-      const startOfDisplayedWeek = this.currentDate
-        .startOf('week')
-        .add(1, 'day');
-
-      return startOfDisplayedWeek.isSame(startOfCurrentWeek, 'day');
+  getSlots() {
+    this.slots = [];
+    if (this.fieldSlotAvailability) {
+      this.fieldSlotAvailability[0].slots.forEach((res) => {
+        let data: CalendarSlot = {
+          slotId: res.slotId,
+          startTime: res.startTime,
+          endTime: res.endTime,
+        };
+        this.slots.push(data);
+      });
     }
   }
 
-  goToToday() {
-    this.currentDate = dayjs();
-    this.getDays();
-  }
-
-  navigate(offset: number): void {
-    if (this.isDayView) {
-      this.currentDate = this.currentDate.add(offset, 'day');
-    } else {
-      this.currentDate = this.currentDate.add(offset * 7, 'day');
-    }
-
-    this.getDays();
-  }
-
-  toggleView(isDay: boolean): void {
-    this.isDayView = isDay;
-    this.getDays();
-  }
-
-  handleSlotClick(dayGuid: string, slotGuid: string, date: string) {
-    const key = `${dayGuid}-${date}-${slotGuid}`;
+  handleSlotClick(slotGuid: string, date: string) {
+    const key = `${date}-${slotGuid}`;
 
     if (!this.selectedSlots[key]) {
       this.selectedSlots[key] = [];
@@ -123,9 +82,9 @@ export class CalendarComponent {
       (slot) => slot.slotGuid === slotGuid
     );
 
-    let rate = this.getSlotRate(dayGuid, slotGuid);
+    let rate = this.getSlotRate(date, slotGuid);
     if (index === -1) {
-      this.selectedSlots[key].push({ dayGuid, slotGuid, date, rate });
+      this.selectedSlots[key].push({ slotGuid, date, rate });
     } else {
       this.selectedSlots[key].splice(index, 1);
     }
@@ -133,29 +92,41 @@ export class CalendarComponent {
     this.selectedSlots = { ...this.selectedSlots };
   }
 
-  getSlotRate(dayGuid: string, slotGuid: string): number {
-    const fieldSlot = this.slotsByField.find((f) => f.dayId === dayGuid);
+  getSlotRate(date: string, slotGuid: string): number {
+    const fieldSlot = this.fieldSlotAvailability.find((f) => f.date == date);
     const slotData = fieldSlot?.slots.find((s) => s.slotId === slotGuid);
     return slotData.rate;
   }
 
-  getSlotStatus(
-    day: CalendarDay,
-    slot: Slot
-  ): { status: string; rate?: string } {
-    const fieldSlot = this.slotsByField.find((f) => f.dayId === day.guid);
-    const slotData = fieldSlot?.slots.find((s) => s.slotId === slot.guid);
+  getFormattedTimeString(timeString: string): string {
+    return getFormattedTime(timeString);
+  }
 
-    const dayDate = dayjs(day.date, 'YYYY-MM-DD', true);
+  getSlotStatus(
+    day: string,
+    slot: CalendarSlot
+  ): { status: string; rate?: string } {
+    const fieldSlot = this.fieldSlotAvailability.find((f) => f.date === day);
+    const slotData = fieldSlot?.slots.find((s) => s.slotId === slot.slotId);
+
+    const dayDate = dayjs(day, 'YYYY-MM-DD', true);
     const isToday = dayDate.isSame(this.today, 'day');
     const isPastDay = dayDate.isBefore(this.today, 'day');
     const slotStartTime = dayjs(slot.startTime, 'hh:mm A');
 
+    const todayDate = dayjs().format('YYYY-MM-DD');
+    const now = dayjs(); // Get current date & time
+
+    const parsedTime = dayjs(
+      `${todayDate} ${slot.startTime}`,
+      'YYYY-MM-DD hh:mm A'
+    );
+
     if (slotData) {
-      if (!slotData.isAvailable) return { status: 'booked' };
+      if (!slotData.availability) return { status: 'booked' };
       if (
-        (isPastDay && slotData.isAvailable) ||
-        (isToday && slotStartTime.isBefore(this.today))
+        (isPastDay && slotData.availability) ||
+        (isToday && parsedTime.isBefore(now))
       )
         return { status: 'past' };
       return { status: 'available', rate: slotData.rate.toString() };
@@ -163,11 +134,11 @@ export class CalendarComponent {
     return { status: 'unavailable' };
   }
 
-  getSlotClass(day: CalendarDay, slot: Slot): { [key: string]: boolean } {
-    const key = `${day.guid}-${day.date}-${slot.guid}`;
+  getSlotClass(day: string, slot: CalendarSlot): { [key: string]: boolean } {
+    const key = `${day}-${slot.slotId}`;
     const status = this.getSlotStatus(day, slot).status;
     const isSelected = this.selectedSlots[key]?.some(
-      (selectedSlot) => selectedSlot.slotGuid === slot.guid
+      (selectedSlot) => selectedSlot.slotGuid === slot.slotId
     );
 
     return {
@@ -178,7 +149,7 @@ export class CalendarComponent {
     };
   }
 
-  getSlotDisplayText(day: CalendarDay, slot: Slot): string {
+  getSlotDisplayText(day: string, slot: CalendarSlot): string {
     const slotStatus = this.getSlotStatus(day, slot);
 
     switch (slotStatus.status) {
@@ -207,20 +178,32 @@ export class CalendarComponent {
   }
 
   openDialog() {
-    let dialogData = convertSelectableSlotsToDialogTable(
+    let dialogData = convertSelectableSlotToDialogTable(
       this.selectedSlots,
-      this.slots,
-      this.days
+      this.slots
     );
     const dialogRef = this.dialog.open(DialogComponent, {
       data: dialogData,
       width: '50%',
     });
-
     dialogRef.afterClosed().subscribe((item) => {
       if (item) {
         this.selectedSlotsEvent.emit(this.selectedSlots);
       }
     });
+  }
+
+  removeAll() {
+    this.selectedSlots = {};
+  }
+
+  getSelectedSlotTotalPrice(): number {
+    let count = 0;
+    Object.values(this.selectedSlots).forEach((slots) => {
+      slots.forEach((x) => {
+        count += Number(x.rate);
+      });
+    });
+    return count;
   }
 }

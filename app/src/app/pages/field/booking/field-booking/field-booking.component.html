@@ -1,19 +1,71 @@
 <div class="container mt-4">
-  <div class="card shadow-sm p-3">
-    <div class="row">
+  <h2 class="col-12 fw-bold d-flex justify-content-between">
+    Field Booking
+    <app-button
+      class="calendar-button"
+      [buttonType]="'normal'"
+      [text]="'Back'"
+      [color]="'secondary'"
+      (buttonClick)="navigate()"
+    >
+    </app-button>
+  </h2>
+
+  <div class="card shadow-sm p-3 mt-2">
+    <div class="row" *ngIf="field">
       <div class="col-md-6 text-center">
-        <img
-          src="assets/images/football-pitch-4994688_1280.jpg"
-          class="img-fluid rounded shadow-sm"
-          alt="Field Image"
-        />
+        <div
+          id="carouselExampleControls"
+          class="carousel slide"
+          data-bs-ride="carousel"
+        >
+          <div class="carousel-inner">
+            <ng-container *ngIf="field.documents">
+              <div
+                *ngFor="let item of field.documents; let i = index"
+                class="carousel-item"
+                [ngClass]="{ active: i === 0 }"
+              >
+                <img
+                  [src]="item.document"
+                  class="d-block w-100 height-400"
+                  alt="..."
+                />
+              </div>
+            </ng-container>
+            <img
+              *ngIf="!field.documents"
+              src="assets/images/football-pitch-4994688_1280.jpg"
+              class="img-fluid rounded shadow-sm"
+              alt="Field Image"
+            />
+          </div>
+          <button
+            class="carousel-control-prev"
+            type="button"
+            data-bs-target="#carouselExampleControls"
+            data-bs-slide="prev"
+          >
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button
+            class="carousel-control-next"
+            type="button"
+            data-bs-target="#carouselExampleControls"
+            data-bs-slide="next"
+          >
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+        </div>
       </div>
 
       <div class="col-md-6 d-flex flex-column justify-content-center">
-        <h2 class="field-title">{{ field.fieldName }}</h2>
-        <p class="field-description">{{ field.description }}</p>
+        <h1 class="field-title">{{ field.fieldName }}</h1>
+        <h2 class="field-description">{{ field.description }}</h2>
 
-        <ul class="list-unstyled">
+        <ul class="list-unstyled mt-3">
           <li>
             <mat-icon class="icon">location_on</mat-icon>
             <strong>Address:</strong> {{ field.address }}
@@ -35,11 +87,55 @@
     </div>
   </div>
 
-  <app-calendar
-    *ngIf="days && slots && slotsByField"
-    [days]="days"
-    [slots]="slots"
-    [slotsByField]="slotsByField"
-    (selectedSlotsEvent)="selectedEvents($event)"
-  ></app-calendar>
+  <div class="card p-3 mt-3">
+    <div class="d-flex justify-content-between align-items-center">
+      <div>
+        <mat-form-field class="mb-0">
+          <mat-label>Choose a {{ dayView ? "" : "start" }} date</mat-label>
+          <input
+            matInput
+            [(ngModel)]="startDate"
+            [matDatepicker]="picker"
+            [max]="maxDate"
+            (dateChange)="startDateChange($event)"
+          />
+          <mat-datepicker-toggle
+            matIconSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field *ngIf="!dayView" class="ms-2">
+          <mat-label>Choose a end date</mat-label>
+          <input
+            matInput
+            [matDatepicker]="endDatePicker"
+            [min]="minimumStartDate"
+            [max]="maxDate"
+            (dateChange)="endDateChange($event)"
+          />
+          <mat-datepicker-toggle
+            matIconSuffix
+            [for]="endDatePicker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #endDatePicker></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-slide-toggle
+          [(ngModel)]="dayView"
+          (change)="toggleChange($event)"
+          >{{ toggleSlideLabel }}</mat-slide-toggle
+        >
+      </div>
+    </div>
+
+    <app-calendar
+      *ngIf="fieldSlot && fieldSlot.length"
+      [fieldSlotAvailability]="fieldSlot"
+      (selectedSlotsEvent)="selectedEvents($event)"
+      [dayView]="dayView"
+    ></app-calendar>
+  </div>
 </div>

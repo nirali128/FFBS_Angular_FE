@@ -1,73 +1,74 @@
-<form [formGroup]="addFieldDetailsForm" class="container p-4 rounded shadow bg-white">
-  <h2 class="mb-4">Add Field Details</h2>
-  <div class="row">
-    <div class="col-4">
-      <app-input
-        label="Field Name"
-        [formControl]="getFormControl('fieldName')"
-        placeholder="Enter field name"
-        formControlName="fieldName"
-      ></app-input>
-    </div>
-    <!-- <div class="col-4">
-      <app-textarea
-        label="Address"
-        [formControl]="getFormControl('address')"
-        placeholder="Enter address"
-        formControlName="address"
-      ></app-textarea>
-    </div> -->
-    <div class="col-4">
-      <app-input
-        label="Area"
-        [formControl]="getFormControl('area')"
-        placeholder="Enter area"
-        formControlName="area"
-      ></app-input>
-    </div>
-    <div class="col-4">
-      <app-input
-        label="Phone Number"
-        [formControl]="getFormControl('phoneNumber')"
-        placeholder="Enter your phone number"
-        formControlName="phoneNumber"
-        (keypress)="restrictPhoneInput($event)"
-      ></app-input>
-    </div>
-
-    <!-- <div class="col-4">
-      <app-textarea
-        label="Description"
-        [formControl]="getFormControl('description')"
-        placeholder="Enter description"
-        formControlName="description"
-      ></app-textarea>
-    </div> -->
-    <div class="col-8">
-      <div class="editor">
-        <ngx-editor-menu [editor]="editor" [toolbar]="toolbar">
-        </ngx-editor-menu>
-        <ngx-editor
-          [editor]="editor"
-          [disabled]="false"
-          [placeholder]="'Type here...'"
-          formControlName="rulesPolicies"
-        ></ngx-editor>
+<div class="container mt-4">
+  <h2 class="mb-4 fw-bold">Add Field Details</h2>
+  <form [formGroup]="addFieldDetailsForm" class="p-4 rounded shadow bg-white">
+    <div class="row">
+      <div class="col-4">
+        <app-input
+          label="Field Name"
+          [formControl]="getFormControl('fieldName')"
+          placeholder="Enter field name"
+          formControlName="fieldName"
+        ></app-input>
+      </div>
+      <div class="col-4">
+        <app-input
+          label="Area"
+          [formControl]="getFormControl('area')"
+          placeholder="Enter area"
+          formControlName="area"
+        ></app-input>
+      </div>
+      <div class="col-4">
+        <app-input
+          label="Phone Number"
+          [formControl]="getFormControl('phoneNumber')"
+          placeholder="Enter your phone number"
+          formControlName="phoneNumber"
+          (keypress)="restrictPhoneInput($event)"
+        ></app-input>
+      </div>
+      <div class="col-4">
+        <app-textarea
+          label="Address"
+          [formControl]="getFormControl('address')"
+          placeholder="Enter address"
+          formControlName="address"
+        ></app-textarea>
+      </div>
+      <div class="col-4">
+        <app-textarea
+          label="Description"
+          [formControl]="getFormControl('description')"
+          placeholder="Enter description"
+          formControlName="description"
+        ></app-textarea>
+      </div>
+      <div class="col-8">
+        <div class="editor">
+          <ngx-editor-menu [editor]="editor" [toolbar]="toolbar">
+          </ngx-editor-menu>
+          <ngx-editor
+            [editor]="editor"
+            [disabled]="false"
+            [placeholder]="'Type here...'"
+            formControlName="rulesPolicies"
+          ></ngx-editor>
+        </div>
       </div>
     </div>
-  </div>
-  <div class="form-actions text-center mt-4 col-4 d-flex">
-    <app-button
-      [text]="'Submit'"
-      [buttonType]="'normal'"
-      (buttonClick)="onSubmit()"
-    ></app-button>
-    <app-button
-      class="ms-2"
-      [text]="'Back'"
-      color="secondary"
-      [buttonType]="'normal'"
-      (buttonClick)="back()"
-    ></app-button>
-  </div>
-</form>
+    <div class="form-actions text-center mt-4 col-4 d-flex">
+      <app-button
+        [text]="'Submit'"
+        [buttonType]="'normal'"
+        (buttonClick)="onSubmit()"
+      ></app-button>
+      <app-button
+        class="ms-2"
+        [text]="'Back'"
+        color="secondary"
+        [buttonType]="'normal'"
+        (buttonClick)="back()"
+      ></app-button>
+    </div>
+  </form>
+</div>

@@ -54,3 +54,7 @@ mat-sidenav-content {
         padding: 8px;
     }
 }
+
+.mat-mdc-nav-list .mat-mdc-list-item.mdc-list-item--activated {
+    background-color: #c1daff;
+}
