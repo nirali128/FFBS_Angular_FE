@@ -8,6 +8,8 @@ import {
   Day,
   FieldDetail,
   FieldsDetailList,
+  FieldSlotRateData,
+  FieldSlotRateRequestData,
   Slot,
   SlotByField,
 } from '../interfaces/field';
@@ -88,6 +90,26 @@ export class FieldService {
         '?fieldId=' +
         guid
       }`,
+      this.getHeaders()
+    );
+  }
+
+  getFieldSlotsAvailability(data: FieldSlotRateRequestData) {
+    return this.httpClient.post<ApiResponse<FieldSlotRateData[]>>(
+      `${
+        GlobalConstant.AVAILABILITY_API_URL +
+        GlobalConstant.AVAILABILITY.GET_FIELD_SLOTS_AVAILABILITY
+      }`, data,
+      this.getHeaders()
+    );
+  }
+
+  getFieldSlotsRates(data: FieldSlotRateRequestData) {
+    return this.httpClient.post<ApiResponse<FieldSlotRateData[]>>(
+      `${
+        GlobalConstant.RATE_API_URL +
+        GlobalConstant.RATE.GET_RATES
+      }`, data,
       this.getHeaders()
     );
   }
