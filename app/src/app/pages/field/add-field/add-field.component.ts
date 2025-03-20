@@ -13,6 +13,7 @@ import { ButtonComponent } from '../../../shared/components/button/button.compon
 import { ValidationRules, ValidationPatterns } from '../../../shared/constants/validation.const';
 import { FieldDetail } from '../../../shared/interfaces/field';
 import { FieldService } from '../../../shared/service/field.service';
+import { TextareaComponent } from '../../../shared/components/text-area/text-area.component';
 
 
 @Component({
@@ -22,7 +23,7 @@ import { FieldService } from '../../../shared/service/field.service';
     ButtonComponent,
     ReactiveFormsModule,
     NgxEditorModule,
-    //TextareaComponent
+    TextareaComponent
   ],
   templateUrl: './add-field.component.html',
   styleUrl: './add-field.component.scss',

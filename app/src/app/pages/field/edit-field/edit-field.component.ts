@@ -14,6 +14,7 @@ import { InputComponent } from '../../../shared/components/input/input.component
 import { ValidationRules, ValidationPatterns } from '../../../shared/constants/validation.const';
 import { FieldDetail } from '../../../shared/interfaces/field';
 import { FieldService } from '../../../shared/service/field.service';
+import { TextareaComponent } from '../../../shared/components/text-area/text-area.component';
 
 
 @Component({
@@ -23,7 +24,7 @@ import { FieldService } from '../../../shared/service/field.service';
     ButtonComponent,
     ReactiveFormsModule,
     MatCardModule,
-    //    TextareaComponent,
+    TextareaComponent,
     NgxEditorModule,
   ],
   templateUrl: './edit-field.component.html',
