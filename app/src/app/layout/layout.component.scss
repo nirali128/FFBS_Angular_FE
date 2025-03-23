@@ -25,6 +25,10 @@ mat-sidenav-content {
     box-sizing: border-box;
 }
 
+.mat-mdc-nav-list .mat-mdc-list-item.mdc-list-item--activated {
+    background-color: #c1daff;
+}
+
 .sidenav-content {
     max-height: 100%;
     overflow-y: auto;
