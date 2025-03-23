@@ -89,6 +89,7 @@ export interface Booking {
   }
 
 export const FIELD_COLUMNS: ColumnField<FieldsDetailList>[] = [
+    { key: 'documentName', label: 'Image', labelType: 'image', isVisible: true },
     { key: 'fieldName', label: 'Field Name', icon: 'sports_soccer', labelType: 'title', isVisible: true },
     { key: 'isAvailable', label: 'Available', icon: 'check_circle', labelType: 'badge', isVisible: true },
     { key: 'description', label: 'Description', labelType: 'description', isVisible: true },

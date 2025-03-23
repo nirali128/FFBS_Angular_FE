@@ -59,6 +59,12 @@ export class DataViewComponent<T> {
     return !(item as any).isAvailable;
   }
 
+  getImageUrl(imageData: string): string {
+    if (!imageData) {
+      return 'assets/images/default-image.jpg';
+    }
+    return imageData.startsWith('data:image') ? imageData : 'data:image/jpeg;base64,' + imageData;
+  }
   edit(item: T) {
     this.editEvent.emit((item as any).guid);
   }
