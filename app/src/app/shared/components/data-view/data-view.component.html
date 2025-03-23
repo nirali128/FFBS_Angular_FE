@@ -6,6 +6,7 @@
         class="form-control w-100"
         placeholder="Search fields..."
         [(ngModel)]="searchQuery"
+        (ngModelChange)="onSearchChange()"
       />
       <div class="ms-2 form-check w-100 d-flex align-items-center">
         <input

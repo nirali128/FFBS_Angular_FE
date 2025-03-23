@@ -15,5 +15,14 @@
     [columns]="fieldColumns"
     (buttonEvent)="navigate($event)"
     (editEvent)="edit($event)"
+    (searchEvent)="onSearch($event)"
   ></app-data-view>
+
+  <mat-paginator
+  [length]="totalItems"
+  [pageSize]="pageSize"
+  [pageSizeOptions]="[3, 5, 10]"
+  (page)="onPageChange($event)"
+>
+</mat-paginator>
 </div>

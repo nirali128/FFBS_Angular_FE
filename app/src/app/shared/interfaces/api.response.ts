@@ -22,3 +22,11 @@ export interface PaginationData {
   currentPage: number;
   pageSize: number;
 }
+
+export interface PaginationRequest {
+  page: number;
+  pageSize: number;
+  search: string;
+  sortBy: string;
+  sortOrder: string;
+}
