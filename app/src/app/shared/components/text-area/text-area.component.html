@@ -6,10 +6,8 @@
       [formControl]="formControl"
       [placeholder]="placeholder"
       [rows]="rows"
+      [controlValue]="formControl"
       appFormErrors
-      (input)="onInputChange($event)"
-      (blur)="onBlur()"
-      [disabled]="disabled"
     ></textarea>
   </mat-form-field>
   <div class="error-messages mb-3"></div>

@@ -21,6 +21,7 @@ export class DataViewComponent<T> {
   sortOption: string = 'title';
   showAvailableOnly: boolean = false;
   @Output() buttonEvent = new EventEmitter<string>();
+  @Output() editEvent = new EventEmitter<string>();
 
   toggleView(): void {
     this.isGridView = !this.isGridView;
@@ -56,5 +57,9 @@ export class DataViewComponent<T> {
 
   disability(item: T) {
     return !(item as any).isAvailable;
+  }
+
+  edit(item: T) {
+    this.editEvent.emit((item as any).guid);
   }
 }

@@ -41,8 +41,10 @@ export class AuthInterceptor implements HttpInterceptor {
         ) {
           this.refreshTokenInProgress = true;
 
+          let refreshTokenValue = this.authService.getRefreshToken();
+          if(refreshTokenValue)
           this.authService
-            .refreshToken(localStorage.getItem('refreshToken') || '')
+            .refreshToken(refreshTokenValue)
             .subscribe((res) => {
               if (res.success) {
                 this.authService.setToken(res.data);

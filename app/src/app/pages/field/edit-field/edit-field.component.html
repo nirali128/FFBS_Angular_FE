@@ -1,11 +1,9 @@
-<div
-  class="container d-flex align-items-center justify-content-center"
->
+<div class="container mt-4">
+  <h2 class="mb-4 fw-bold">Edit Field Details</h2>
   <form
     [formGroup]="editFieldDetailsForm"
     class="registration-form p-4 rounded shadow bg-white"
   >
-    <h2 class="text-center mb-4">Register</h2>
     <div class="row">
       <div class="col-4">
         <app-input
@@ -16,15 +14,8 @@
         ></app-input>
       </div>
       <div class="col-4">
-        <app-textarea
-          label="Address"
-          [formControl]="getFormControl('address')"
-          placeholder="Enter address"
-          formControlName="address"
-        ></app-textarea>
-      </div>
-      <div class="col-4">
         <app-input
+          type="number"
           label="Area"
           [formControl]="getFormControl('area')"
           placeholder="Enter area"
@@ -40,7 +31,23 @@
           (keypress)="restrictPhoneInput($event)"
         ></app-input>
       </div>
-  
+      <div class="col-4">
+        <app-input
+          type="number"
+          label="Base Rate"
+          [formControl]="getFormControl('baseRate')"
+          placeholder="Enter base rate"
+          formControlName="baseRate"
+        ></app-input>
+      </div>
+      <div class="col-4">
+        <app-textarea
+          label="Address"
+          [formControl]="getFormControl('address')"
+          placeholder="Enter address"
+          formControlName="address"
+        ></app-textarea>
+      </div>
       <div class="col-4">
         <app-textarea
           label="Description"
@@ -49,17 +56,41 @@
           formControlName="description"
         ></app-textarea>
       </div>
-      <div class="col-8">
-        <div class="editor">
-          <ngx-editor-menu [editor]="editor" [toolbar]="toolbar">
-          </ngx-editor-menu>
-          <ngx-editor
-            [editor]="editor"
-            [disabled]="false"
-            [placeholder]="'Type here...'"
-            formControlName="rulesPolicies"
-          ></ngx-editor>
-        </div>
+      <div class="col-4">
+        <app-textarea
+          label="Rules & Policies"
+          [formControl]="getFormControl('rulesPolicies')"
+          placeholder="Enter rules & policies"
+          formControlName="rulesPolicies"
+        ></app-textarea>
+      </div>
+      <div class="col-4">
+        <app-checkbox
+          type="number"
+          label="Is Available"
+          [checked]="editFieldDetailsForm.get('isAvailable')?.value"
+          (checkedChange)="
+            editFieldDetailsForm.get('isAvailable')?.setValue($event)
+          "
+        ></app-checkbox>
+      </div>
+      <div class="col-4">
+        <app-multi-select-checkbox
+          *ngIf="dropdownData && dropdownData.length"
+          label="Closed Days"
+          [selectedValues]="closeDays"
+          [options]="dropdownData"
+          (selectionChangeEvent)="selectionChange($event)"
+        ></app-multi-select-checkbox>
+      </div>
+      <div class="col-9 mt-2">
+        <app-image-upload
+          [uploadedFiles]="uploadedFiles"
+          (filesUploaded)="onFilesUploaded($event)"
+        ></app-image-upload>
+        <mat-error class="error" *ngIf="showError()"
+          >At least 1 image is required</mat-error
+        >
       </div>
     </div>
     <div class="form-actions text-center mt-4 d-flex">

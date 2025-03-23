@@ -72,12 +72,20 @@ export interface Booking {
     address: string;
     area?: number;
     phoneNumber?: string;
+    baseRate: number;
     isAvailable: boolean;
     rulesPolicies?: string;
     description?: string;
     isActive: boolean;
     closeDays: string[]; 
-    documents: { fileName: string; fileType?: string; document?: string; description?: string }[];
+    documents: FieldDocument[];
+  }
+
+  export class FieldDocument {
+    fileName: string; 
+    fileType?: string; 
+    document?: string; 
+    description?: string 
   }
 
 export const FIELD_COLUMNS: ColumnField<FieldsDetailList>[] = [

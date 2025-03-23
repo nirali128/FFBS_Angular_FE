@@ -6,15 +6,16 @@
         <app-input
           label="Field Name"
           [formControl]="getFormControl('fieldName')"
-          placeholder="Enter field name"
+          placeholder="Enter Field name"
           formControlName="fieldName"
         ></app-input>
       </div>
       <div class="col-4">
         <app-input
+          type="number"
           label="Area"
           [formControl]="getFormControl('area')"
-          placeholder="Enter area"
+          placeholder="Enter Area"
           formControlName="area"
         ></app-input>
       </div>
@@ -43,21 +44,52 @@
           formControlName="description"
         ></app-textarea>
       </div>
-      <div class="col-8">
-        <div class="editor">
-          <ngx-editor-menu [editor]="editor" [toolbar]="toolbar">
-          </ngx-editor-menu>
-          <ngx-editor
-            [editor]="editor"
-            [disabled]="false"
-            [placeholder]="'Type here...'"
+      <div class="col-4">
+          <app-textarea
+            label="Rules & Policies"
+            [formControl]="getFormControl('rulesPolicies')"
+            placeholder="Enter rules & policies"
             formControlName="rulesPolicies"
-          ></ngx-editor>
-        </div>
+          ></app-textarea>
+      </div>
+      <div class="col-4 mt-2">
+        <app-input
+          type="number"
+          label="Base Rate"
+          [formControl]="getFormControl('baseRate')"
+          placeholder="Enter base rate"
+          formControlName="baseRate"
+        ></app-input>
+      </div>
+      <div class="col-4">
+        <app-multi-select-checkbox
+          *ngIf="dropdownData && dropdownData.length"
+          label="Closed Days"
+          placeholder="Select Closed Days"
+          [options]="dropdownData"
+          (selectionChangeEvent)="selectionChange($event)"
+        ></app-multi-select-checkbox>
+      </div>
+      <div class="col-4">
+        <app-checkbox
+          type="number"
+          label="Is Available"
+          [checked]="addFieldDetailsForm.get('isAvailable')?.value"
+          (checkedChange)="
+            addFieldDetailsForm.get('isAvailable')?.setValue($event)
+          "
+        ></app-checkbox>
+      </div>
+      <div class="col-8 mt-2">
+        <app-image-upload
+          (filesUploaded)="onFilesUploaded($event)"
+        ></app-image-upload>
+        <mat-error class="error" *ngIf="submitted && files && !files.length">At least 1 image is required</mat-error>
       </div>
     </div>
     <div class="form-actions text-center mt-4 col-4 d-flex">
       <app-button
+        type="submit"
         [text]="'Submit'"
         [buttonType]="'normal'"
         (buttonClick)="onSubmit()"

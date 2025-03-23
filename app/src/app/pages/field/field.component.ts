@@ -32,4 +32,8 @@ export class FieldComponent {
   navigate(guid: string) {
     this.router.navigateByUrl("/field/booking/" + guid)
   }
+
+  edit(guid: string) {
+    this.router.navigateByUrl("/field/edit/" + guid)
+  }
 }
