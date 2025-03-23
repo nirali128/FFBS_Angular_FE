@@ -1,0 +1,54 @@
+<div class="card p-3">
+  <div class="d-flex mb-2">
+    <input
+      type="file"
+      #fileInput
+      multiple
+      (change)="onFileSelected($event)"
+      class="d-none"
+    />
+    <app-button
+      [text]="'Choose Files'"
+      color="primary"
+      [buttonType]="'normal'"
+      (buttonClick)="fileInput.click()"
+    >
+    </app-button>
+    <app-button
+      class="ms-2"
+      [text]="'Clear All'"
+      color="outline-secondary"
+      [buttonType]="'normal'"
+      [disable]="files.length === 0"
+      (buttonClick)="clearFiles()"
+    >
+    </app-button>
+  </div>
+
+  <div class="d-flex flex-wrap">
+    <div
+      *ngFor="let file of files; let i = index"
+      class="m-2 position-relative"
+    >
+      <div *ngIf="isImage(file)" class="image-preview">
+        <img
+          [src]="previewUrls[i]"
+          class="img-thumbnail"
+          style="height: 150px"
+          width="200"
+        />
+        <div class="position-absolute top-0 end-0 d-flex flex-column">
+          <button class="btn btn-sm btn-warning mb-1" (click)="removeFile(i)">
+            ✖
+          </button>
+          <a
+            [href]="previewUrls[i]"
+            [download]="file.name"
+            class="btn btn-sm btn-primary"
+            >⬇</a
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
