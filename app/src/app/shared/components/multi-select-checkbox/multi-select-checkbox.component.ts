@@ -21,7 +21,7 @@ export class MultiSelectCheckboxComponent implements ControlValueAccessor {
   @Input() options: { value: string | number; label: string }[] = [];
   @Input() placeholder: string = 'Select options';
   @Input() disabled: boolean = false;
-  
+
   @Output() selectionChange = new EventEmitter<(string | number)[]>();
 
   selectedValues: (string | number)[] = [];
