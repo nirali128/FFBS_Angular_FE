@@ -43,11 +43,12 @@ export interface Booking {
     fieldId: string;
     isLongTermBooking: boolean;
     totalPrice: number;
+    isDirectBooking: boolean;
     bookingDetails: BookingDetail[];
   }
   
   export interface BookingDetail {
-    dayId: string;
+    dayId?: string;
     slots: string[];
     bookingDate: string;
   }
@@ -55,12 +56,12 @@ export interface Booking {
   export interface DialogTable {
     timeSlot: string;
     date: string;
-    day: string;
+    day?: string;
     rate: number;
   }
 
   export interface SelectableSlot {
-    dayGuid: string;
+    dayGuid?: string;
     slotGuid: string;
     date: string;
     rate: number;
@@ -86,6 +87,32 @@ export interface Booking {
     fileType?: string; 
     document?: string; 
     description?: string 
+  }
+
+  export class FieldSlotRateRequestData {
+    fieldId: string;
+    date: string[];
+  }
+
+  export class FieldSlotRateData {
+    date: string;
+    slots: NewSlot[]
+  }
+
+  export class NewSlot {
+    slotId: string;
+    startTime: string;
+    endTime: string;
+    rate?: number;
+    availability?: boolean;
+    status?: string; 
+  }
+
+  export interface CalendarSlot {
+    slotId: string;
+    startTime: string;
+    endTime: string;
+    status?: string;
   }
 
 export const FIELD_COLUMNS: ColumnField<FieldsDetailList>[] = [
