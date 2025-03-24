@@ -40,4 +40,6 @@ export class GlobalConstant {
     GET_ALL_DAYS: "/get-all-days",
     GET_ALL_SLOTS: "/get-all-slots",
   }
+
+  public static readonly paginationOptions = [5, 10, 20];
 }
