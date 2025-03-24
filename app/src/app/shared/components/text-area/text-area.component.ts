@@ -9,8 +9,8 @@ import { FormErrorsDirective } from '../../directives/form-error.directive';
   selector: 'app-textarea',
   standalone: true,
   imports: [MatFormFieldModule, MatInputModule, MatLabel, CommonModule, ReactiveFormsModule, FormErrorsDirective],
-  templateUrl: './textarea.component.html',
-  styleUrl: './textarea.component.scss',
+  templateUrl: './text-area.component.html',
+  styleUrl: './text-area.component.scss',
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
