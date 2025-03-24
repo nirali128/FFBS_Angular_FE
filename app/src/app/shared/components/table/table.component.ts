@@ -29,7 +29,7 @@ export class TableComponent<T> {
 
   @Input() data!: T[];
   @Input() displayedColumns!: iTableField[];
-  @Input() paginationOptions: number[] = [5, 10, 20];
+  @Input() paginationOptions: number[] = GlobalConstant.paginationOptions;
   @Input() totalCount: number = 0;
   @Input() dialogData: iDialogField = {
     message: "Do you want to delete this record?"
@@ -94,7 +94,7 @@ export class TableComponent<T> {
     this.onPagination.emit(filterRequest);
   }
   onSearch() {
-    let searchValue = this.searchVal.trim();
+    const searchValue = this.searchVal.trim();
 
     if (this.previousFilterValue || searchValue) {
       this.filterRequest.search = searchValue;
@@ -107,13 +107,6 @@ export class TableComponent<T> {
   }
 
   enableSearchBtn() {
-    if(!this.searchVal.trim())
-    {
-      this.searchEnabled = false;
-    }
-    else 
-    {
-      this.searchEnabled = true;
-    }
+    this.searchEnabled = Boolean(this.searchVal.trim());
   }
 }

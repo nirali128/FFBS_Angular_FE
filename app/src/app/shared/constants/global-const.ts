@@ -20,4 +20,6 @@ export class GlobalConstant {
     REFRESH_TOKEN: "/refresh-token",
     RESET_PASSWORD: "/reset-password",
   }
+
+  public static readonly paginationOptions = [5, 10, 20];
 }
