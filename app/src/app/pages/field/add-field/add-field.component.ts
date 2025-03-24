@@ -10,11 +10,23 @@ import { Router } from '@angular/router';
 import { InputComponent } from '../../../shared/components/input/input.component';
 import { NgxEditorModule, Editor, Toolbar } from 'ngx-editor';
 import { ButtonComponent } from '../../../shared/components/button/button.component';
-import { ValidationRules, ValidationPatterns } from '../../../shared/constants/validation.const';
+import {
+  ValidationRules,
+  ValidationPatterns,
+} from '../../../shared/constants/validation.const';
 import { FieldDetail } from '../../../shared/interfaces/field';
 import { FieldService } from '../../../shared/service/field.service';
 import { TextareaComponent } from '../../../shared/components/text-area/text-area.component';
-
+import { ImageUploadComponent } from '../../../shared/components/image-upload/image-upload.component';
+import {
+  convertFilesToDocuments,
+  mapDayToDropdown,
+} from '../../../shared/utility/utilitty';
+import { CheckboxComponent } from '../../../shared/components/checkbox/checkbox.component';
+import { MultiSelectCheckboxComponent } from '../../../shared/components/multi-select-checkbox/multi-select-checkbox.component';
+import { DropdownOption } from '../../../shared/interfaces/dropdown.options';
+import { CommonModule } from '@angular/common';
+import { MatError } from '@angular/material/form-field';
 
 @Component({
   selector: 'app-add-field-booking',
@@ -23,31 +35,36 @@ import { TextareaComponent } from '../../../shared/components/text-area/text-are
     ButtonComponent,
     ReactiveFormsModule,
     NgxEditorModule,
-    TextareaComponent
+    TextareaComponent,
+    ImageUploadComponent,
+    CheckboxComponent,
+    MultiSelectCheckboxComponent,
+    CommonModule,
+    MatError,
   ],
   templateUrl: './add-field.component.html',
   styleUrl: './add-field.component.scss',
 })
 export class AddFieldComponent {
   addFieldDetailsForm: FormGroup;
-  editor: Editor;
-  html = '';
-  toolbar: Toolbar = [
-    ['bold', 'italic'],
-    ['underline', 'strike'],
-    ['code', 'blockquote'],
-    ['ordered_list', 'bullet_list'],
-    [{ heading: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'] }],
-    ['link', 'image'],
-    ['text_color', 'background_color'],
-    ['align_left', 'align_center', 'align_right', 'align_justify'],
-  ];
+  files: File[] = [];
+  dropdownData: DropdownOption[];
+  closeDays: string[] = [];
+  submitted: boolean = false;
 
   constructor(
     private fb: FormBuilder,
     public fieldService: FieldService,
     private router: Router
   ) {
+    this.fieldService.getAllDays().subscribe((res) => {
+      if (res.success) {
+        this.dropdownData = mapDayToDropdown(res.data);
+      }
+    });
+  }
+
+  ngOnInit(): void {
     this.addFieldDetailsForm = this.fb.group({
       fieldName: [
         '',
@@ -57,31 +74,74 @@ export class AddFieldComponent {
           Validators.pattern('^[a-zA-Z0-9 ]*$'),
         ],
       ],
-      address: ['', [Validators.required, Validators.maxLength(100)]],
-      area: ['', [Validators.required]],
+      address: [
+        '',
+        [
+          Validators.required,
+          Validators.maxLength(ValidationRules.FIELD_ADDRESS_MAX_LENGTH),
+        ],
+      ],
+      area: [0, [Validators.required, Validators.min(ValidationRules.FIELD_AREA_MIN)]],
       phoneNumber: [
         '',
         [Validators.required, Validators.pattern(ValidationPatterns.PHONE)],
       ],
-      rulesPolicies: ['', Validators.required],
-      description: ['', [Validators.required]],
+      baseRate: [0, [Validators.required, Validators.min(ValidationRules.FEILD_BASE_RATE_MIN)]],
+      isAvailable: [true, [Validators.required]],
+      rulesPolicies: [
+        '',
+        [
+          Validators.required,
+          Validators.maxLength(ValidationRules.RULES_POLICIES_MAX_LENGTH),
+        ],
+      ],
+      description: [
+        '',
+        [
+          Validators.required,
+          Validators.maxLength(ValidationRules.FIELD_DESCRIPTION_MAX_LENGTH),
+        ],
+      ],
+      documents: [[], [Validators.required]],
+      closeDays: [[]],
     });
-    this.editor = new Editor();
   }
 
   getFormControl(controlName: string): FormControl {
     return this.addFieldDetailsForm.get(controlName) as FormControl;
   }
 
+  onFilesUploaded(files: File[]): void {
+    this.files = files;
+  }
+
+  selectionChange(event: any) {
+    this.closeDays = event;
+  }
+
   onSubmit(): void {
-    if (this.addFieldDetailsForm.valid) {
-      this.fieldService
-        .addField(this.addFieldDetailsForm.value as FieldDetail)
-        .subscribe((res) => {
-          this.router.navigateByUrl('field');
-        });
-    } else {
-      this.addFieldDetailsForm.markAllAsTouched();
+    this.submitted = true;
+    if (this.files.length) {
+      convertFilesToDocuments(this.files).then((documents) => {
+        this.addFieldDetailsForm.controls['documents'].setValue(documents);
+        this.addFieldDetailsForm.controls['closeDays'].setValue(this.closeDays);
+        if (this.addFieldDetailsForm.valid) {
+          const formValue = {
+            ...this.addFieldDetailsForm.value,
+            area: parseFloat(this.addFieldDetailsForm.controls['area'].value),
+            baseRate: parseFloat(
+              this.addFieldDetailsForm.controls['baseRate'].value
+            ),
+          };
+          this.fieldService
+            .addField(formValue as FieldDetail)
+            .subscribe((res) => {
+              this.router.navigateByUrl('field');
+            });
+        } else {
+          this.addFieldDetailsForm.markAllAsTouched();
+        }
+      });
     }
   }
 
@@ -95,7 +155,7 @@ export class AddFieldComponent {
     }
   }
 
-  back(){
-    this.router.navigateByUrl("field");
+  back() {
+    this.router.navigateByUrl('field');
   }
 }

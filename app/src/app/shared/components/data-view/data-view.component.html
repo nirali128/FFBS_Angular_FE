@@ -75,15 +75,26 @@
             </ng-container>
           </div>
 
-          <app-button
-            buttonType="normal"
-            color="warning"
-            text="BOOK NOW"
-            iconPosition="right"
-            [disable]="disability(item)"
-            (buttonClick)="buttonClick(item)"
-          >
-          </app-button>
+          <div class="d-flex">
+            <app-button
+              buttonType="normal"
+              color="warning"
+              text="BOOK NOW"
+              iconPosition="right"
+              [disable]="disability(item)"
+              (buttonClick)="buttonClick(item)"
+            >
+            </app-button>
+            <app-button
+              class="ms-2"
+              buttonType="normal"
+              color="secondary"
+              text="Edit"
+              iconPosition="right"
+              (buttonClick)="edit(item)"
+            >
+            </app-button>
+          </div>
         </div>
       </div>
     </div>
@@ -134,15 +145,26 @@
         </div>
       </div>
 
-      <app-button
-        buttonType="text-icon"
-        color="danger"
-        text="BOOK NOW"
-        iconPosition="right"
-        [disable]="disability(item)"
-        (buttonClick)="buttonClick(item)"
-      >
-      </app-button>
+      <div class="d-flex flex-column">
+        <app-button
+          buttonType="normal"
+          color="warning"
+          text="BOOK NOW"
+          iconPosition="right"
+          [disable]="disability(item)"
+          (buttonClick)="buttonClick(item)"
+        >
+        </app-button>
+        <app-button
+          class="mt-2"
+          buttonType="normal"
+          color="secondary"
+          text="Edit"
+          iconPosition="right"
+          (buttonClick)="edit(item)"
+        >
+        </app-button>
+      </div>
     </div>
   </div>
 </div>

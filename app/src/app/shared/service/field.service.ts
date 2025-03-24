@@ -131,9 +131,9 @@ export class FieldService {
     );
   }
 
-  editField(data: FieldDetail) {
-    return this.httpClient.put(
-      `${GlobalConstant.FIELD_API_URL + GlobalConstant.FIELD.EDIT_FIELD}`,
+  editField(guid: string, data: FieldDetail) {
+    return this.httpClient.post(
+      `${GlobalConstant.FIELD_API_URL + GlobalConstant.FIELD.EDIT_FIELD + '?fieldId=' + guid}` ,
       data,
       this.getHeaders()
     );

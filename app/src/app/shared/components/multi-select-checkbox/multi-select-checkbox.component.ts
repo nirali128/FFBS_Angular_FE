@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, forwardRef, Input, Output } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import { MatSelectModule } from '@angular/material/select';
+import { MatSelectChange, MatSelectModule } from '@angular/material/select';
 
 @Component({
   selector: 'app-multi-select-checkbox',
@@ -19,12 +19,13 @@ import { MatSelectModule } from '@angular/material/select';
 })
 export class MultiSelectCheckboxComponent implements ControlValueAccessor {
   @Input() options: { value: string | number; label: string }[] = [];
-  @Input() placeholder: string = 'Select options';
+  @Input() label: string = '';
   @Input() disabled: boolean = false;
+  @Input() placeholder: string = ''; 
+  
+  @Output() selectionChangeEvent = new EventEmitter<(string | number)[]>();
 
-  @Output() selectionChange = new EventEmitter<(string | number)[]>();
-
-  selectedValues: (string | number)[] = [];
+  @Input() selectedValues: (string | number)[] = [];
 
   private onChange: (value: any) => void = () => {};
   private onTouched: () => void = () => {};
@@ -45,19 +46,9 @@ export class MultiSelectCheckboxComponent implements ControlValueAccessor {
     this.disabled = isDisabled;
   }
 
-  toggleSelection(value: string | number): void {
-    const index = this.selectedValues.indexOf(value);
-    if (index === -1) {
-      this.selectedValues.push(value);
-    } else {
-      this.selectedValues.splice(index, 1);
-    }
-
+  onSelectionChange(event: MatSelectChange): void {
+    this.selectedValues = event.value;
     this.onChange(this.selectedValues);
-    this.selectionChange.emit(this.selectedValues);
-  }
-
-  isSelected(value: string | number): boolean {
-    return this.selectedValues.includes(value);
+    this.selectionChangeEvent.emit(this.selectedValues);
   }
 }
