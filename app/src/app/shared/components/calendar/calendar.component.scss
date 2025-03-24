@@ -46,12 +46,21 @@ a {
 }
 
 .booked {
-  background-color: #a3a3a3cc !important;
+  background-color: #a09d9dcc !important;
+  cursor: not-allowed;
+}
+
+.closed {
+  background-color: #f5e7d4 !important;
   cursor: not-allowed;
 }
 
 .past {
-  background-color: #e3797b !important;
+  background-color: #faa5a6 !important;
+}
+
+.unavailable {
+  background-color: #d4edda !important;
 }
 
 td {

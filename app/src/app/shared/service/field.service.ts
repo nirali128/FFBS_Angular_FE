@@ -65,6 +65,15 @@ export class FieldService {
     );
   }
 
+  getClosedDays(guid: string): Observable<ApiResponse<Day[]>> {
+    return this.httpClient.get<ApiResponse<Day[]>>(
+      `${GlobalConstant.COMMON_API_URL + GlobalConstant.COMMON.GET_CLOSED_DAYS +
+        '?fieldId=' +
+        guid}`,
+      this.getHeaders()
+    );
+  }
+
   addBooking(data: Booking) {
     return this.httpClient.post(
       `${GlobalConstant.BOOKING_API_URL + GlobalConstant.BOOKING.ADD_BOOKING}`,

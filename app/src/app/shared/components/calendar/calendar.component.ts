@@ -6,11 +6,14 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatDialog } from '@angular/material/dialog';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { getFormattedTime } from '../../common/common';
-import { FieldSlotRateData, SelectableSlot, CalendarSlot } from '../../interfaces/field';
+import {
+  FieldSlotRateData,
+  SelectableSlot,
+  CalendarSlot,
+} from '../../interfaces/field';
 import { convertSelectableSlotToDialogTable } from '../../mapper/mapper';
 import { ButtonComponent } from '../button/button.component';
 import { DialogComponent } from './dialog/dialog.component';
-
 
 @Component({
   selector: 'app-calendar',
@@ -65,6 +68,7 @@ export class CalendarComponent {
           slotId: res.slotId,
           startTime: res.startTime,
           endTime: res.endTime,
+          status: res.status,
         };
         this.slots.push(data);
       });
@@ -123,13 +127,30 @@ export class CalendarComponent {
     );
 
     if (slotData) {
-      if (!slotData.availability) return { status: 'booked' };
+      const { availability, status, rate } = slotData;
+      if (status === 'Closed') {
+        return { status: 'closed' };
+      }
+
+      if (!availability && (status === 'Confirmed' || status === 'Pending')) {
+        return { status: 'booked' };
+      }
+
       if (
-        (isPastDay && slotData.availability) ||
-        (isToday && parsedTime.isBefore(now))
-      )
+        availability &&
+        !status &&
+        (isPastDay || (isToday && parsedTime.isBefore(now)))
+      ) {
         return { status: 'past' };
-      return { status: 'available', rate: slotData.rate.toString() };
+      }
+
+      if (availability && !status) {
+        return { status: 'available', rate: rate?.toString() };
+      }
+
+      if (!availability && !status) {
+        return { status: 'unavailable' };
+      }
     }
     return { status: 'unavailable' };
   }
@@ -146,6 +167,8 @@ export class CalendarComponent {
       available: !isSelected && status === 'available',
       booked: status === 'booked',
       past: status === 'past',
+      closed: status === 'closed',
+      unavailable: status == 'unavailable'
     };
   }
 
@@ -161,6 +184,8 @@ export class CalendarComponent {
         return 'Booked';
       case 'past':
         return 'Time Concluded';
+      case 'closed':
+        return 'Closed';
       default:
         return '-';
     }

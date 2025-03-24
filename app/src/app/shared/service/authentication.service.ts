@@ -44,6 +44,12 @@ export class AuthService {
     return a.guid;
   }
 
+  getRole(): string {
+    let token = this.getToken()
+    let a = this.decodedToken(token);
+    return a.role
+  }
+
   getRefreshToken(): string {
     const encryptedRefreshToken = localStorage.getItem('refreshToken');
     return encryptedRefreshToken ? this.decrypt(encryptedRefreshToken) : '';

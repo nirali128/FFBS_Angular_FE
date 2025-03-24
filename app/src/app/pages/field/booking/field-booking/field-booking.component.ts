@@ -26,6 +26,7 @@ import { MatInputModule } from '@angular/material/input';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
 import { MatSlideToggleChange, MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { CalendarComponent } from '../../../../shared/components/calendar/calendar.component';
+import { Role } from '../../../../shared/enum/role';
 
 @Component({
   selector: 'app-field-booking',
@@ -59,6 +60,7 @@ export class FieldBookingComponent {
   dayView: boolean = false;
   toggleSlideLabel: string = 'Toggle for single day booking';
   minimumStartDate: Date;
+  closedDays: Day[];
 
   constructor(
     public fieldService: FieldService,
@@ -120,6 +122,7 @@ export class FieldBookingComponent {
 
     forkJoin({
       day: this.fieldService.getAllDays(),
+      closedDays: this.fieldService.getClosedDays(this.fieldId),
       fieldSlotAvailability: this.fieldService.getFieldSlotsAvailability(data),
       fieldSlotRates: this.fieldService.getFieldSlotsRates(data),
     }).subscribe((res) => {
@@ -128,6 +131,7 @@ export class FieldBookingComponent {
       if (res.fieldSlotAvailability.success)
         this.fieldSlotAvailability = res.fieldSlotAvailability.data;
       if (res.day.success) this.days = res.day.data;
+      if(res.closedDays.success) this.closedDays = res.closedDays.data;
       this.generateFieldSlotRate();
     });
   }
@@ -149,6 +153,19 @@ export class FieldBookingComponent {
               avalSlot.rate = matchingSlot.rate;
             }
           });
+        }
+
+        if(this.closedDays) {
+          let day = this.closedDays.find(
+            (d) => d.description == dayjs(res.date).format('dddd')
+          );
+
+          if(day) {
+            res.slots.map((res) => {
+              res.availability = false;
+              res.status = "Closed"
+            })
+          }
         }
       });
       this.fieldSlot = this.fieldSlotAvailability;
@@ -204,6 +221,7 @@ export class FieldBookingComponent {
       fieldId: this.fieldId,
       totalPrice: totalPrice,
       isLongTermBooking: true,
+      isDirectBooking: this.authService.getRole() == Role.Admin ? true : false,
       bookingDetails,
     };
 

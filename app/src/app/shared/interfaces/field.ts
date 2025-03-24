@@ -43,6 +43,7 @@ export interface Booking {
     fieldId: string;
     isLongTermBooking: boolean;
     totalPrice: number;
+    isDirectBooking: boolean;
     bookingDetails: BookingDetail[];
   }
   
@@ -96,13 +97,14 @@ export interface Booking {
     endTime: string;
     rate?: number;
     availability?: boolean;
-    status?: any; 
+    status?: string; 
   }
 
   export interface CalendarSlot {
     slotId: string;
     startTime: string;
     endTime: string;
+    status?: string;
   }
 
 export const FIELD_COLUMNS: ColumnField<FieldsDetailList>[] = [

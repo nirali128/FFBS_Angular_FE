@@ -40,6 +40,7 @@ export class GlobalConstant {
   public static readonly COMMON = {
     GET_ALL_ROLES: "/get-all-roles",
     GET_ALL_DAYS: "/get-all-days",
+    GET_CLOSED_DAYS: "/get-all-close-days",
     GET_ALL_SLOTS: "/get-all-slots",
   }
 
