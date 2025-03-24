@@ -1,0 +1,64 @@
+<button mat-button class="mb-2">
+    <a href="#" class="text-decoration-none d-flex align-items-center" [routerLink]="addFormLink">
+      <h3 class="mb-0 text-dark" color="primary">Add</h3>
+      <mat-icon color="primary">add</mat-icon>
+    </a>
+  </button>
+  
+  <div class="d-flex justify-content-end">
+      <input type="search" (input)="enableSearchBtn()" (keydown.enter)="onSearch()" id="searchValue" [(ngModel)]="searchVal" (keyup)="enableSearchBtn()" placeholder="Search Here..." class="search-input form-control w-15">
+      &nbsp;
+      <button mat-raised-button class="btn btn-success btnClass" [disabled]="!searchEnabled && previousFilterValue  == ''" (click)="onSearch()">Search</button>
+  </div>
+  
+  <table matSort mat-table [dataSource]="dataSource">
+  
+    <!-- Define dynamic columns -->
+    <ng-container *ngFor="let column of displayedColumns" matColumnDef="{{column.name}}">
+      <th mat-header-cell [disabled]="!column.sort" *matHeaderCellDef mat-sort-header class="text-capitalize">{{ column.name }}</th>
+  
+      <td mat-cell *matCellDef="let element">
+        <!-- For showing data Columns -->
+        <span *ngIf="column.type == 'label'">{{ element[column.name] }}</span>
+  
+        <!-- For IsActive Column -->
+        <mat-slide-toggle *ngIf="column.type == 'switch'" class="switch-color" (change)="toggle(element)"
+          [(ngModel)]="element[column.name]" [disabled]="column && column.disabled ? true : false"></mat-slide-toggle>
+  
+        <!-- For Action Column -->
+        <span *ngIf="column.type == 'button'">
+          <ng-container *ngFor="let item of column.arr">
+  
+            <button *ngIf="item.name == 'view'" mat-icon-button [routerLink]="[item.url , element.id]">
+              <mat-icon *ngIf="item.src"  color="primary" [fontIcon]="item.src"></mat-icon>
+            </button>
+            <!-- For Edit button -->
+            <button *ngIf="item.name == 'edit'" mat-icon-button [routerLink]="[item.url , element.id]" [disabled]="((item && item.disabled) && !element.isActive)">
+              <mat-icon *ngIf="item.src" [ngClass]="((item && item.disabled) && !element.isActive) ? 'disabled-color' : ''"  color="primary" [fontIcon]="item.src"></mat-icon>
+            </button>
+  
+            <!-- For Delete button -->
+            <app-button *ngIf="item.name == 'delete'" 
+            buttonType="icon"
+            [icon]="item.src"
+            (buttonClick)="delete(element.id)"
+          ></app-button>
+            
+          </ng-container>
+        </span>
+      </td>
+    </ng-container>
+  
+    <!-- Header row -->
+    <tr mat-header-row *matHeaderRowDef="columns"></tr>
+  
+    <!-- Data row -->
+    <tr mat-row *matRowDef="let row; columns: columns"></tr>
+    <tr class="mat-row" *matNoDataRow>
+      <td class="mat-cell py-2 text-center h5" [attr.colspan]="columns.length">
+        No data
+      </td>
+    </tr>
+  
+  </table>
+  <mat-paginator *ngIf="showPagination" [pageSizeOptions]="paginationOptions" [pageIndex]="pageIndex" [pageSize]="pageSize" [length]="totalCount"  (page)="onPageChange($event)" showFirstLastButtons></mat-paginator>

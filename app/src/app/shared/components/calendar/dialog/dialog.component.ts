@@ -21,7 +21,7 @@ export class DialogComponent {
     private dialogRef: MatDialogRef<DialogComponent>
   ) {
     this.dialogTableData = data;
-  }
+  } 
 
   bookNow(isConfirmed: boolean) {
     this.dialogRef.close(isConfirmed);
