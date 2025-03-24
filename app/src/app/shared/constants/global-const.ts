@@ -43,6 +43,7 @@ export class GlobalConstant {
     GET_CLOSED_DAYS: "/get-all-close-days",
     GET_ALL_SLOTS: "/get-all-slots",
   }
+  public static readonly paginationOptions = [5, 10, 20];
 
   public static readonly AVAILABILITY = {
     GET_FIELD_SLOTS_AVAILABILITY: "/fetch-field-slots-availability",
