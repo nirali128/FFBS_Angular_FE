@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { LayoutComponent } from './layout/layout.component';
 import { RegisterComponent } from './pages/auth/register/register.component';
 import { LoginComponent } from './pages/auth/login/login.component';
+import { CalendarComponent } from './shared/components/calendar/calendar.component';
 
 export const routes: Routes = [
     {path: '', pathMatch: 'full', redirectTo: 'register'},
@@ -12,6 +13,10 @@ export const routes: Routes = [
     {
         path: 'login',
         component: LoginComponent
+    },
+    {
+        path: 'calendar',
+        component: CalendarComponent
     },
     {
         path: '',
@@ -27,13 +32,13 @@ export const routes: Routes = [
                 loadChildren: () => import('./pages/dashboard/dashboard.routes')
             },
             {
-                path:'address-form',
-                title: 'Address Form',
+                path:'field',
+                title: 'Field',
                 data: {
                     icon: 'home',
-                    title: 'Address Form'
+                    title: 'Field'
                 },
-                loadChildren: () => import('./pages/address-form/address-form.routes')
+                loadChildren: () => import('./pages/field/field.routes')
             },
             {path: '**', redirectTo: 'dashboard', pathMatch: 'full'}
         ]
