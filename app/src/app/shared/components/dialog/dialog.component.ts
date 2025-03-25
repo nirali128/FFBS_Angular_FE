@@ -1,10 +1,13 @@
 import { Component, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { iDialogField } from '../../interfaces/dialog-fields';
+import { ButtonComponent } from '../button/button.component';
 
 
 @Component({
-  selector: 'app-dialog',
+  selector: 'app-confirm-dialog',
+  standalone: true,
+  imports: [MatDialogModule, ButtonComponent],
   templateUrl: './dialog.component.html',
   styleUrls: ['./dialog.component.scss']
 })

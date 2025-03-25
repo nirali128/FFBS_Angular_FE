@@ -6,6 +6,7 @@ import { DataViewComponent } from '../../shared/components/data-view/data-view.c
 import { Router } from '@angular/router';
 import { ButtonComponent } from '../../shared/components/button/button.component';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { AuthService } from '../../shared/service/authentication.service';
 
 @Component({
   selector: 'app-field',
@@ -32,7 +33,7 @@ export class FieldComponent {
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  constructor(public fieldService: FieldService, public router: Router) {
+  constructor(public fieldService: FieldService, public router: Router, public authService: AuthService) {
   }
 
   ngAfterViewInit(): void {

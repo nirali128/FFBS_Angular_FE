@@ -1,6 +1,23 @@
-<div class="ps-4 pb-4" mat-dialog-title *ngIf="title">{{title}}</div>
-<mat-dialog-content class="text-wrap text-dark">{{message}}</mat-dialog-content>
-<mat-dialog-actions align="end">
-  <button mat-stroked-button (click)="onDismiss()">{{ btnCancelText }}</button>
-  <button mat-raised-button cdkFocusInitial color="primary" (click)="onConfirm()">{{ btnOkText }}</button>
-</mat-dialog-actions>
+<div class="width-400">
+  <div class="ps-4 pb-4" mat-dialog-title *ngIf="title">{{ title }}</div>
+  <mat-dialog-content class="text-wrap text-dark">{{
+    message
+  }}</mat-dialog-content>
+  <mat-dialog-actions align="end">
+    <app-button
+      [text]="btnCancelText"
+      [buttonType]="'normal'"
+      [color]="'success'"
+      (buttonClick)="onDismiss()"
+    >
+    </app-button>
+    <app-button
+      class="ms-1"
+      [text]="btnOkText"
+      [buttonType]="'normal'"
+      [color]="'danger'"
+      (buttonClick)="onConfirm()"
+    >
+    </app-button>
+  </mat-dialog-actions>
+</div>

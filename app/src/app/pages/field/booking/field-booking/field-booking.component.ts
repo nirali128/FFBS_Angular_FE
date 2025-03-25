@@ -27,6 +27,7 @@ import { ButtonComponent } from '../../../../shared/components/button/button.com
 import { MatSlideToggleChange, MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { CalendarComponent } from '../../../../shared/components/calendar/calendar.component';
 import { Role } from '../../../../shared/enum/role';
+import { BookingService } from '../../../../shared/service/booking.service';
 
 @Component({
   selector: 'app-field-booking',
@@ -64,6 +65,7 @@ export class FieldBookingComponent {
 
   constructor(
     public fieldService: FieldService,
+    public bookingService: BookingService,
     private route: ActivatedRoute,
     private authService: AuthService,
     private router: Router
@@ -225,7 +227,7 @@ export class FieldBookingComponent {
       bookingDetails,
     };
 
-    this.fieldService.addBooking(booking).subscribe((res) => {
+    this.bookingService.addBooking(booking).subscribe((res) => {
       this.fieldSlot = [];
       this.generateDateRange();
     });

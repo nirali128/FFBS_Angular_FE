@@ -3,6 +3,7 @@ import { LayoutComponent } from './layout/layout.component';
 import { RegisterComponent } from './pages/auth/register/register.component';
 import { LoginComponent } from './pages/auth/login/login.component';
 import { CalendarComponent } from './shared/components/calendar/calendar.component';
+import { BookingListComponent } from './pages/field/booking/booking-list/booking-list.component';
 
 export const routes: Routes = [
     {path: '', pathMatch: 'full', redirectTo: 'register'},
@@ -39,6 +40,15 @@ export const routes: Routes = [
                     title: 'Field'
                 },
                 loadChildren: () => import('./pages/field/field.routes')
+            },
+            {
+                path:'booking-list',
+                title: 'Booking',
+                data: {
+                    icon: 'home',
+                    title: 'Booking'
+                },
+                component: BookingListComponent
             },
             {path: '**', redirectTo: 'dashboard', pathMatch: 'full'}
         ]
