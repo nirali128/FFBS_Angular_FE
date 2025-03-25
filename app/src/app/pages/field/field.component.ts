@@ -8,10 +8,11 @@ import { ButtonComponent } from '../../shared/components/button/button.component
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { AuthService } from '../../shared/service/authentication.service';
 import { Role } from '../../shared/enum/role';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-field',
-  imports: [DataViewComponent, ButtonComponent, MatPaginatorModule],
+  imports: [DataViewComponent, ButtonComponent, MatPaginatorModule, CommonModule],
   templateUrl: './field.component.html',
   styleUrl: './field.component.scss'
 })
