@@ -1,7 +1,7 @@
 <div class="container mt-4">
   <div class="d-flex justify-content-between mb-2">
     <h2 class="fw-bold">All Fields</h2>
-    <app-button
+    <app-button *ngIf="isAdmin"
       buttonType="text-icon"
       text="Add"
       icon="add"
@@ -10,6 +10,7 @@
     </app-button>
   </div>
   <app-data-view
+    [isAdmin]="isAdmin"
     [items]="fields"
     [fieldIcons]="fieldIcons"
     [columns]="fieldColumns"

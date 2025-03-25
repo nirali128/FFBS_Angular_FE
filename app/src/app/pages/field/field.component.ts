@@ -6,6 +6,8 @@ import { DataViewComponent } from '../../shared/components/data-view/data-view.c
 import { Router } from '@angular/router';
 import { ButtonComponent } from '../../shared/components/button/button.component';
 import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
+import { AuthService } from '../../shared/service/authentication.service';
+import { Role } from '../../shared/enum/role';
 
 @Component({
   selector: 'app-field',
@@ -29,10 +31,11 @@ export class FieldComponent {
   sortOrder = '';
   totalItems = 0;
   totalPages = 0;
-
+  isAdmin: boolean = false;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  constructor(public fieldService: FieldService, public router: Router) {
+  constructor(public fieldService: FieldService, public router: Router, private authService: AuthService,) {
+    this.isAdmin = this.authService.getRole() == Role.Admin ? true : false;
   }
 
   ngAfterViewInit(): void {

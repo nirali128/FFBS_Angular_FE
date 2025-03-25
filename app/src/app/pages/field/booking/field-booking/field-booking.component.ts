@@ -61,6 +61,7 @@ export class FieldBookingComponent {
   toggleSlideLabel: string = 'Toggle for single day booking';
   minimumStartDate: Date;
   closedDays: Day[];
+  isAdmin: boolean = false;
 
   constructor(
     public fieldService: FieldService,
@@ -72,6 +73,7 @@ export class FieldBookingComponent {
       this.fieldId = params['id'];
     });
     this.maxDate = dayjs().add(2, 'month').toDate();
+    this.isAdmin = this.authService.getRole() == Role.Admin ? true : false;
   }
 
   ngOnInit() {
@@ -221,7 +223,7 @@ export class FieldBookingComponent {
       fieldId: this.fieldId,
       totalPrice: totalPrice,
       isLongTermBooking: true,
-      isDirectBooking: this.authService.getRole() == Role.Admin ? true : false,
+      isDirectBooking: this.isAdmin,
       bookingDetails,
     };
 
