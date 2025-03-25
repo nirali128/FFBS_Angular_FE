@@ -22,6 +22,11 @@ export class DataViewComponent<T> {
   showAvailableOnly: boolean = false;
   @Output() buttonEvent = new EventEmitter<string>();
   @Output() editEvent = new EventEmitter<string>();
+  @Output() searchEvent = new EventEmitter<string>(); // New Output event
+
+  onSearchChange() {
+    this.searchEvent.emit(this.searchQuery);
+  }
 
   toggleView(): void {
     this.isGridView = !this.isGridView;
@@ -34,17 +39,6 @@ export class DataViewComponent<T> {
   filteredItems() {
     let filtered = this.items;
 
-    if (this.searchQuery) {
-      filtered = this.items.filter((item) =>
-        Object.values(item).some((value) =>
-          value
-            ?.toString()
-            .toLowerCase()
-            .includes(this.searchQuery.toLowerCase())
-        )
-      );
-    }
-
     if (this.showAvailableOnly) {
       filtered = filtered.filter((item) => (item as any).isAvailable);
     }
@@ -52,13 +46,21 @@ export class DataViewComponent<T> {
   }
 
   buttonClick(item: T) {
-    this.buttonEvent.emit((item as any).guid)
+    this.buttonEvent.emit((item as any).guid);
   }
 
   disability(item: T) {
     return !(item as any).isAvailable;
   }
 
+  getImageUrl(imageData: string): string {
+    if (!imageData) {
+      return 'assets/images/grass-2616911_1280.jpg';
+    }
+    return imageData.startsWith('data:image')
+      ? imageData
+      : 'data:image/jpeg;base64,' + imageData;
+  }
   edit(item: T) {
     this.editEvent.emit((item as any).guid);
   }

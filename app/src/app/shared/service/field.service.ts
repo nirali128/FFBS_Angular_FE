@@ -1,8 +1,8 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { GlobalConstant } from '../constants/global-const';
 import { Observable } from 'rxjs';
-import { ApiPaginatedResponse, ApiResponse } from '../interfaces/api.response';
+import { ApiPaginatedResponse, ApiResponse, PaginationRequest } from '../interfaces/api.response';
 import {
   Booking,
   Day,
@@ -32,10 +32,18 @@ export class FieldService {
 
   constructor(private httpClient: HttpClient) {}
 
-  getAllFields(): Observable<ApiPaginatedResponse<FieldsDetailList[]>> {
+  getAllFields(params: PaginationRequest): Observable<ApiPaginatedResponse<FieldsDetailList[]>> {
+    let httpParams = new HttpParams()
+      .set('page', params.page)
+      .set('pageSize', params.pageSize)
+      .set('search', params.search)
+      .set('sortBy', params.sortBy)
+      .set('sortOrder', params.sortOrder);
     return this.httpClient.get<ApiPaginatedResponse<FieldsDetailList[]>>(
-      `${GlobalConstant.FIELD_API_URL + GlobalConstant.FIELD.GET_ALL_FIELDS}`,
-      this.getHeaders()
+      `${GlobalConstant.FIELD_API_URL + GlobalConstant.FIELD.GET_ALL_FIELDS}`,  { 
+        ...this.getHeaders(),
+        params: httpParams,  
+      }
     );
   }
 

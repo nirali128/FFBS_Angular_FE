@@ -1,22 +1,29 @@
-::ng-deep {
-    .mat-mdc-slide-toggle.mat-mdc-slide-toggle-checked:not(.mat-disabled) .mdc-switch__shadow {
-      background-color: #25476a !important;
-    }
-  
-    .mat-mdc-slide-toggle.mat-mdc-slide-toggle-checked:not(.mat-disabled) .mdc-switch__track::after {
-      background-color: #aeafb1 !important;
-    }
+.image-container {
+    width: 120px; /* Fixed width */
+    height: 100px; /* Fixed height */
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   
-  .btnClass {
-    background-color: #25476a !important;
-    color: white !important;
+  .image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensures image scales properly */
+    border-radius: 8px;
   }
-  
-  .w-15 {
-    width: 15% !important;
-  }
-  
-  .disabled-color {
-    color: darkgray !important;
-  }
+
+
+.data-view-badge {
+    position: relative;
+    top: -17px;
+}
+
+.available {
+    right: -94px;
+}
+
+.not-available {
+    right: -110px;
+}

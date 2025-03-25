@@ -1,2 +1,28 @@
-<app-data-view [items]="fields" [fieldIcons]="fieldIcons" [columns]="fieldColumns" (buttonEvent)="navigate($event)" 
-(editEvent)="edit($event)"></app-data-view>
+<div class="container mt-4">
+  <div class="d-flex justify-content-between mb-2">
+    <h2 class="fw-bold">All Fields</h2>
+    <app-button
+      buttonType="text-icon"
+      text="Add"
+      icon="add"
+      (buttonClick)="navigateToAddField()"
+    >
+    </app-button>
+  </div>
+  <app-data-view
+    [items]="fields"
+    [fieldIcons]="fieldIcons"
+    [columns]="fieldColumns"
+    (buttonEvent)="navigate($event)"
+    (editEvent)="edit($event)"
+    (searchEvent)="onSearch($event)"
+  ></app-data-view>
+
+  <mat-paginator
+  [length]="totalItems"
+  [pageSize]="pageSize"
+  [pageSizeOptions]="[3, 5, 10]"
+  (page)="onPageChange($event)"
+>
+</mat-paginator>
+</div>
