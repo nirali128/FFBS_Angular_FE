@@ -1,0 +1,16 @@
+<div class="form-group">
+  <mat-form-field class="form-field">
+    <mat-label>{{ label }}</mat-label>
+    <textarea
+      matInput
+      [formControl]="formControl"
+      [placeholder]="placeholder"
+      [rows]="rows"
+      appFormErrors
+      (input)="onInputChange($event)"
+      (blur)="onBlur()"
+      [disabled]="disabled"
+    ></textarea>
+  </mat-form-field>
+  <div class="error-messages mb-3"></div>
+</div>

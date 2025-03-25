@@ -1,0 +1,111 @@
+<div class="container mt-4">
+  <h2 class="mb-4 fw-bold">Edit Field Details</h2>
+  <form
+    [formGroup]="editFieldDetailsForm"
+    class="registration-form p-4 rounded shadow bg-white"
+  >
+    <div class="row">
+      <div class="col-4">
+        <app-input
+          label="Field Name"
+          [formControl]="getFormControl('fieldName')"
+          placeholder="Enter field name"
+          formControlName="fieldName"
+        ></app-input>
+      </div>
+      <div class="col-4">
+        <app-input
+          type="number"
+          label="Area"
+          [formControl]="getFormControl('area')"
+          placeholder="Enter area"
+          formControlName="area"
+        ></app-input>
+      </div>
+      <div class="col-4">
+        <app-input
+          label="Phone Number"
+          [formControl]="getFormControl('phoneNumber')"
+          placeholder="Enter your phone number"
+          formControlName="phoneNumber"
+          (keypress)="restrictPhoneInput($event)"
+        ></app-input>
+      </div>
+      <div class="col-4">
+        <app-input
+          type="number"
+          label="Base Rate"
+          [formControl]="getFormControl('baseRate')"
+          placeholder="Enter base rate"
+          formControlName="baseRate"
+        ></app-input>
+      </div>
+      <div class="col-4">
+        <app-textarea
+          label="Address"
+          [formControl]="getFormControl('address')"
+          placeholder="Enter address"
+          formControlName="address"
+        ></app-textarea>
+      </div>
+      <div class="col-4">
+        <app-textarea
+          label="Description"
+          [formControl]="getFormControl('description')"
+          placeholder="Enter description"
+          formControlName="description"
+        ></app-textarea>
+      </div>
+      <div class="col-4">
+        <app-textarea
+          label="Rules & Policies"
+          [formControl]="getFormControl('rulesPolicies')"
+          placeholder="Enter rules & policies"
+          formControlName="rulesPolicies"
+        ></app-textarea>
+      </div>
+      <div class="col-4">
+        <app-checkbox
+          type="number"
+          label="Is Available"
+          [checked]="editFieldDetailsForm.get('isAvailable')?.value"
+          (checkedChange)="
+            editFieldDetailsForm.get('isAvailable')?.setValue($event)
+          "
+        ></app-checkbox>
+      </div>
+      <div class="col-4">
+        <app-multi-select-checkbox
+          *ngIf="dropdownData && dropdownData.length"
+          label="Closed Days"
+          [selectedValues]="closeDays"
+          [options]="dropdownData"
+          (selectionChangeEvent)="selectionChange($event)"
+        ></app-multi-select-checkbox>
+      </div>
+      <div class="col-9 mt-2">
+        <app-image-upload
+          [uploadedFiles]="uploadedFiles"
+          (filesUploaded)="onFilesUploaded($event)"
+        ></app-image-upload>
+        <mat-error class="error" *ngIf="showError()"
+          >At least 1 image is required</mat-error
+        >
+      </div>
+    </div>
+    <div class="form-actions text-center mt-4 d-flex">
+      <app-button
+        [text]="'Submit'"
+        [buttonType]="'normal'"
+        (buttonClick)="onSubmit()"
+      ></app-button>
+      <app-button
+        class="ms-2"
+        [text]="'Back'"
+        color="secondary"
+        [buttonType]="'normal'"
+        (buttonClick)="back()"
+      ></app-button>
+    </div>
+  </form>
+</div>

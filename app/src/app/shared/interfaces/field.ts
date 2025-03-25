@@ -43,11 +43,12 @@ export interface Booking {
     fieldId: string;
     isLongTermBooking: boolean;
     totalPrice: number;
+    isDirectBooking: boolean;
     bookingDetails: BookingDetail[];
   }
   
   export interface BookingDetail {
-    dayId: string;
+    dayId?: string;
     slots: string[];
     bookingDate: string;
   }
@@ -55,12 +56,12 @@ export interface Booking {
   export interface DialogTable {
     timeSlot: string;
     date: string;
-    day: string;
+    day?: string;
     rate: number;
   }
 
   export interface SelectableSlot {
-    dayGuid: string;
+    dayGuid?: string;
     slotGuid: string;
     date: string;
     rate: number;
@@ -72,15 +73,50 @@ export interface Booking {
     address: string;
     area?: number;
     phoneNumber?: string;
+    baseRate: number;
     isAvailable: boolean;
     rulesPolicies?: string;
     description?: string;
     isActive: boolean;
     closeDays: string[]; 
-    documents: { fileName: string; fileType?: string; document?: string; description?: string }[];
+    documents: FieldDocument[];
+  }
+
+  export class FieldDocument {
+    fileName: string; 
+    fileType?: string; 
+    document?: string; 
+    description?: string 
+  }
+
+  export class FieldSlotRateRequestData {
+    fieldId: string;
+    date: string[];
+  }
+
+  export class FieldSlotRateData {
+    date: string;
+    slots: NewSlot[]
+  }
+
+  export class NewSlot {
+    slotId: string;
+    startTime: string;
+    endTime: string;
+    rate?: number;
+    availability?: boolean;
+    status?: string; 
+  }
+
+  export interface CalendarSlot {
+    slotId: string;
+    startTime: string;
+    endTime: string;
+    status?: string;
   }
 
 export const FIELD_COLUMNS: ColumnField<FieldsDetailList>[] = [
+    { key: 'documentName', label: 'Image', labelType: 'image', isVisible: true },
     { key: 'fieldName', label: 'Field Name', icon: 'sports_soccer', labelType: 'title', isVisible: true },
     { key: 'isAvailable', label: 'Available', icon: 'check_circle', labelType: 'badge', isVisible: true },
     { key: 'description', label: 'Description', labelType: 'description', isVisible: true },

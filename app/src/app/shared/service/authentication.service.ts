@@ -40,8 +40,14 @@ export class AuthService {
 
   getUserId(): string {
     let token = this.getToken()
-    let a = this.decodedToken(token);
-    return a.guid;
+    let decodedToken = this.decodedToken(token);
+    return decodedToken.guid;
+  }
+
+  getRole(): string {
+    let token = this.getToken()
+    let decodedToken = this.decodedToken(token);
+    return decodedToken.role
   }
 
   getRefreshToken(): string {

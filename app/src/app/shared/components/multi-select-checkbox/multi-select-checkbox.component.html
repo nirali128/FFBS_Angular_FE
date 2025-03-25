@@ -1,0 +1,14 @@
+<mat-form-field class="full-width mt-2">
+  <mat-label>{{ label }}</mat-label>
+  <mat-select
+    multiple
+    [placeholder]="placeholder"
+    [disabled]="disabled"
+    [(value)]="selectedValues"
+    (selectionChange)="onSelectionChange($event)"
+  >
+    <mat-option *ngFor="let option of options" [value]="option.value">
+      {{ option.label }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>

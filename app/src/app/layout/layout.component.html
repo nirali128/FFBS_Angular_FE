@@ -34,6 +34,7 @@
     <div class="sidenav-scroll-wrapper">
       <div class="sidenav-content">
         <router-outlet></router-outlet>
+        <app-spinner></app-spinner>
       </div>
     </div>
   </mat-drawer-content>
@@ -46,7 +47,7 @@
     [opened]="(isHandset$ | async) === false"
   >
     <mat-toolbar>
-      <h1>FBS</h1>
+      <h1><img src="assets/images/fieldd-logo.png" alt="" height="90"></h1>
     </mat-toolbar>
     <mat-nav-list>
       @for (item of routes; track $index) {

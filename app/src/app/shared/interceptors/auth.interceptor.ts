@@ -8,17 +8,21 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AuthService } from '../service/authentication.service';
 import { GlobalConstant } from '../constants/global-const';
-import { Role } from '../enum/role';
+import { AppLoaderService } from '../service/app-loader.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
   private refreshTokenInProgress = false;
-  constructor(public authService: AuthService) {}
+  constructor(
+    public authService: AuthService,
+    private loaderService: AppLoaderService
+  ) {}
 
   intercept(
     request: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
+    this.loaderService.showLoader();
     if (this.authService.isLoggedIn()) {
       request = request.clone({
         setHeaders: {
@@ -37,8 +41,10 @@ export class AuthInterceptor implements HttpInterceptor {
         ) {
           this.refreshTokenInProgress = true;
 
+          let refreshTokenValue = this.authService.getRefreshToken();
+          if(refreshTokenValue)
           this.authService
-            .refreshToken(localStorage.getItem('refreshToken') || '')
+            .refreshToken(refreshTokenValue)
             .subscribe((res) => {
               if (res.success) {
                 this.authService.setToken(res.data);
@@ -48,6 +54,7 @@ export class AuthInterceptor implements HttpInterceptor {
         }
       }
     }
+    this.loaderService.hideLoader();
     return next.handle(request);
   }
 }

@@ -1,13 +1,15 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { GlobalConstant } from '../constants/global-const';
 import { Observable } from 'rxjs';
-import { ApiPaginatedResponse, ApiResponse } from '../interfaces/api.response';
+import { ApiPaginatedResponse, ApiResponse, PaginationRequest } from '../interfaces/api.response';
 import {
   Booking,
   Day,
   FieldDetail,
   FieldsDetailList,
+  FieldSlotRateData,
+  FieldSlotRateRequestData,
   Slot,
   SlotByField,
 } from '../interfaces/field';
@@ -30,10 +32,18 @@ export class FieldService {
 
   constructor(private httpClient: HttpClient) {}
 
-  getAllFields(): Observable<ApiPaginatedResponse<FieldsDetailList[]>> {
+  getAllFields(params: PaginationRequest): Observable<ApiPaginatedResponse<FieldsDetailList[]>> {
+    let httpParams = new HttpParams()
+      .set('page', params.page)
+      .set('pageSize', params.pageSize)
+      .set('search', params.search)
+      .set('sortBy', params.sortBy)
+      .set('sortOrder', params.sortOrder);
     return this.httpClient.get<ApiPaginatedResponse<FieldsDetailList[]>>(
-      `${GlobalConstant.FIELD_API_URL + GlobalConstant.FIELD.GET_ALL_FIELDS}`,
-      this.getHeaders()
+      `${GlobalConstant.FIELD_API_URL + GlobalConstant.FIELD.GET_ALL_FIELDS}`,  { 
+        ...this.getHeaders(),
+        params: httpParams,  
+      }
     );
   }
 
@@ -63,6 +73,15 @@ export class FieldService {
     );
   }
 
+  getClosedDays(guid: string): Observable<ApiResponse<Day[]>> {
+    return this.httpClient.get<ApiResponse<Day[]>>(
+      `${GlobalConstant.COMMON_API_URL + GlobalConstant.COMMON.GET_CLOSED_DAYS +
+        '?fieldId=' +
+        guid}`,
+      this.getHeaders()
+    );
+  }
+
   addBooking(data: Booking) {
     return this.httpClient.post(
       `${GlobalConstant.BOOKING_API_URL + GlobalConstant.BOOKING.ADD_BOOKING}`,
@@ -88,6 +107,42 @@ export class FieldService {
         '?fieldId=' +
         guid
       }`,
+      this.getHeaders()
+    );
+  }
+
+  getFieldSlotsAvailability(data: FieldSlotRateRequestData) {
+    return this.httpClient.post<ApiResponse<FieldSlotRateData[]>>(
+      `${
+        GlobalConstant.AVAILABILITY_API_URL +
+        GlobalConstant.AVAILABILITY.GET_FIELD_SLOTS_AVAILABILITY
+      }`, data,
+      this.getHeaders()
+    );
+  }
+
+  getFieldSlotsRates(data: FieldSlotRateRequestData) {
+    return this.httpClient.post<ApiResponse<FieldSlotRateData[]>>(
+      `${
+        GlobalConstant.RATE_API_URL +
+        GlobalConstant.RATE.GET_RATES
+      }`, data,
+      this.getHeaders()
+    );
+  }
+
+  addField(data: FieldDetail) {
+    return this.httpClient.post(
+      `${GlobalConstant.FIELD_API_URL + GlobalConstant.FIELD.ADD_FIELD}`,
+      data,
+      this.getHeaders()
+    );
+  }
+
+  editField(guid: string, data: FieldDetail) {
+    return this.httpClient.post(
+      `${GlobalConstant.FIELD_API_URL + GlobalConstant.FIELD.EDIT_FIELD + '?fieldId=' + guid}` ,
+      data,
       this.getHeaders()
     );
   }

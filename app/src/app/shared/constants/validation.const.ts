@@ -18,8 +18,12 @@ export const ValidationRules = {
   PHONE_NUMBER_MAX_LENGTH: 30,
   ROLE_NAME_MAX_LENGTH: 30,
   DESCRIPTION_MAX_LENGTH: 100,
-  FIELD_NAME_MAX_LENGTH: 50,
-  FIELD_ADDRESS_MAX_LENGTH: 100,
+  FIELD_NAME_MAX_LENGTH: 100,
+  FIELD_AREA_MIN: 100,
+  FEILD_BASE_RATE_MIN: 10,
+  FIELD_ADDRESS_MAX_LENGTH: 255,
+  RULES_POLICIES_MAX_LENGTH: 1000,
+  FIELD_DESCRIPTION_MAX_LENGTH: 1000
 };
 
 export const ErrorLabel = {
@@ -31,6 +35,7 @@ export const ValidationErrors: Record<string, string | ((error: any, label?: str
   required: (label = 'This field') => label.toLowerCase() === ErrorLabel.Role ? ErrorMessages.ROLE_SELECTION : `${label} is required`,
   minlength: (error) => `Minimum length of ${error.requiredLength} characters`,
   maxlength: (error) => `Maximum length of ${error.requiredLength} characters`,
+  min: (error) => `Min value is ${error.min}.`,
   pattern: (label = 'This field') =>  label.toLowerCase() === ErrorLabel.PASSWORD
   ? ErrorMessages.PASSWORD_INVALID
   : `Please enter a valid ${label}`,
