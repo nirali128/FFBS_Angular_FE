@@ -3,7 +3,6 @@ import {
   ReactiveFormsModule,
   FormGroup,
   FormBuilder,
-  Validators,
   FormControl,
 } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -28,6 +27,9 @@ import { DropdownOption } from '../../../shared/interfaces/dropdown.options';
 import { CommonModule } from '@angular/common';
 import { MatError } from '@angular/material/form-field';
 import { FieldDetailsFormConfig } from '../field.config';
+import { SnackbarConfig } from '../../../shared/constants/snackbar-config.const';
+import { SuccessMessages } from '../../../shared/constants/messages-const';
+import { SnackbarService } from '../../../shared/service/snackbar.service';
 
 @Component({
   selector: 'app-add-field-booking',
@@ -57,7 +59,8 @@ export class AddFieldComponent {
     private formConfig: FieldDetailsFormConfig,
     private fb: FormBuilder,
     public fieldService: FieldService,
-    private router: Router
+    private router: Router,
+    private snackbarService: SnackbarService
   ) {
     this.fieldService.getAllDays().subscribe((res) => {
       if (res.success) {
@@ -99,7 +102,12 @@ export class AddFieldComponent {
           this.fieldService
             .addField(formValue as FieldDetail)
             .subscribe((res) => {
-              this.router.navigateByUrl('field');
+              this.snackbarService.show(
+                new SnackbarConfig({
+                  message: SuccessMessages.FIELD_ADDED_SUCCESS,
+                })
+              );
+              this.back();
             });
         } else {
           this.addFieldDetailsForm.markAllAsTouched();

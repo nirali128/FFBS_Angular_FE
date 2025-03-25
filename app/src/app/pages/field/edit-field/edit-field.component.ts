@@ -2,17 +2,14 @@ import { Component } from '@angular/core';
 import {
   ReactiveFormsModule,
   FormGroup,
-  FormBuilder,
-  Validators,
   FormControl,
 } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NgxEditorModule, Editor, Toolbar } from 'ngx-editor';
+import { NgxEditorModule } from 'ngx-editor';
 import { ButtonComponent } from '../../../shared/components/button/button.component';
 import { InputComponent } from '../../../shared/components/input/input.component';
 import {
-  ValidationRules,
   ValidationPatterns,
 } from '../../../shared/constants/validation.const';
 import { FieldDetail, FieldDocument } from '../../../shared/interfaces/field';
@@ -31,6 +28,9 @@ import { CommonModule } from '@angular/common';
 import { forkJoin } from 'rxjs';
 import { MatError } from '@angular/material/form-field';
 import { FieldDetailsFormConfig } from '../field.config';
+import { SuccessMessages } from '../../../shared/constants/messages-const';
+import { SnackbarConfig } from '../../../shared/constants/snackbar-config.const';
+import { SnackbarService } from '../../../shared/service/snackbar.service';
 
 @Component({
   selector: 'app-edit-field-booking',
@@ -64,8 +64,8 @@ export class EditFieldComponent {
     private formConfig: FieldDetailsFormConfig,
     public fieldService: FieldService,
     private router: Router,
-    private route: ActivatedRoute
-    
+    private route: ActivatedRoute,
+    private snackbarService: SnackbarService
   ) {
     this.editFieldDetailsForm = this.formConfig.createForm();
     this.route.params.subscribe((params) => {
@@ -119,8 +119,12 @@ export class EditFieldComponent {
   }
 
   showError(): boolean {
-    if(this.submitted && !this.files.length && this.uploadedFiles.length != this.documentsData.length) {
-      return true
+    if (
+      this.submitted &&
+      !this.files.length &&
+      this.uploadedFiles.length != this.documentsData.length
+    ) {
+      return true;
     }
     return false;
   }
@@ -156,7 +160,10 @@ export class EditFieldComponent {
       this.fieldService
         .editField(this.fieldId, formValue as FieldDetail)
         .subscribe((res) => {
-          this.router.navigateByUrl('field');
+          this.snackbarService.show(
+            new SnackbarConfig({ message: SuccessMessages.FIELD_EDIT_SUCCESS })
+          );
+          this.back();
         });
     } else {
       this.editFieldDetailsForm.markAllAsTouched();
