@@ -2,7 +2,7 @@ import { Routes } from '@angular/router';
 import { LayoutComponent } from './layout/layout.component';
 import { RegisterComponent } from './pages/auth/register/register.component';
 import { LoginComponent } from './pages/auth/login/login.component';
-import { CalendarComponent } from './shared/components/calendar/calendar.component';
+import { ProfileComponent } from './pages/profile/profile.component';
 
 export const routes: Routes = [
     {path: '', pathMatch: 'full', redirectTo: 'register'},
@@ -15,8 +15,8 @@ export const routes: Routes = [
         component: LoginComponent
     },
     {
-        path: 'calendar',
-        component: CalendarComponent
+        path: 'profile',
+        component: ProfileComponent
     },
     {
         path: '',

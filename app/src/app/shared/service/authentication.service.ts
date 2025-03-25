@@ -10,6 +10,7 @@ import { jwtDecode } from 'jwt-decode';
 import { DecodedToken } from '../interfaces/decoded.token';
 import * as CryptoJS from 'crypto-js';
 import { environment } from '../../../environment/environment';
+import { ResetPassword } from '../interfaces/user';
 
 @Injectable({
   providedIn: 'root',
@@ -111,15 +112,15 @@ export class AuthService {
       );
   }
 
+  changePassword(resetPassword: ResetPassword) {
+    return this.http.post(`${environment.baseUrl + GlobalConstant.AUTH.RESET_PASSWORD}`, resetPassword, this.getHeaders())
+  }
+
   refreshToken(refresh: string): Observable<ApiResponse<Token>> {
     return this.http.post<ApiResponse<Token>>(`${environment.baseUrl + GlobalConstant.AUTH.REFRESH_TOKEN}`, {refreshToken: refresh}, this.getHeaders());
   }
 
-  changePassword() {
-    return "Not implemented";
-  }
-
-  private encrypt(data: string): string {
+  public encrypt(data: string): string {
     return CryptoJS.AES.encrypt(data, GlobalConstant.ENCRYPTION_KEY).toString();
   }
 

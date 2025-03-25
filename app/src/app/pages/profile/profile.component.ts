@@ -27,26 +27,33 @@ import { MatDialog } from '@angular/material/dialog';
 import { ChangePasswordDialogComponent } from './change-password-dialog/change-password-dialog.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { CommonModule } from '@angular/common';
+import { UserService } from '../../shared/service/user.service';
+import { User } from '../../shared/interfaces/user';
+import { minAgeValidator } from '../../shared/validators/custom.validator';
+import { FormErrorsDirective } from '../../shared/directives/form-error.directive';
 
 @Component({
   selector: 'app-profile',
   imports: [
     InputComponent,
     ButtonComponent,
-    SelectComponent,
     ReactiveFormsModule,
     MatCardModule,
-    MatFormFieldModule, 
-    MatInputModule, 
-    MatDatepickerModule
+    MatFormFieldModule,
+    MatInputModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    CommonModule  
   ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss',
 })
 export class ProfileComponent {
-  registrationForm: FormGroup;
-
+  profileForm: FormGroup;
+  email: string;
   roleOptions: DropdownOption[];
 
   constructor(
@@ -55,13 +62,10 @@ export class ProfileComponent {
     public roleService: RoleService,
     private snackBarService: SnackbarService,
     private router: Router,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    public userService: UserService
   ) {
-    this.roleService.getRole().subscribe((res) => {
-      this.roleOptions = res.data;
-    });
-
-    this.registrationForm = this.fb.group({
+    this.profileForm = this.fb.group({
       firstName: [
         '',
         [
@@ -79,7 +83,7 @@ export class ProfileComponent {
         ],
       ],
       email: [
-        '',
+        { value: '', disabled: true },
         [
           Validators.required,
           Validators.maxLength(ValidationRules.EMAIL_MAX_LENGTH),
@@ -90,29 +94,35 @@ export class ProfileComponent {
         '',
         [Validators.required, Validators.pattern(ValidationPatterns.PHONE)],
       ],
+      dob: ['', [Validators.required, minAgeValidator(14)]],
+      avatar: ['', Validators.required],
+    });
+  }
+
+  ngOnInit() {
+    this.userService.getUserById().subscribe((res) => {
+      if (res.success) {
+        this.email = res.data.email;
+        this.profileForm.patchValue(res.data);
+      }
     });
   }
 
   getFormControl(controlName: string): FormControl {
-    return this.registrationForm.get(controlName) as FormControl;
+    return this.profileForm.get(controlName) as FormControl;
   }
 
   onSubmit(): void {
-    if (this.registrationForm.valid) {
-      this.authService
-        .register(this.registrationForm.value as Register)
-        .subscribe((res: ApiResponse<Register>) => {
-          if (res.success) {
-            this.snackBarService.show(
-              new SnackbarConfig({
-                message: SuccessMessages.USER_REGISTRATION_SUCCESS,
-              })
-            );
-            this.router.navigateByUrl('login');
-          }
+    if (this.profileForm.valid) {
+      this.userService
+        .editUser(this.profileForm.value as User)
+        .subscribe(() => {
+          this.snackBarService.show(
+            new SnackbarConfig({ message: SuccessMessages.USER_EDIT_SUCCESS })
+          );
         });
     } else {
-      this.registrationForm.markAllAsTouched();
+      this.profileForm.markAllAsTouched();
     }
   }
 
@@ -133,9 +143,25 @@ export class ProfileComponent {
     }
   }
 
+  onFileSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.profileForm.patchValue({ avatar: reader.result });
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
   changePassword() {
     this.dialog.open(ChangePasswordDialogComponent, {
       width: '50%',
+      data: this.email,
     });
+  }
+
+  navigate() {
+    this.router.navigateByUrl('dashboard');
   }
 }

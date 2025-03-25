@@ -8,6 +8,7 @@ export class GlobalConstant {
   public static readonly REGISTER = 'register';
   public static readonly BEARER = 'Bearer';
   public static readonly ENCRYPTION_KEY = "FFBS26022025";
+  public static readonly ENCRYPTION_KEY_RESET = "d5f41a8a68e8e5af3b93754b578ed23f1a8e4a4b0a5f7e12cf50bb9470f1a5c6";
 
   //Create constants for the API URL
   public static readonly COMMON_API_URL = `${environment.baseUrl}/common`;
@@ -15,6 +16,7 @@ export class GlobalConstant {
   public static readonly BOOKING_API_URL = `${environment.baseUrl}/booking`;
   public static readonly AVAILABILITY_API_URL = `${environment.baseUrl}/availability`;
   public static readonly RATE_API_URL = `${environment.baseUrl}/rate`;
+  public static readonly USER_API_URL = `${environment.baseUrl}/user`;
 
   public static readonly AUTH = {
     LOGIN: "/login",
@@ -22,6 +24,11 @@ export class GlobalConstant {
     FORGOT_PASSWORD: "/forgot-password",
     REFRESH_TOKEN: "/refresh-token",
     RESET_PASSWORD: "/reset-password",
+  }
+
+  public static readonly USER = {
+    GET_USER_BY_ID: "/get-user-by-id",
+    EDIT_USER: "/edit-user-details"
   }
 
   public static readonly FIELD =  {

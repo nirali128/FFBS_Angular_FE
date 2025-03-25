@@ -1,63 +1,113 @@
-<div class="container">
+<div class="container pt-5">
+  <h2 class="col-12 fw-bold d-flex justify-content-between">
+    User Profile
+    <app-button
+      class="calendar-button"
+      [buttonType]="'normal'"
+      [text]="'Back'"
+      [color]="'secondary'"
+      (buttonClick)="navigate()"
+    >
+    </app-button>
+  </h2>
   <form
-    [formGroup]="registrationForm"
+    [formGroup]="profileForm"
     class="registration-form p-4 rounded shadow bg-white"
   >
-    <h2 class="text-center mb-4">Profile</h2>
-    <app-input
-      label="First Name"
-      [formControl]="getFormControl('firstName')"
-      placeholder="Enter your first name"
-      formControlName="firstName"
-      (keypress)="restrictTextInput($event)"
-    ></app-input>
-    <app-input
-      label="Last Name"
-      [formControl]="getFormControl('lastName')"
-      placeholder="Enter your last name"
-      formControlName="lastName"
-      (keypress)="restrictTextInput($event)"
-    ></app-input>
-    <app-input
-      label="Email"
-      disabled="true"
-      [formControl]="getFormControl('email')"
-      placeholder="Enter your email"
-      formControlName="email"
-      type="email"
-    ></app-input>
+    <div class="row">
+      <div class="col-4 avatar-container mb-2">
+        <div class="avatar-preview" (click)="fileInput.click()">
+          <img
+            *ngIf="profileForm.get('avatar')?.value"
+            [src]="profileForm.get('avatar')?.value"
+            alt="User avatar"
+          />
+          <div
+            *ngIf="!profileForm.get('avatar')?.value"
+            class="avatar-placeholder"
+          >
+            <span>Upload Profile Picture</span>
+          </div>
+        </div>
 
-    <app-input
-      label="Phone Number"
-      [formControl]="getFormControl('phoneNumber')"
-      placeholder="Enter your phone number"
-      formControlName="phoneNumber"
-      (keypress)="restrictPhoneInput($event)"
-    ></app-input>
+        <input
+          type="file"
+          #fileInput
+          (change)="onFileSelected($event)"
+          hidden
+        />
+      </div>
+      <div class="col-4">
+        <app-input
+          label="First Name"
+          [formControl]="getFormControl('firstName')"
+          placeholder="Enter your first name"
+          formControlName="firstName"
+          (keypress)="restrictTextInput($event)"
+        ></app-input>
+      </div>
+      <div class="col-4">
+        <app-input
+          label="Last Name"
+          [formControl]="getFormControl('lastName')"
+          placeholder="Enter your last name"
+          formControlName="lastName"
+          (keypress)="restrictTextInput($event)"
+        ></app-input>
+      </div>
+      <div class="col-4">
+        <app-input
+          label="Email"
+          [formControl]="getFormControl('email')"
+          placeholder="Enter your email"
+          formControlName="email"
+          type="email"
+        ></app-input>
+      </div>
+      <div class="col-4">
+        <app-input
+          label="Phone Number"
+          [formControl]="getFormControl('phoneNumber')"
+          placeholder="Enter your phone number"
+          formControlName="phoneNumber"
+          (keypress)="restrictPhoneInput($event)"
+        ></app-input>
+      </div>
+      <div class="col-4">
+        <mat-form-field class="mb-0 form-field">
+          <mat-label>Choose a date</mat-label>
+          <input
+            matInput
+            [formControl]="getFormControl('dob')"
+            [matDatepicker]="picker"
+          />
+          <mat-datepicker-toggle
+            matIconSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+          <mat-error
+            class="fs-7 mt-2"
+            *ngIf="getFormControl('dob').hasError('required')"
+            >Date Of Birth is required</mat-error
+          >
+          <mat-error
+            class="fs-7 mt-2"
+            *ngIf="getFormControl('dob').hasError('minAge')"
+            >Minimum age should be 14 years old</mat-error
+          >
+        </mat-form-field>
+      </div>
+    </div>
 
-    <mat-form-field>
-        <mat-label>Choose a date</mat-label>
-        <input matInput [matDatepicker]="picker">
-        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
-    </mat-form-field>
-
-    <app-textarea
-      label="Address"
-      [formControl]="getFormControl('address')"
-      formControlName="address"
-      placeholder="Enter Address"
-      formControlName="address"
-    ></app-textarea>
-
-    <app-button
-      [text]="'Change Password'"
-      [buttonType]="'normal'"
-      (buttonClick)="changePassword()"
-    ></app-button>
-
-    <div class="form-actions text-center mt-4">
+    <div class="form-actions text-center mt-4 col-4 d-flex">
       <app-button
+        [text]="'Change Password'"
+        [buttonType]="'normal'"
+        (buttonClick)="changePassword()"
+      ></app-button>
+      <app-button
+        class="ms-1"
         [text]="'Submit'"
         [buttonType]="'normal'"
         (buttonClick)="onSubmit()"
