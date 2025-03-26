@@ -73,6 +73,12 @@ export class AuthService {
     return jwtDecode(data);
   }
 
+  getEncryptedEmail(): string {
+    let token = this.getToken()
+    let decodedToken = this.decodedToken(token);
+    return decodedToken.encryptedEmail;
+  }
+
   setToken(data: Token) {
     const encryptedToken = this.encrypt(data.token);
     const encryptedRefreshToken = this.encrypt(data.refreshToken);

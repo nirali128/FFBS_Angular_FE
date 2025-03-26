@@ -41,7 +41,6 @@ export class ChangePasswordDialogComponent {
 
   constructor(
     private dialogRef: MatDialogRef<DialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: string,
     private fb: FormBuilder,
     private router: Router,
     private readonly authService: AuthService,
@@ -69,7 +68,7 @@ export class ChangePasswordDialogComponent {
   changePassword() {
     if (this.changePasswordForm.valid) {
       const formValue: ResetPassword = {
-        email: this.data,
+        email: this.authService.getEncryptedEmail(),
         password: this.changePasswordForm.get('password').value,
         oldPassword: this.changePasswordForm.get('oldPassword').value
       };

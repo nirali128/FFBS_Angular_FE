@@ -171,7 +171,6 @@ export class ProfileComponent {
   changePassword() {
     this.dialog.open(ChangePasswordDialogComponent, {
       width: '50%',
-      data: this.user.email,
     });
   }
 
