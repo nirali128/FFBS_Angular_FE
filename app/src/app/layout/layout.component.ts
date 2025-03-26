@@ -66,7 +66,7 @@ export class LayoutComponent implements OnInit {
 
   ngOnInit() {
     let arr = routes.filter((x) => x?.children && x?.children.length > 0);
-    this.routes = arr[0]?.children?.filter((r) => r.path && r.path !== '**');
+    this.routes = arr[0]?.children?.filter((r) => r.path && r.path !== '**' && r.path !== 'profile');
     this.router.events.subscribe(() => {
       if (this.routes.length) {
         const data = this.routes.find(

@@ -95,7 +95,7 @@ export class ProfileComponent {
         [Validators.required, Validators.pattern(ValidationPatterns.PHONE)],
       ],
       dob: ['', [Validators.required, minAgeValidator(14)]],
-      avatar: ['', Validators.required],
+      avatar: [null, Validators.required],
     });
   }
 
@@ -116,10 +116,13 @@ export class ProfileComponent {
     if (this.profileForm.valid) {
       this.userService
         .editUser(this.profileForm.value as User)
-        .subscribe(() => {
-          this.snackBarService.show(
-            new SnackbarConfig({ message: SuccessMessages.USER_EDIT_SUCCESS })
-          );
+        .subscribe((res) => {
+          if(res.success) {
+            this.snackBarService.show(
+              new SnackbarConfig({ message: res.message })
+            );
+            this.navigate();
+          }
         });
     } else {
       this.profileForm.markAllAsTouched();

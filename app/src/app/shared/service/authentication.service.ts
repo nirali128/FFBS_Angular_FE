@@ -113,7 +113,7 @@ export class AuthService {
   }
 
   changePassword(resetPassword: ResetPassword) {
-    return this.http.post(`${environment.baseUrl + GlobalConstant.AUTH.RESET_PASSWORD}`, resetPassword, this.getHeaders())
+    return this.http.post<ApiResponse<any>>(`${environment.baseUrl + GlobalConstant.AUTH.RESET_PASSWORD}`, resetPassword, this.getHeaders())
   }
 
   refreshToken(refresh: string): Observable<ApiResponse<Token>> {

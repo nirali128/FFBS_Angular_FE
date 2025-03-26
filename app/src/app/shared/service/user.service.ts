@@ -42,7 +42,7 @@ export class UserService {
   }
 
   editUser(user: User) {
-    return this.httpClient.post(
+    return this.httpClient.post<ApiResponse<any>>(
       `${
         GlobalConstant.USER_API_URL +
         GlobalConstant.USER.EDIT_USER +

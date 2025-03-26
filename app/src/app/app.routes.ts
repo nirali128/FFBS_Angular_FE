@@ -15,10 +15,6 @@ export const routes: Routes = [
         component: LoginComponent
     },
     {
-        path: 'profile',
-        component: ProfileComponent
-    },
-    {
         path: '',
         component: LayoutComponent,
         children: [
@@ -39,6 +35,10 @@ export const routes: Routes = [
                     title: 'Field'
                 },
                 loadChildren: () => import('./pages/field/field.routes')
+            },
+            {
+                path: 'profile',
+                component: ProfileComponent
             },
             {path: '**', redirectTo: 'dashboard', pathMatch: 'full'}
         ]

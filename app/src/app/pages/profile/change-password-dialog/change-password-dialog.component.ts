@@ -43,8 +43,8 @@ export class ChangePasswordDialogComponent {
     @Inject(MAT_DIALOG_DATA) public data: string,
     private fb: FormBuilder,
     private router: Router,
-    private authService: AuthService,
-    private snackBarService: SnackbarService
+    private readonly authService: AuthService,
+    private readonly snackBarService: SnackbarService
   ) {
     this.changePasswordForm = this.fb.group(
       {
@@ -70,12 +70,15 @@ export class ChangePasswordDialogComponent {
         email: this.data,
         password: this.changePasswordForm.get('password').value,
       };
-      this.authService.changePassword(formValue).subscribe(() => {
-        this.snackBarService.show(
-          new SnackbarConfig({
-            message: SuccessMessages.PASSWORD_UPDATED_SUCCESS,
-          })
-        );
+      this.authService.changePassword(formValue).subscribe((res) => {
+        if(res.success) {
+          this.snackBarService.show(
+            new SnackbarConfig({
+              message: res.message,
+            })
+          );
+          this.back();
+        }
       });
     } else {
       this.changePasswordForm.markAllAsTouched();
