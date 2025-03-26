@@ -1,10 +1,8 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { GlobalConstant } from '../constants/global-const';
-import { map, Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { ApiResponse } from '../interfaces/api.response';
-import { Role } from '../interfaces/role';
-import { DropdownOption } from '../interfaces/dropdown.options';
 import { AuthService } from './authentication.service';
 import { User } from '../interfaces/user';
 

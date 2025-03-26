@@ -16,4 +16,5 @@ export interface User {
 export interface ResetPassword {
   email: string;
   password: string;
+  oldPassword: string;
 }

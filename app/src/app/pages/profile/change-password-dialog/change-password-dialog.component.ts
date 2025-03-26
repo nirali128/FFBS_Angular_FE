@@ -23,6 +23,7 @@ import { SnackbarConfig } from '../../../shared/constants/snackbar-config.const'
 import { SuccessMessages } from '../../../shared/constants/messages-const';
 import { GlobalConstant } from '../../../shared/constants/global-const';
 import * as CryptoJS from 'crypto-js';
+import { ValidationPatterns } from '../../../shared/constants/validation.const';
 
 @Component({
   selector: 'app-change-password-dialog',
@@ -48,7 +49,8 @@ export class ChangePasswordDialogComponent {
   ) {
     this.changePasswordForm = this.fb.group(
       {
-        password: ['', [Validators.required]],
+        oldPassword: ['', [Validators.required, Validators.pattern(ValidationPatterns.PASSWORD)]],
+        password: ['', [Validators.required, Validators.pattern(ValidationPatterns.PASSWORD)]],
         confirmPassword: ['', [Validators.required]],
       },
       { validator: passwordMatchValidator }
@@ -69,6 +71,7 @@ export class ChangePasswordDialogComponent {
       const formValue: ResetPassword = {
         email: this.data,
         password: this.changePasswordForm.get('password').value,
+        oldPassword: this.changePasswordForm.get('oldPassword').value
       };
       this.authService.changePassword(formValue).subscribe((res) => {
         if(res.success) {

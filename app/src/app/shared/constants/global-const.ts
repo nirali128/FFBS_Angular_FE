@@ -8,7 +8,10 @@ export class GlobalConstant {
   public static readonly REGISTER = 'register';
   public static readonly BEARER = 'Bearer';
   public static readonly ENCRYPTION_KEY = "FFBS26022025";
-  public static readonly ENCRYPTION_KEY_RESET = "d5f41a8a68e8e5af3b93754b578ed23f1a8e4a4b0a5f7e12cf50bb9470f1a5c6";
+  public static readonly ADD = 'add';
+  public static readonly EDIT = 'edit';
+  public static readonly VIEW = 'view';
+  public static readonly DELETE = 'delete';
 
   //Create constants for the API URL
   public static readonly COMMON_API_URL = `${environment.baseUrl}/common`;
@@ -44,6 +47,7 @@ export class GlobalConstant {
     GET_BOOKING_BY_ID: "/get-booking-by-id",
     APPROVE_REJECT_BOOKING: "/approve-or-reject",
     GET_ALL_BOOKINGS: "/get-all-bookings",
+    DELETE_BOOKING: "/delete-booking"
   }
 
   public static readonly COMMON = {

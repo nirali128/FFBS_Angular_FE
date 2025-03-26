@@ -53,8 +53,9 @@ import { FormErrorsDirective } from '../../shared/directives/form-error.directiv
 })
 export class ProfileComponent {
   profileForm: FormGroup;
-  email: string;
+  user: User;
   roleOptions: DropdownOption[];
+  initialFormValue: any;
 
   constructor(
     private fb: FormBuilder,
@@ -102,8 +103,9 @@ export class ProfileComponent {
   ngOnInit() {
     this.userService.getUserById().subscribe((res) => {
       if (res.success) {
-        this.email = res.data.email;
+        this.user = res.data;
         this.profileForm.patchValue(res.data);
+        this.initialFormValue = this.profileForm.value;
       }
     });
   }
@@ -112,20 +114,29 @@ export class ProfileComponent {
     return this.profileForm.get(controlName) as FormControl;
   }
 
+  isFormChanged(): boolean {
+    return JSON.stringify(this.initialFormValue) !== JSON.stringify(this.profileForm.value);
+  }
+
   onSubmit(): void {
-    if (this.profileForm.valid) {
-      this.userService
-        .editUser(this.profileForm.value as User)
-        .subscribe((res) => {
-          if(res.success) {
-            this.snackBarService.show(
-              new SnackbarConfig({ message: res.message })
-            );
-            this.navigate();
-          }
-        });
+    if(this.isFormChanged()) {
+      if (this.profileForm.valid) {
+        this.userService
+          .editUser(this.profileForm.value as User)
+          .subscribe((res) => {
+            if(res.success) {
+              this.snackBarService.show(
+                new SnackbarConfig({ message: res.message })
+              );
+            }
+          });
+      } else {
+        this.profileForm.markAllAsTouched();
+      }
     } else {
-      this.profileForm.markAllAsTouched();
+      this.snackBarService.show(
+        new SnackbarConfig({status: 'error', message: "There were no changes made to the form.", icon: 'warning_amber', })
+      );
     }
   }
 
@@ -160,7 +171,7 @@ export class ProfileComponent {
   changePassword() {
     this.dialog.open(ChangePasswordDialogComponent, {
       width: '50%',
-      data: this.email,
+      data: this.user.email,
     });
   }
 

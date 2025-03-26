@@ -2,6 +2,8 @@ import { Routes } from '@angular/router';
 import { LayoutComponent } from './layout/layout.component';
 import { RegisterComponent } from './pages/auth/register/register.component';
 import { LoginComponent } from './pages/auth/login/login.component';
+import { CalendarComponent } from './shared/components/calendar/calendar.component';
+import { BookingListComponent } from './pages/field/booking/booking-list/booking-list.component';
 import { ProfileComponent } from './pages/profile/profile.component';
 
 export const routes: Routes = [
@@ -35,6 +37,15 @@ export const routes: Routes = [
                     title: 'Field'
                 },
                 loadChildren: () => import('./pages/field/field.routes')
+            },
+            {
+                path:'booking-list',
+                title: 'Booking',
+                data: {
+                    icon: 'home',
+                    title: 'Booking'
+                },
+                component: BookingListComponent
             },
             {
                 path: 'profile',

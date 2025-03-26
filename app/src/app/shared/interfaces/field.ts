@@ -115,6 +115,48 @@ export interface Booking {
     status?: string;
   }
 
+  export interface BookingDetailsResponseDto {
+    bookingId: string;
+    totalPrice: number;
+    isLongTermBooking?: boolean;
+    fieldId: string;
+    fieldName: string;
+    address: string;
+    status?: string;
+    combinedBookingDate?: string;
+    user: {
+      firstName: string;
+      lastName: string;
+      email: string;
+      phoneNumber?: string;
+    };
+    bookingDetails?: {
+      bookingDate: string;
+      dayName: string;
+      slots: {
+        slotId: string;
+        startTime?: string;
+        endTime?: string;
+        description: string;
+      }[];
+    }[];
+  }
+  
+  export interface BookingTableData {
+    bookingId: string;
+    fieldName: string;
+    totalPrice: number;
+    bookingDate: string;
+    dayName: string;
+    username: string;
+    status?: string;
+  }
+
+  export interface BookingApproveReject {
+    bookingId: string;
+    status: string;
+  }
+
 export const FIELD_COLUMNS: ColumnField<FieldsDetailList>[] = [
     { key: 'documentName', label: 'Image', labelType: 'image', isVisible: true },
     { key: 'fieldName', label: 'Field Name', icon: 'sports_soccer', labelType: 'title', isVisible: true },

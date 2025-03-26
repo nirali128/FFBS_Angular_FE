@@ -1,0 +1,98 @@
+<div class="container mt-3">
+  <h2>All Bookings</h2>
+  <!-- Search Bar -->
+  <div class="mb-3 col-3 d-flex">
+    <input
+      type="text"
+      [(ngModel)]="searchKey"
+      (ngModelChange)="applyFilter()"
+      placeholder="Search by field name or address"
+      class="form-control"
+    />
+    <app-button
+      *ngIf="searchKey"
+      buttonType="icon"
+      color="outline-secondary"
+      icon="close"
+      (buttonClick)="clearFilter()"
+    >
+    </app-button>
+  </div>
+
+  <!-- Table -->
+  <div class="table-responsive">
+    <table mat-table [dataSource]="dataSource" matSort>
+      <!-- Field Name Column -->
+      <ng-container matColumnDef="fieldName">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Field Name</th>
+        <td mat-cell *matCellDef="let element">{{ element.fieldName }}</td>
+      </ng-container>
+
+      <!-- Total Price Column -->
+      <ng-container matColumnDef="totalPrice">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Total Price</th>
+        <td mat-cell *matCellDef="let element">{{ element.totalPrice }}</td>
+      </ng-container>
+
+      <!-- Username Column -->
+      <ng-container matColumnDef="username">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Username</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.user.firstName }} {{ element.user.lastName }}
+        </td>
+      </ng-container>
+
+      <!-- Booking Dates Column -->
+      <ng-container matColumnDef="bookingDate">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Booking Dates</th>
+        <td mat-cell *matCellDef="let element">
+          {{ element.combinedBookingDate }}
+        </td>
+      </ng-container>
+
+      <!-- Status Column -->
+      <ng-container matColumnDef="status">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>Status</th>
+        <td mat-cell *matCellDef="let element">{{ element.status }}</td>
+      </ng-container>
+
+      <!-- Actions Column -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Actions</th>
+        <td mat-cell *matCellDef="let element">
+          <div class="d-flex">
+            <app-button
+              buttonType="icon"
+              color="primary"
+              icon="visibility"
+              (buttonClick)="openViewDialog(element.bookingId)"
+            >
+            </app-button>
+
+            <app-button
+              class="ms-1"
+              *ngIf="element.status !== 'Cancelled'"
+              buttonType="icon"
+              color="danger"
+              icon="delete"
+              (buttonClick)="deleteBooking(element.bookingId)"
+            >
+            </app-button>
+          </div>
+        </td>
+      </ng-container>
+
+      <!-- Table Rows -->
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let element; columns: displayedColumns"></tr>
+    </table>
+  </div>
+
+  <!-- Paginator -->
+  <mat-paginator
+    [pageSize]="10"
+    [pageSizeOptions]="[5, 10, 25]"
+    (page)="loadBookings()"
+    class="mt-3"
+  ></mat-paginator>
+</div>
