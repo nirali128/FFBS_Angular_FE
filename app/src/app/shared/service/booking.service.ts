@@ -4,20 +4,12 @@ import { GlobalConstant } from '../constants/global-const';
 import { Observable } from 'rxjs';
 import {
   ApiPaginatedResponse,
-  ApiResponse,
-  PaginationRequest,
+  ApiResponse
 } from '../interfaces/api.response';
 import {
   Booking,
   BookingApproveReject,
   BookingDetailsResponseDto,
-  Day,
-  FieldDetail,
-  FieldsDetailList,
-  FieldSlotRateData,
-  FieldSlotRateRequestData,
-  Slot,
-  SlotByField,
 } from '../interfaces/field';
 import { FilterRequest } from '../interfaces/filter-request';
 import { AuthService } from './authentication.service';
@@ -52,7 +44,7 @@ export class BookingService {
     );
   }
 
-  getPaginatedBooings(
+  getPaginatedBookings(
     filterRequest: FilterRequest
   ): Observable<ApiPaginatedResponse<BookingDetailsResponseDto[]>> {
     let httpParams = new HttpParams()
@@ -76,8 +68,8 @@ export class BookingService {
     );
   }
 
-  approveOrRejectBooking(approvedRejectData: BookingApproveReject) {
-    return this.httpClient.post(
+  approveOrRejectBooking(approvedRejectData: BookingApproveReject): Observable<ApiResponse<any>> {
+    return this.httpClient.post<ApiResponse<any>>(
         `${
           GlobalConstant.BOOKING_API_URL +
           GlobalConstant.BOOKING.APPROVE_REJECT_BOOKING
@@ -88,7 +80,7 @@ export class BookingService {
   }
 
   deleteBooking(guid: string) {
-    return this.httpClient.delete(
+    return this.httpClient.delete<ApiResponse<any>>(
       `${
         GlobalConstant.BOOKING_API_URL +
         GlobalConstant.BOOKING.DELETE_BOOKING +

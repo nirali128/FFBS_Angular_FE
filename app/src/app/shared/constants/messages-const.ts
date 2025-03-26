@@ -1,9 +1,6 @@
 export const SuccessMessages = {
     USER_REGISTRATION_SUCCESS: "User registered successfully.",
     USER_LOGIN_SUCCESS: "User logged in successfully.",
-    APPROVED_BOOKING_SUCCESS: "Booking approved successfully",
-    REJECTED_BOOKING_SUCCESS: "Booking rejected successfully",
-    DELETED_BOOKING_SUCCESS: "Booking deleted successfully",
 }
 
 export const ErrorMessages = {

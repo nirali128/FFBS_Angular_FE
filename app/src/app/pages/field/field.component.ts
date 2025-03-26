@@ -33,10 +33,10 @@ export class FieldComponent {
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  constructor(public fieldService: FieldService, public router: Router, public authService: AuthService) {
+  constructor(public readonly fieldService: FieldService, public router: Router, public readonly authService: AuthService) {
   }
 
-  ngAfterViewInit(): void {
+  ngOnInit(): void {
     this.loadFields();
   }
 

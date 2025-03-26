@@ -21,6 +21,7 @@ import { iDialogField } from '../../../../shared/interfaces/dialog-fields';
 import { AuthService } from '../../../../shared/service/authentication.service';
 import { Role } from '../../../../shared/enum/role';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
+import { debounceTime, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-booking-list',
@@ -28,7 +29,6 @@ import { ButtonComponent } from '../../../../shared/components/button/button.com
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
-    MatIcon,
     FormsModule,
     CommonModule,
     ButtonComponent
@@ -55,18 +55,22 @@ export class BookingListComponent {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
   isAdmin: boolean = false;
+  private filterSubject = new Subject<void>();
 
   constructor(
-    private bookingService: BookingService,
+    private readonly bookingService: BookingService,
     private dialog: MatDialog,
-    public snackBarService: SnackbarService,
-    public authService: AuthService
+    public readonly snackBarService: SnackbarService,
+    public readonly authService: AuthService
   ) {
-    this.isAdmin = this.authService.getRole() == Role.Admin ? true: false;
+    this.isAdmin = this.authService.getRole() === Role.Admin ? true: false;
   }
 
   ngOnInit(): void {
     this.loadBookings();
+    this.filterSubject.pipe(debounceTime(300)).subscribe(() => {
+      this.loadBookings();
+    });
   }
 
   loadBookings(): void {
@@ -77,7 +81,7 @@ export class BookingListComponent {
     };
 
     this.bookingService
-      .getPaginatedBooings(filterRequest)
+      .getPaginatedBookings(filterRequest)
       .subscribe((response) => {
         if (response.success) {
           this.bookingData = response.data;
@@ -98,7 +102,7 @@ export class BookingListComponent {
 
   applyFilter(): void {
     this.paginator.pageIndex = 0;
-    this.loadBookings();
+    this.filterSubject.next();
   }
 
   clearFilter(): void {
@@ -119,25 +123,24 @@ export class BookingListComponent {
           bookingId: bookingId,
           status: isApproved ? 'Confirmed' : 'Cancelled',
         };
-        this.approveRejectBooking(approvedRejectData, isApproved);
+        this.approveRejectBooking(approvedRejectData);
       }
     });
   }
 
   approveRejectBooking(
     approvedRejectData: BookingApproveReject,
-    isApproved: boolean
   ) {
     this.bookingService
       .approveOrRejectBooking(approvedRejectData)
-      .subscribe(() => {
-        this.snackBarService.show(
-          new SnackbarConfig({
-            message: isApproved
-              ? SuccessMessages.APPROVED_BOOKING_SUCCESS
-              : SuccessMessages.REJECTED_BOOKING_SUCCESS,
-          })
-        );
+      .subscribe((res) => {
+        if(res.success) {
+          this.snackBarService.show(
+            new SnackbarConfig({
+              message: res.message,
+            })
+          );
+        }
         this.loadBookings()
       });
   }
@@ -149,13 +152,16 @@ export class BookingListComponent {
 
     dialogRef.afterClosed().subscribe((dialogResult) => {
       if (dialogResult) {
-        this.bookingService.deleteBooking(bookingId).subscribe(() => {
-          this.snackBarService.show(
-            new SnackbarConfig({
-              message: SuccessMessages.DELETED_BOOKING_SUCCESS,
-            })
-          );
-          this.loadBookings();
+        this.bookingService.deleteBooking(bookingId).subscribe((res) => {
+          if(res.success) {
+            this.snackBarService.show(
+              new SnackbarConfig({
+                message: res.message,
+              })
+            );
+            this.loadBookings();
+          }
+          
         });
       }
     });
