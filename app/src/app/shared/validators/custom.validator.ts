@@ -1,4 +1,4 @@
-import { FormGroup } from '@angular/forms';
+import { AbstractControl, FormGroup, ValidationErrors } from '@angular/forms';
 
 export function passwordMatchValidator(
   group: FormGroup
@@ -27,4 +27,26 @@ export function passwordMatchValidator(
   }
 
   return null;
+}
+
+export function minAgeValidator(minAge: number) {
+  return (control: AbstractControl): ValidationErrors | null => {
+    if (!control.value) return null; // No value, no validation needed
+
+    const birthDate = new Date(control.value);
+    const today = new Date();
+    const age = today.getFullYear() - birthDate.getFullYear();
+
+    // Adjust for exact birthdate comparison
+    if (
+      age > minAge ||
+      (age === minAge &&
+        today.getMonth() >= birthDate.getMonth() &&
+        today.getDate() >= birthDate.getDate())
+    ) {
+      return null; // Valid age
+    }
+
+    return { minAge: true }; // Invalid age
+  };
 }

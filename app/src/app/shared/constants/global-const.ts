@@ -19,6 +19,7 @@ export class GlobalConstant {
   public static readonly BOOKING_API_URL = `${environment.baseUrl}/booking`;
   public static readonly AVAILABILITY_API_URL = `${environment.baseUrl}/availability`;
   public static readonly RATE_API_URL = `${environment.baseUrl}/rate`;
+  public static readonly USER_API_URL = `${environment.baseUrl}/user`;
 
   public static readonly AUTH = {
     LOGIN: "/login",
@@ -26,6 +27,11 @@ export class GlobalConstant {
     FORGOT_PASSWORD: "/forgot-password",
     REFRESH_TOKEN: "/refresh-token",
     RESET_PASSWORD: "/reset-password",
+  }
+
+  public static readonly USER = {
+    GET_USER_BY_ID: "/get-user-by-id",
+    EDIT_USER: "/edit-user-details"
   }
 
   public static readonly FIELD =  {

@@ -4,6 +4,7 @@ import { RegisterComponent } from './pages/auth/register/register.component';
 import { LoginComponent } from './pages/auth/login/login.component';
 import { CalendarComponent } from './shared/components/calendar/calendar.component';
 import { BookingListComponent } from './pages/field/booking/booking-list/booking-list.component';
+import { ProfileComponent } from './pages/profile/profile.component';
 
 export const routes: Routes = [
     {path: '', pathMatch: 'full', redirectTo: 'register'},
@@ -14,10 +15,6 @@ export const routes: Routes = [
     {
         path: 'login',
         component: LoginComponent
-    },
-    {
-        path: 'calendar',
-        component: CalendarComponent
     },
     {
         path: '',
@@ -49,6 +46,10 @@ export const routes: Routes = [
                     title: 'Booking'
                 },
                 component: BookingListComponent
+            },
+            {
+                path: 'profile',
+                component: ProfileComponent
             },
             {path: '**', redirectTo: 'dashboard', pathMatch: 'full'}
         ]

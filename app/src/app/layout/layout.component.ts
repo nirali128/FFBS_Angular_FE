@@ -42,7 +42,7 @@ import { AppSpinnerComponent } from '../shared/components/app-spinner/app-spinne
     MatMenuItem,
     CommonModule,
     ButtonComponent,
-    AppSpinnerComponent
+    AppSpinnerComponent,
   ],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.scss',
@@ -52,18 +52,21 @@ export class LayoutComponent implements OnInit {
   actualRoute!: RouteData;
   isHandset$: Observable<boolean>;
 
-  constructor(public breakpointObserver: BreakpointObserver, public router: Router, public route: ActivatedRoute, public authService: AuthService) {
-    this.isHandset$ = this.breakpointObserver
-    .observe(Breakpoints.Handset)
-    .pipe(
+  constructor(
+    public breakpointObserver: BreakpointObserver,
+    public router: Router,
+    public route: ActivatedRoute,
+    public authService: AuthService
+  ) {
+    this.isHandset$ = this.breakpointObserver.observe(Breakpoints.Handset).pipe(
       map((result) => result.matches),
       shareReplay()
     );
   }
 
   ngOnInit() {
-    let arr = routes.filter(x => x?.children && x?.children.length > 0);
-    this.routes = arr[0]?.children?.filter((r) => r.path && r.path !== '**');
+    let arr = routes.filter((x) => x?.children && x?.children.length > 0);
+    this.routes = arr[0]?.children?.filter((r) => r.path && r.path !== '**' && r.path !== 'profile');
     this.router.events.subscribe(() => {
       if (this.routes.length) {
         const data = this.routes.find(
@@ -74,8 +77,12 @@ export class LayoutComponent implements OnInit {
     });
   }
 
-    signOut() {
-      this.authService.clearToken();
-      this.router.navigateByUrl("/login");
-    }
+  signOut() {
+    this.authService.clearToken();
+    this.router.navigateByUrl('/login');
+  }
+
+  navigateToProfile() {
+    this.router.navigateByUrl('/profile');
+  }
 }

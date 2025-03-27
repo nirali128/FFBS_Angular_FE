@@ -20,9 +20,9 @@
         >
         </app-button>
         <mat-menu #menu="matMenu">
-          <button mat-menu-item>
-            <mat-icon class="material-symbols-outlined">person</mat-icon>
-            <span>My Profile</span>
+          <button mat-menu-item (click)="navigateToProfile()">
+              <mat-icon class="material-symbols-outlined">person</mat-icon>
+              <span>My Profile</span>
           </button>
           <button mat-menu-item (click)="signOut()">
             <mat-icon class="material-symbols-outlined">logout</mat-icon>
@@ -47,7 +47,7 @@
     [opened]="(isHandset$ | async) === false"
   >
     <mat-toolbar>
-      <h1><img src="assets/images/fieldd-logo.png" alt="" height="90"></h1>
+      <h1><img src="assets/images/fieldd-logo.png" alt="" height="90" /></h1>
     </mat-toolbar>
     <mat-nav-list>
       @for (item of routes; track $index) {
