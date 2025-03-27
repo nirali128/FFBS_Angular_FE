@@ -116,6 +116,7 @@ export class UserListComponent {
                 icon: 'warning_amber',
               })
             );
+            element.isActive = true;
           }
         });
       } else {
