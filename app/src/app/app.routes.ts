@@ -5,6 +5,7 @@ import { LoginComponent } from './pages/auth/login/login.component';
 import { CalendarComponent } from './shared/components/calendar/calendar.component';
 import { BookingListComponent } from './pages/field/booking/booking-list/booking-list.component';
 import { ProfileComponent } from './pages/profile/profile.component';
+import { InvoiceListComponent } from './pages/invoice-list/invoice-list.component';
 
 export const routes: Routes = [
     {path: '', pathMatch: 'full', redirectTo: 'register'},
@@ -33,7 +34,7 @@ export const routes: Routes = [
                 path:'field',
                 title: 'Field',
                 data: {
-                    icon: 'home',
+                    icon: 'list',
                     title: 'Field'
                 },
                 loadChildren: () => import('./pages/field/field.routes')
@@ -42,7 +43,7 @@ export const routes: Routes = [
                 path:'booking-list',
                 title: 'Booking',
                 data: {
-                    icon: 'home',
+                    icon: 'list',
                     title: 'Booking'
                 },
                 component: BookingListComponent
@@ -50,6 +51,15 @@ export const routes: Routes = [
             {
                 path: 'profile',
                 component: ProfileComponent
+            },
+            {
+                path:'invoice-list',
+                title: 'Invoice',
+                data: {
+                    icon: 'list',
+                    title: 'Invoice'
+                },
+                component: InvoiceListComponent
             },
             {path: '**', redirectTo: 'dashboard', pathMatch: 'full'}
         ]
