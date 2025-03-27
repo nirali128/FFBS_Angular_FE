@@ -5,6 +5,7 @@ import { LoginComponent } from './pages/auth/login/login.component';
 import { CalendarComponent } from './shared/components/calendar/calendar.component';
 import { BookingListComponent } from './pages/field/booking/booking-list/booking-list.component';
 import { ProfileComponent } from './pages/profile/profile.component';
+import { UserListComponent } from './pages/user-list/user-list.component';
 
 export const routes: Routes = [
     {path: '', pathMatch: 'full', redirectTo: 'register'},
@@ -50,6 +51,15 @@ export const routes: Routes = [
             {
                 path: 'profile',
                 component: ProfileComponent
+            },
+            {
+                path: 'user-list',
+                title: 'User',
+                data: {
+                    icon: 'home',
+                    title: 'User'
+                },
+                component: UserListComponent
             },
             {path: '**', redirectTo: 'dashboard', pathMatch: 'full'}
         ]

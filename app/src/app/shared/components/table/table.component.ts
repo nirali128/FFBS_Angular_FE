@@ -5,14 +5,19 @@ import { iDialogField } from '../../interfaces/dialog-fields';
 import { FilterRequest } from '../../interfaces/filter-request';
 import { iTableField } from '../../interfaces/table-fields';
 import { ConfirmDialogComponent } from '../dialog/dialog.component';
-import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { ButtonComponent } from '../button/button.component';
+import { CommonModule } from '@angular/common';
+import { MatIcon } from '@angular/material/icon';
+import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 @Component({
   selector: 'app-table',
-  imports: [MatTableModule, ButtonComponent],
+  imports: [MatTableModule, ButtonComponent, MatPaginatorModule, CommonModule, MatIcon, FormsModule, RouterModule, MatSlideToggleModule],
   templateUrl: './table.component.html',
   styleUrl: './table.component.scss'
 })
