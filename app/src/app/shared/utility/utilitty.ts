@@ -1,5 +1,6 @@
 import { DropdownOption } from '../interfaces/dropdown.options';
 import { Day } from '../interfaces/field';
+import { User } from '../interfaces/user';
 
 export function base64ToFile(base64: string, fileName: string, fileType?: string): Promise<File> {
     return new Promise((resolve, reject) => {
@@ -65,5 +66,12 @@ export function mapDayToDropdown(day: Day[]): DropdownOption[] {
   return day.map((res) => ({
     value: res.guid,
     label: res.description,
+  }));
+}
+
+export function mapUserToDropdown(day: User[]): DropdownOption[] {
+  return day.filter(x => x.isActive).map((res) => ({
+    value: res.userId,
+    label: res.firstName + res.lastName,
   }));
 }
