@@ -8,6 +8,10 @@ export class GlobalConstant {
   public static readonly REGISTER = 'register';
   public static readonly BEARER = 'Bearer';
   public static readonly ENCRYPTION_KEY = "FFBS26022025";
+  public static readonly ADD = 'add';
+  public static readonly EDIT = 'edit';
+  public static readonly VIEW = 'view';
+  public static readonly DELETE = 'delete';
 
   //Create constants for the API URL
   public static readonly COMMON_API_URL = `${environment.baseUrl}/common`;
@@ -15,6 +19,8 @@ export class GlobalConstant {
   public static readonly BOOKING_API_URL = `${environment.baseUrl}/booking`;
   public static readonly AVAILABILITY_API_URL = `${environment.baseUrl}/availability`;
   public static readonly RATE_API_URL = `${environment.baseUrl}/rate`;
+  public static readonly USER_API_URL = `${environment.baseUrl}/user`;
+  public static readonly INVOICE_API_URL = `${environment.baseUrl}/invoice`;
 
   public static readonly AUTH = {
     LOGIN: "/login",
@@ -22,6 +28,13 @@ export class GlobalConstant {
     FORGOT_PASSWORD: "/forgot-password",
     REFRESH_TOKEN: "/refresh-token",
     RESET_PASSWORD: "/reset-password",
+  }
+
+  public static readonly USER = {
+    GET_USER_BY_ID: "/get-user-by-id",
+    EDIT_USER: "/edit-user-details",
+    GET_ALL_USER: "/get-all-users",
+    BLOCK_USER: "/block-user"
   }
 
   public static readonly FIELD =  {
@@ -37,6 +50,7 @@ export class GlobalConstant {
     GET_BOOKING_BY_ID: "/get-booking-by-id",
     APPROVE_REJECT_BOOKING: "/approve-or-reject",
     GET_ALL_BOOKINGS: "/get-all-bookings",
+    DELETE_BOOKING: "/delete-booking"
   }
 
   public static readonly COMMON = {
@@ -45,6 +59,11 @@ export class GlobalConstant {
     GET_CLOSED_DAYS: "/get-all-close-days",
     GET_ALL_SLOTS: "/get-all-slots",
   }
+
+  public static readonly INVOICE = {
+    GET_ALL_INVOICE: "/get-all-invoices"
+  }
+
   public static readonly paginationOptions = [5, 10, 20];
 
   public static readonly AVAILABILITY = {

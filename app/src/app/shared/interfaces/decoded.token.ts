@@ -3,4 +3,5 @@ export interface DecodedToken {
   guid: string;
   role: string;
   username: string;
+  encryptedEmail: string;
 }

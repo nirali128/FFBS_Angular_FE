@@ -3,6 +3,10 @@ import { LayoutComponent } from './layout/layout.component';
 import { RegisterComponent } from './pages/auth/register/register.component';
 import { LoginComponent } from './pages/auth/login/login.component';
 import { CalendarComponent } from './shared/components/calendar/calendar.component';
+import { BookingListComponent } from './pages/field/booking/booking-list/booking-list.component';
+import { ProfileComponent } from './pages/profile/profile.component';
+import { UserListComponent } from './pages/user-list/user-list.component';
+import { InvoiceListComponent } from './pages/invoice-list/invoice-list.component';
 
 export const routes: Routes = [
     {path: '', pathMatch: 'full', redirectTo: 'register'},
@@ -13,10 +17,6 @@ export const routes: Routes = [
     {
         path: 'login',
         component: LoginComponent
-    },
-    {
-        path: 'calendar',
-        component: CalendarComponent
     },
     {
         path: '',
@@ -35,10 +35,41 @@ export const routes: Routes = [
                 path:'field',
                 title: 'Field',
                 data: {
-                    icon: 'home',
+                    icon: 'list',
                     title: 'Field'
                 },
                 loadChildren: () => import('./pages/field/field.routes')
+            },
+            {
+                path:'booking-list',
+                title: 'Booking',
+                data: {
+                    icon: 'list',
+                    title: 'Booking'
+                },
+                component: BookingListComponent
+            },
+            {
+                path: 'profile',
+                component: ProfileComponent
+            },
+            {
+                path:'invoice-list',
+                title: 'Invoice',
+                data: {
+                    icon: 'list',
+                    title: 'Invoice'
+                },
+                component: InvoiceListComponent
+            },
+            {
+                path: 'user-list',
+                title: 'User',
+                data: {
+                    icon: 'list',
+                    title: 'User'
+                },
+                component: UserListComponent
             },
             {path: '**', redirectTo: 'dashboard', pathMatch: 'full'}
         ]

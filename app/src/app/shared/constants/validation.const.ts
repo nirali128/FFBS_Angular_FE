@@ -39,5 +39,6 @@ export const ValidationErrors: Record<string, string | ((error: any, label?: str
   pattern: (label = 'This field') =>  label.toLowerCase() === ErrorLabel.PASSWORD
   ? ErrorMessages.PASSWORD_INVALID
   : `Please enter a valid ${label}`,
-  mismatch: ErrorMessages.PASSWORD_MISMATCH
+  mismatch: ErrorMessages.PASSWORD_MISMATCH,
+  minAge: (error) => `You must be at least ${error.minAge} years old`,
 };

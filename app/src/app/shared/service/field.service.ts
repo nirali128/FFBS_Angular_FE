@@ -4,7 +4,6 @@ import { GlobalConstant } from '../constants/global-const';
 import { Observable } from 'rxjs';
 import { ApiPaginatedResponse, ApiResponse, PaginationRequest } from '../interfaces/api.response';
 import {
-  Booking,
   Day,
   FieldDetail,
   FieldsDetailList,
@@ -13,6 +12,7 @@ import {
   Slot,
   SlotByField,
 } from '../interfaces/field';
+import { AuthService } from './authentication.service';
 
 @Injectable({
   providedIn: 'root',
@@ -30,7 +30,7 @@ export class FieldService {
     return requestOptions;
   }
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient, public authService: AuthService) {}
 
   getAllFields(params: PaginationRequest): Observable<ApiPaginatedResponse<FieldsDetailList[]>> {
     let httpParams = new HttpParams()
@@ -82,23 +82,6 @@ export class FieldService {
     );
   }
 
-  addBooking(data: Booking) {
-    return this.httpClient.post(
-      `${GlobalConstant.BOOKING_API_URL + GlobalConstant.BOOKING.ADD_BOOKING}`,
-      data,
-      this.getHeaders()
-    );
-  }
-
-  getAllBooking(): Observable<ApiResponse<Booking[]>> {
-    return this.httpClient.get<ApiResponse<Booking[]>>(
-      `${
-        GlobalConstant.BOOKING_API_URL + GlobalConstant.BOOKING.GET_ALL_BOOKINGS
-      }`,
-      this.getHeaders()
-    );
-  }
-
   getFieldById(guid: string) {
     return this.httpClient.get<ApiResponse<FieldDetail>>(
       `${
@@ -132,7 +115,7 @@ export class FieldService {
   }
 
   addField(data: FieldDetail) {
-    return this.httpClient.post(
+    return this.httpClient.post<ApiResponse<any>>(
       `${GlobalConstant.FIELD_API_URL + GlobalConstant.FIELD.ADD_FIELD}`,
       data,
       this.getHeaders()
@@ -140,7 +123,7 @@ export class FieldService {
   }
 
   editField(guid: string, data: FieldDetail) {
-    return this.httpClient.post(
+    return this.httpClient.post<ApiResponse<any>>(
       `${GlobalConstant.FIELD_API_URL + GlobalConstant.FIELD.EDIT_FIELD + '?fieldId=' + guid}` ,
       data,
       this.getHeaders()

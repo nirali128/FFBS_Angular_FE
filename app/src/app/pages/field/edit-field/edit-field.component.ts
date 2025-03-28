@@ -160,10 +160,12 @@ export class EditFieldComponent {
       this.fieldService
         .editField(this.fieldId, formValue as FieldDetail)
         .subscribe((res) => {
-          this.snackbarService.show(
-            new SnackbarConfig({ message: SuccessMessages.FIELD_EDIT_SUCCESS })
-          );
-          this.back();
+          if(res.success) {
+            this.snackbarService.show(
+              new SnackbarConfig({ message: res.message })
+            );
+            this.back();
+          }
         });
     } else {
       this.editFieldDetailsForm.markAllAsTouched();

@@ -1,0 +1,71 @@
+<h2
+  mat-dialog-title
+  class="bg-primary text-white py-2 px-3 rounded-top d-flex justify-content-between align-items-center"
+>
+  Booking Details
+  <button
+    mat-button
+    mat-dialog-close
+    class="btn-close btn-close-white"
+  ></button>
+</h2>
+
+<mat-dialog-content class="p-4">
+  <div class="container">
+
+    <h3 class="border-bottom pb-2">User Details</h3>
+    <p>
+      <strong>Address: </strong>
+      <span class="text-muted">{{ data.address }}</span>
+    </p>
+    <p>
+      <strong>Phone: </strong>
+      <span class="text-muted">{{ data.user.phoneNumber }}</span>
+    </p>
+
+    <h3 class="mt-4 border-bottom pb-2">Booking Schedule</h3>
+
+    <div *ngFor="let detail of data.bookingDetails" class="card mt-3 shadow-sm">
+      <div class="card-header bg-secondary text-white">
+        <strong>Date:</strong> {{ detail.bookingDate | date }}
+        <span class="badge bg-light text-dark ms-2">{{ detail.dayName }}</span>
+      </div>
+      <div class="card-body">
+        <div *ngFor="let slot of detail.slots" class="border-bottom pb-2 mb-2">
+          <p class="mb-1">
+            <strong>Time: </strong>
+            <span class="text-primary"
+              >{{ slot.startTime }} - {{ slot.endTime }}</span
+            >
+          </p>
+          <p class="mb-0">
+            <strong>Description: </strong>
+            <span class="text-muted">{{ slot.description }}</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions class="d-flex p-3" *ngIf="data.status == 'Pending' && isAdmin">
+  <app-button
+    [text]="'Approve'"
+    [buttonType]="'text-icon'"
+    [color]="'success'"
+    [icon]="'check'"
+    [iconPosition]="'left'"
+    (buttonClick)="approveRejectBooking(true)"
+  >
+  </app-button>
+  <app-button
+    class="ms-1"
+    [text]="'Reject'"
+    [buttonType]="'text-icon'"
+    [color]="'danger'"
+    [icon]="'close'"
+    [iconPosition]="'left'"
+    (buttonClick)="approveRejectBooking(false)"
+  >
+  </app-button>
+</mat-dialog-actions>

@@ -32,7 +32,7 @@ import { CalendarComponent } from '../../../../shared/components/calendar/calend
 import { Role } from '../../../../shared/enum/role';
 import { SnackbarService } from '../../../../shared/service/snackbar.service';
 import { SnackbarConfig } from '../../../../shared/constants/snackbar-config.const';
-import { SuccessMessages } from '../../../../shared/constants/messages-const';
+import { BookingService } from '../../../../shared/service/booking.service';
 
 @Component({
   selector: 'app-field-booking',
@@ -71,6 +71,7 @@ export class FieldBookingComponent {
 
   constructor(
     public fieldService: FieldService,
+    public bookingService: BookingService,
     private route: ActivatedRoute,
     private authService: AuthService,
     private snackbarService: SnackbarService,
@@ -240,10 +241,12 @@ export class FieldBookingComponent {
       bookingDetails,
     };
 
-    this.fieldService.addBooking(booking).subscribe((res) => {
-      this.snackbarService.show(
-        new SnackbarConfig({ message: SuccessMessages.ADD_BOOKING_SUCCESS })
-      );
+    this.bookingService.addBooking(booking).subscribe((res) => {
+      if(res.success) {
+        this.snackbarService.show(
+          new SnackbarConfig({ message: res.message })
+        );
+      }
       this.fieldSlot = [];
       this.generateDateRange();
     });

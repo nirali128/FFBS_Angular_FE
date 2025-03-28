@@ -102,12 +102,12 @@ export class AddFieldComponent {
           this.fieldService
             .addField(formValue as FieldDetail)
             .subscribe((res) => {
-              this.snackbarService.show(
-                new SnackbarConfig({
-                  message: SuccessMessages.FIELD_ADDED_SUCCESS,
-                })
-              );
-              this.back();
+              if(res.success) {
+                this.snackbarService.show(
+                  new SnackbarConfig({ message: res.message })
+                );
+                this.back();
+              }
             });
         } else {
           this.addFieldDetailsForm.markAllAsTouched();
