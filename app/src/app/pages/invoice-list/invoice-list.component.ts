@@ -34,30 +34,31 @@ export class InvoiceListComponent {
     this.displayedColumns = [
       {
         name: 'invoiceNumber',
-        //label: 'Invoice Number',
+        label: 'Invoice Number',
         type: 'label',
         sort: true,
       },
       {
         name: 'invoiceDate',
-        //label: 'Invoice Date',
+        label: 'Invoice Date',
         type: 'label',
         sort: true,
       },
       {
         name: 'amount',
-        //label: 'Email',
+        label: 'Amount',
         type: 'label',
         sort: true,
       },
       {
         name: 'status',
-        //label: 'status',
+        label: 'Status',
         type: 'label',
         sort: true,
       },
       {
         name: 'action',
+        label: 'Action',
         type: 'button',
         sort: false,
         arr: [

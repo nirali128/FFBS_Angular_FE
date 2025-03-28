@@ -29,11 +29,11 @@
         <span *ngIf="column.type == 'button'">
           <ng-container *ngFor="let item of column.arr">
   
-            <button *ngIf="item.name == 'view'" mat-icon-button (click)="view(element)">
+            <button class="btn" *ngIf="item.name == 'view'" mat-icon-button (click)="view(element)">
               <mat-icon *ngIf="item.src"  color="primary" [fontIcon]="item.src"></mat-icon>
             </button>
             <!-- For Edit button -->
-            <button *ngIf="item.name == 'edit'" mat-icon-button (click)="edit(element)">
+            <button class="btn" *ngIf="item.name == 'edit'" mat-icon-button (click)="edit(element)">
               <mat-icon *ngIf="item.src" color="primary" [fontIcon]="item.src"></mat-icon>
             </button>
   
