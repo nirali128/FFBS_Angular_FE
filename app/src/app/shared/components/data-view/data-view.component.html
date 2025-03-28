@@ -4,7 +4,7 @@
       <input
         type="text"
         class="form-control w-100"
-        placeholder="Search fields..."
+        placeholder="Search by field name"
         [(ngModel)]="searchQuery"
         (ngModelChange)="onSearchChange()"
       />
@@ -22,10 +22,10 @@
   </div>
 
   <div>
-    <button class="btn btn-light" (click)="isGridView = true">
+    <button class="btn rounded-0" [ngClass]="{'btn-primary': isGridView, 'btn-light': !isGridView }" (click)="isGridView = true">
       <mat-icon>{{ "grid_view" }}</mat-icon>
     </button>
-    <button class="btn btn-light" (click)="isGridView = false">
+    <button class="btn rounded-0" [ngClass]="{'btn-primary': !isGridView, 'btn-light': isGridView }" (click)="isGridView = false">
       <mat-icon>{{ "list" }}</mat-icon>
     </button>
   </div>
@@ -87,7 +87,7 @@
             (buttonClick)="buttonClick(item)"
           >
           </app-button>
-          <app-button
+          <app-button *ngIf="isAdmin"
             class="ms-2"
             buttonType="normal"
             color="secondary"
@@ -160,7 +160,7 @@
         (buttonClick)="buttonClick(item)"
       >
       </app-button>
-      <app-button
+      <app-button *ngIf="isAdmin"
         class="mt-2"
         buttonType="normal"
         color="secondary"

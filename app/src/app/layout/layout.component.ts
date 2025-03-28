@@ -51,6 +51,7 @@ export class LayoutComponent implements OnInit {
   routes!: Routes;
   actualRoute!: RouteData;
   isHandset$: Observable<boolean>;
+  username!: string;
 
   constructor(
     public breakpointObserver: BreakpointObserver,
@@ -75,6 +76,7 @@ export class LayoutComponent implements OnInit {
         this.actualRoute = { title: data.title, icon: data.icon };
       }
     });
+    this.username = this.authService.getUsername();
   }
 
   signOut() {

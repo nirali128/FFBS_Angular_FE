@@ -40,14 +40,12 @@ export class AuthService {
   }
 
   getUserId(): string {
-    let token = this.getToken()
-    let decodedToken = this.decodedToken(token);
+    let decodedToken = this.getDecodedToken();
     return decodedToken.guid;
   }
 
   getRole(): string {
-    let token = this.getToken()
-    let decodedToken = this.decodedToken(token);
+    let decodedToken = this.getDecodedToken();
     return decodedToken.role
   }
 
@@ -65,8 +63,18 @@ export class AuthService {
     return  new Date(decodedToken.exp * 1000).toString() ?? '';
   }
 
+  getUsername(): string {
+    let decodedToken = this.getDecodedToken();
+    return decodedToken.username;
+  }
+
   clearToken() {
     localStorage.clear();
+  }
+
+  getDecodedToken(): DecodedToken {
+    let token = this.getToken();
+    return this.decodedToken(token);
   }
 
   decodedToken(data: string): DecodedToken {

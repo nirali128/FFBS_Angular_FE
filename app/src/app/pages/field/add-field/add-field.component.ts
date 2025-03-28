@@ -3,7 +3,6 @@ import {
   ReactiveFormsModule,
   FormGroup,
   FormBuilder,
-  Validators,
   FormControl,
 } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -27,6 +26,10 @@ import { MultiSelectCheckboxComponent } from '../../../shared/components/multi-s
 import { DropdownOption } from '../../../shared/interfaces/dropdown.options';
 import { CommonModule } from '@angular/common';
 import { MatError } from '@angular/material/form-field';
+import { FieldDetailsFormConfig } from '../field.config';
+import { SnackbarConfig } from '../../../shared/constants/snackbar-config.const';
+import { SuccessMessages } from '../../../shared/constants/messages-const';
+import { SnackbarService } from '../../../shared/service/snackbar.service';
 
 @Component({
   selector: 'app-add-field-booking',
@@ -53,9 +56,11 @@ export class AddFieldComponent {
   submitted: boolean = false;
 
   constructor(
+    private formConfig: FieldDetailsFormConfig,
     private fb: FormBuilder,
     public fieldService: FieldService,
-    private router: Router
+    private router: Router,
+    private snackbarService: SnackbarService
   ) {
     this.fieldService.getAllDays().subscribe((res) => {
       if (res.success) {
@@ -65,46 +70,7 @@ export class AddFieldComponent {
   }
 
   ngOnInit(): void {
-    this.addFieldDetailsForm = this.fb.group({
-      fieldName: [
-        '',
-        [
-          Validators.required,
-          Validators.maxLength(ValidationRules.FIELD_NAME_MAX_LENGTH),
-          Validators.pattern('^[a-zA-Z0-9 ]*$'),
-        ],
-      ],
-      address: [
-        '',
-        [
-          Validators.required,
-          Validators.maxLength(ValidationRules.FIELD_ADDRESS_MAX_LENGTH),
-        ],
-      ],
-      area: [0, [Validators.required, Validators.min(ValidationRules.FIELD_AREA_MIN)]],
-      phoneNumber: [
-        '',
-        [Validators.required, Validators.pattern(ValidationPatterns.PHONE)],
-      ],
-      baseRate: [0, [Validators.required, Validators.min(ValidationRules.FEILD_BASE_RATE_MIN)]],
-      isAvailable: [true, [Validators.required]],
-      rulesPolicies: [
-        '',
-        [
-          Validators.required,
-          Validators.maxLength(ValidationRules.RULES_POLICIES_MAX_LENGTH),
-        ],
-      ],
-      description: [
-        '',
-        [
-          Validators.required,
-          Validators.maxLength(ValidationRules.FIELD_DESCRIPTION_MAX_LENGTH),
-        ],
-      ],
-      documents: [[], [Validators.required]],
-      closeDays: [[]],
-    });
+    this.addFieldDetailsForm = this.formConfig.createForm();
   }
 
   getFormControl(controlName: string): FormControl {
@@ -136,7 +102,12 @@ export class AddFieldComponent {
           this.fieldService
             .addField(formValue as FieldDetail)
             .subscribe((res) => {
-              this.router.navigateByUrl('field');
+              if(res.success) {
+                this.snackbarService.show(
+                  new SnackbarConfig({ message: res.message })
+                );
+                this.back();
+              }
             });
         } else {
           this.addFieldDetailsForm.markAllAsTouched();

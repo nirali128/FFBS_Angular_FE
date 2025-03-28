@@ -37,7 +37,7 @@ export class BookingService {
   ) {}
 
   addBooking(data: Booking) {
-    return this.httpClient.post(
+    return this.httpClient.post<ApiResponse<any>>(
       `${GlobalConstant.BOOKING_API_URL + GlobalConstant.BOOKING.ADD_BOOKING}`,
       data,
       this.getHeaders()

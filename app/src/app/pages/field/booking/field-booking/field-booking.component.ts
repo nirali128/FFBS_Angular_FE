@@ -24,9 +24,14 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
-import { MatSlideToggleChange, MatSlideToggleModule } from '@angular/material/slide-toggle';
+import {
+  MatSlideToggleChange,
+  MatSlideToggleModule,
+} from '@angular/material/slide-toggle';
 import { CalendarComponent } from '../../../../shared/components/calendar/calendar.component';
 import { Role } from '../../../../shared/enum/role';
+import { SnackbarService } from '../../../../shared/service/snackbar.service';
+import { SnackbarConfig } from '../../../../shared/constants/snackbar-config.const';
 import { BookingService } from '../../../../shared/service/booking.service';
 
 @Component({
@@ -42,7 +47,7 @@ import { BookingService } from '../../../../shared/service/booking.service';
     ReactiveFormsModule,
     MatSlideToggleModule,
     FormsModule,
-    ButtonComponent
+    ButtonComponent,
   ],
   templateUrl: './field-booking.component.html',
   styleUrl: './field-booking.component.scss',
@@ -62,18 +67,21 @@ export class FieldBookingComponent {
   toggleSlideLabel: string = 'Toggle for single day booking';
   minimumStartDate: Date;
   closedDays: Day[];
+  isAdmin: boolean = false;
 
   constructor(
     public fieldService: FieldService,
     public bookingService: BookingService,
     private route: ActivatedRoute,
     private authService: AuthService,
+    private snackbarService: SnackbarService,
     private router: Router
   ) {
     this.route.params.subscribe((params) => {
       this.fieldId = params['id'];
     });
     this.maxDate = dayjs().add(2, 'month').toDate();
+    this.isAdmin = this.authService.getRole() == Role.Admin ? true : false;
   }
 
   ngOnInit() {
@@ -133,13 +141,17 @@ export class FieldBookingComponent {
       if (res.fieldSlotAvailability.success)
         this.fieldSlotAvailability = res.fieldSlotAvailability.data;
       if (res.day.success) this.days = res.day.data;
-      if(res.closedDays.success) this.closedDays = res.closedDays.data;
+      if (res.closedDays.success) this.closedDays = res.closedDays.data;
       this.generateFieldSlotRate();
     });
   }
 
   generateFieldSlotRate() {
-    if ((this.dayView && this.startDate || this.endDate) && this.fieldSlotRate && this.fieldSlotAvailability) {
+    if (
+      ((this.dayView && this.startDate) || this.endDate) &&
+      this.fieldSlotRate &&
+      this.fieldSlotAvailability
+    ) {
       this.fieldSlotAvailability.map((res) => {
         const rateItem = this.fieldSlotRate.find(
           (rate) => rate.date == res.date
@@ -157,16 +169,16 @@ export class FieldBookingComponent {
           });
         }
 
-        if(this.closedDays) {
+        if (this.closedDays) {
           let day = this.closedDays.find(
             (d) => d.description == dayjs(res.date).format('dddd')
           );
 
-          if(day) {
+          if (day) {
             res.slots.map((res) => {
               res.availability = false;
-              res.status = "Closed"
-            })
+              res.status = 'Closed';
+            });
           }
         }
       });
@@ -175,13 +187,15 @@ export class FieldBookingComponent {
   }
 
   toggleChange(event: MatSlideToggleChange) {
-      this.dayView = event.checked;
-      this.toggleSlideLabel = this.dayView ? 'Toggle for multiple days booking' : 'Toggle for single day booking';
-      if(this.dayView) {
-        this.endDate = null;
-      }
-      this.fieldSlot = [];
-      this.generateDateRange();
+    this.dayView = event.checked;
+    this.toggleSlideLabel = this.dayView
+      ? 'Toggle for multiple days booking'
+      : 'Toggle for single day booking';
+    if (this.dayView) {
+      this.endDate = null;
+    }
+    this.fieldSlot = [];
+    this.generateDateRange();
   }
 
   selectedEvents(items: { [key: string]: SelectableSlot[] }) {
@@ -223,17 +237,22 @@ export class FieldBookingComponent {
       fieldId: this.fieldId,
       totalPrice: totalPrice,
       isLongTermBooking: true,
-      isDirectBooking: this.authService.getRole() == Role.Admin ? true : false,
+      isDirectBooking: this.isAdmin,
       bookingDetails,
     };
 
     this.bookingService.addBooking(booking).subscribe((res) => {
+      if(res.success) {
+        this.snackbarService.show(
+          new SnackbarConfig({ message: res.message })
+        );
+      }
       this.fieldSlot = [];
       this.generateDateRange();
     });
   }
 
   navigate() {
-    this.router.navigateByUrl("field");
+    this.router.navigateByUrl('field');
   }
 }

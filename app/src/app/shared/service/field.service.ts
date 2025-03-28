@@ -115,7 +115,7 @@ export class FieldService {
   }
 
   addField(data: FieldDetail) {
-    return this.httpClient.post(
+    return this.httpClient.post<ApiResponse<any>>(
       `${GlobalConstant.FIELD_API_URL + GlobalConstant.FIELD.ADD_FIELD}`,
       data,
       this.getHeaders()
@@ -123,7 +123,7 @@ export class FieldService {
   }
 
   editField(guid: string, data: FieldDetail) {
-    return this.httpClient.post(
+    return this.httpClient.post<ApiResponse<any>>(
       `${GlobalConstant.FIELD_API_URL + GlobalConstant.FIELD.EDIT_FIELD + '?fieldId=' + guid}` ,
       data,
       this.getHeaders()

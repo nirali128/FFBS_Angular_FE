@@ -22,7 +22,8 @@ export class DataViewComponent<T> {
   showAvailableOnly: boolean = false;
   @Output() buttonEvent = new EventEmitter<string>();
   @Output() editEvent = new EventEmitter<string>();
-  @Output() searchEvent = new EventEmitter<string>(); // New Output event
+  @Output() searchEvent = new EventEmitter<string>();
+  @Input() isAdmin = false;
 
   onSearchChange() {
     this.searchEvent.emit(this.searchQuery);
