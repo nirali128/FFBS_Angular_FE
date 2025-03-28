@@ -86,11 +86,7 @@ export class InvoiceListComponent {
   onView(element: InvoiceList) {
     const base64String = element.document;
     const binaryString = atob(base64String.split(',')[1]);
-    const byteArray = new Uint8Array(binaryString.length);
-
-    for (let i = 0; i < binaryString.length; i++) {
-      byteArray[i] = binaryString.charCodeAt(i);
-    }
+    const byteArray = new Uint8Array(Array.from(binaryString, char => char.charCodeAt(0)));
 
     const blob = new Blob([byteArray], { type: 'application/pdf' });
     const url = URL.createObjectURL(blob);
