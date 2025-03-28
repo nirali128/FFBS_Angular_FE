@@ -1,10 +1,11 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { GlobalConstant } from '../constants/global-const';
 import { Observable } from 'rxjs';
-import { ApiResponse } from '../interfaces/api.response';
+import { ApiPaginatedResponse, ApiResponse } from '../interfaces/api.response';
 import { AuthService } from './authentication.service';
-import { User } from '../interfaces/user';
+import { BlockUser, User } from '../interfaces/user';
+import { FilterRequest } from '../interfaces/filter-request';
 
 @Injectable({
   providedIn: 'root',
@@ -46,7 +47,36 @@ export class UserService {
         GlobalConstant.USER.EDIT_USER +
         '?userId=' +
         this.userId
-      }`, user,
+      }`,
+      user,
+      this.getHeaders()
+    );
+  }
+
+  getPaginatedUsers(
+    filterRequest: FilterRequest
+  ): Observable<ApiPaginatedResponse<User[]>> {
+    let httpParams = new HttpParams()
+      .set('page', filterRequest.pageNumber)
+      .set('pageSize', filterRequest.pageSize);
+
+    if (filterRequest.search) {
+      httpParams = httpParams.set('search', filterRequest.search);
+    }
+
+    return this.httpClient.get<ApiPaginatedResponse<User[]>>(
+      `${GlobalConstant.USER_API_URL + GlobalConstant.USER.GET_ALL_USER}`,
+      {
+        ...this.getHeaders(),
+        params: httpParams,
+      }
+    );
+  }
+
+  blockUser(data: BlockUser) {
+    return this.httpClient.post<ApiResponse<any>>(
+      `${GlobalConstant.USER_API_URL + GlobalConstant.USER.BLOCK_USER}`,
+      data,
       this.getHeaders()
     );
   }
