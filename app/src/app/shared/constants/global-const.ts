@@ -32,7 +32,9 @@ export class GlobalConstant {
 
   public static readonly USER = {
     GET_USER_BY_ID: "/get-user-by-id",
-    EDIT_USER: "/edit-user-details"
+    EDIT_USER: "/edit-user-details",
+    GET_ALL_USER: "/get-all-users",
+    BLOCK_USER: "/block-user"
   }
 
   public static readonly FIELD =  {

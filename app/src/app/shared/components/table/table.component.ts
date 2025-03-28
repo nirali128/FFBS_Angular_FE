@@ -9,15 +9,15 @@ import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/p
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { ButtonComponent } from '../button/button.component';
-import { RouterModule } from '@angular/router';
-import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
+import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 @Component({
   selector: 'app-table',
-  imports: [MatTableModule, ButtonComponent, RouterModule, FormsModule, MatPaginatorModule, CommonModule, MatIcon, MatSlideToggleModule],
+  imports: [MatTableModule, ButtonComponent, MatPaginatorModule, CommonModule, MatIcon, FormsModule, RouterModule, MatSlideToggleModule],
   templateUrl: './table.component.html',
   styleUrl: './table.component.scss'
 })
