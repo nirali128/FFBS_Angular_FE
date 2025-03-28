@@ -29,12 +29,12 @@
         <span *ngIf="column.type == 'button'">
           <ng-container *ngFor="let item of column.arr">
   
-            <button class="btn" *ngIf="item.name == 'view'" mat-icon-button [routerLink]="[item.url , element.id]">
+            <button class="btn" *ngIf="item.name == 'view'" mat-icon-button (click)="view(element)">
               <mat-icon *ngIf="item.src"  color="primary" [fontIcon]="item.src"></mat-icon>
             </button>
             <!-- For Edit button -->
-            <button class="btn" *ngIf="item.name == 'edit'" mat-icon-button [routerLink]="[item.url , element.id]" [disabled]="((item && item.disabled) && !element.isActive)">
-              <mat-icon *ngIf="item.src" [ngClass]="((item && item.disabled) && !element.isActive) ? 'disabled-color' : ''"  color="primary" [fontIcon]="item.src"></mat-icon>
+            <button class="btn" *ngIf="item.name == 'edit'" mat-icon-button (click)="edit(element)">
+              <mat-icon *ngIf="item.src" color="primary" [fontIcon]="item.src"></mat-icon>
             </button>
   
             <!-- For Delete button -->

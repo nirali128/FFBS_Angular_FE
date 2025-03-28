@@ -43,6 +43,8 @@ export class TableComponent<T> {
   
   @Output() onDelete = new EventEmitter<number>();
   @Output() onToggle = new EventEmitter<T>();
+  @Output() onView = new EventEmitter<T>();
+  @Output() onEdit = new EventEmitter<T>();
   @Output() onPagination = new EventEmitter<FilterRequest>();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
@@ -82,6 +84,14 @@ export class TableComponent<T> {
 
   toggle(element: T) {
     this.onToggle.emit(element)
+  }
+
+  view(element: T) {
+    this.onView.emit(element);
+  }
+
+  edit(element: T) {
+    this.onEdit.emit(element);
   }
 
   onPageChange(event: PageEvent) {

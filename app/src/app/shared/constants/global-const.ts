@@ -20,6 +20,7 @@ export class GlobalConstant {
   public static readonly AVAILABILITY_API_URL = `${environment.baseUrl}/availability`;
   public static readonly RATE_API_URL = `${environment.baseUrl}/rate`;
   public static readonly USER_API_URL = `${environment.baseUrl}/user`;
+  public static readonly INVOICE_API_URL = `${environment.baseUrl}/invoice`;
 
   public static readonly AUTH = {
     LOGIN: "/login",
@@ -58,6 +59,11 @@ export class GlobalConstant {
     GET_CLOSED_DAYS: "/get-all-close-days",
     GET_ALL_SLOTS: "/get-all-slots",
   }
+
+  public static readonly INVOICE = {
+    GET_ALL_INVOICE: "/get-all-invoices"
+  }
+
   public static readonly paginationOptions = [5, 10, 20];
 
   public static readonly AVAILABILITY = {
