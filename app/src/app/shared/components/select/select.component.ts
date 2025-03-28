@@ -27,7 +27,7 @@ export class SelectComponent implements ControlValueAccessor {
   @Input() selectedValue: string | number | null = null;
   @Input() formControl!: FormControl; 
   @Output() selectionChange = new EventEmitter<string | number>();  
-  @Input() formControlName!: string;
+  @Input() formControlName?: string;
 
   @Input() disabled: boolean = false;
 

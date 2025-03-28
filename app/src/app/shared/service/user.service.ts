@@ -54,13 +54,15 @@ export class UserService {
   }
 
   getPaginatedUsers(
-    filterRequest: FilterRequest
+    filterRequest?: FilterRequest
   ): Observable<ApiPaginatedResponse<User[]>> {
-    let httpParams = new HttpParams()
-      .set('page', filterRequest.pageNumber)
-      .set('pageSize', filterRequest.pageSize);
+    let httpParams = new HttpParams();
+    if (filterRequest && filterRequest.pageNumber && filterRequest.pageSize)
+      httpParams = httpParams
+        .set('page', filterRequest.pageNumber)
+        .set('pageSize', filterRequest.pageSize);
 
-    if (filterRequest.search) {
+    if (filterRequest && filterRequest.search) {
       httpParams = httpParams.set('search', filterRequest.search);
     }
 

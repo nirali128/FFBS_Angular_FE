@@ -18,7 +18,12 @@ import { ApiResponse } from '../../../../shared/interfaces/api.response';
 
 import dayjs from 'dayjs';
 import { forkJoin } from 'rxjs';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormControl,
+  FormsModule,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -33,6 +38,10 @@ import { Role } from '../../../../shared/enum/role';
 import { SnackbarService } from '../../../../shared/service/snackbar.service';
 import { SnackbarConfig } from '../../../../shared/constants/snackbar-config.const';
 import { BookingService } from '../../../../shared/service/booking.service';
+import { UserService } from '../../../../shared/service/user.service';
+import { DropdownOption } from '../../../../shared/interfaces/dropdown.options';
+import { mapUserToDropdown } from '../../../../shared/utility/utilitty';
+import { SelectComponent } from '../../../../shared/components/select/select.component';
 
 @Component({
   selector: 'app-field-booking',
@@ -48,6 +57,7 @@ import { BookingService } from '../../../../shared/service/booking.service';
     MatSlideToggleModule,
     FormsModule,
     ButtonComponent,
+    SelectComponent
   ],
   templateUrl: './field-booking.component.html',
   styleUrl: './field-booking.component.scss',
@@ -68,6 +78,8 @@ export class FieldBookingComponent {
   minimumStartDate: Date;
   closedDays: Day[];
   isAdmin: boolean = false;
+  userFormControl: FormControl = new FormControl('', [Validators.required]);
+  userOptions: DropdownOption[] = [];
 
   constructor(
     public fieldService: FieldService,
@@ -75,13 +87,19 @@ export class FieldBookingComponent {
     private route: ActivatedRoute,
     private authService: AuthService,
     private snackbarService: SnackbarService,
-    private router: Router
+    private router: Router,
+    private readonly userService: UserService
   ) {
     this.route.params.subscribe((params) => {
       this.fieldId = params['id'];
     });
     this.maxDate = dayjs().add(2, 'month').toDate();
     this.isAdmin = this.authService.getRole() == Role.Admin ? true : false;
+    this.userService.getPaginatedUsers().subscribe((res) => {
+      if(res.success) {
+        this.userOptions = mapUserToDropdown(res.data);
+      }
+    });
   }
 
   ngOnInit() {
@@ -233,7 +251,7 @@ export class FieldBookingComponent {
     });
 
     const booking: Booking = {
-      userId: this.authService.getUserId(),
+      userId: this.userFormControl.value,
       fieldId: this.fieldId,
       totalPrice: totalPrice,
       isLongTermBooking: true,
@@ -242,10 +260,8 @@ export class FieldBookingComponent {
     };
 
     this.bookingService.addBooking(booking).subscribe((res) => {
-      if(res.success) {
-        this.snackbarService.show(
-          new SnackbarConfig({ message: res.message })
-        );
+      if (res.success) {
+        this.snackbarService.show(new SnackbarConfig({ message: res.message }));
       }
       this.fieldSlot = [];
       this.generateDateRange();

@@ -89,7 +89,14 @@
 
   <div class="card p-3 mt-3">
     <div class="d-flex justify-content-between align-items-center">
-      <div>
+      <div class="d-flex">
+        <app-select
+          label="User"
+          placeholder="Select user"
+          [options]="userOptions"
+          [formControl]="userFormControl"
+        ></app-select>
+        <div class="ms-1">
         <mat-form-field class="mb-0">
           <mat-label>Choose a {{ dayView ? "" : "start" }} date</mat-label>
           <input
@@ -122,6 +129,7 @@
           <mat-datepicker #endDatePicker></mat-datepicker>
         </mat-form-field>
       </div>
+      </div>
       <div>
         <mat-slide-toggle
           [(ngModel)]="dayView"
@@ -132,7 +140,7 @@
     </div>
 
     <app-calendar
-      *ngIf="fieldSlot && fieldSlot.length"
+      *ngIf="fieldSlot && fieldSlot.length && userFormControl.value"
       [fieldSlotAvailability]="fieldSlot"
       (selectedSlotsEvent)="selectedEvents($event)"
       [dayView]="dayView"
