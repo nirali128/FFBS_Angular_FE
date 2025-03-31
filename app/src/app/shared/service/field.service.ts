@@ -7,6 +7,7 @@ import {
   Day,
   FieldDetail,
   FieldsDetailList,
+  FieldSlotAddRateAvailabilityRequestData,
   FieldSlotRateData,
   FieldSlotRateRequestData,
   Slot,
@@ -126,6 +127,26 @@ export class FieldService {
     return this.httpClient.post<ApiResponse<any>>(
       `${GlobalConstant.FIELD_API_URL + GlobalConstant.FIELD.EDIT_FIELD + '?fieldId=' + guid}` ,
       data,
+      this.getHeaders()
+    );
+  }
+
+  addFieldSlotsAvailability(data: FieldSlotAddRateAvailabilityRequestData) {
+    return this.httpClient.post<ApiResponse<any>>(
+      `${
+        GlobalConstant.AVAILABILITY_API_URL +
+        GlobalConstant.AVAILABILITY.MODIFY_FIELD_SLOTS_AVAILABILITY
+      }`, data,
+      this.getHeaders()
+    );
+  }
+
+  addFieldSlotsRates(data: FieldSlotAddRateAvailabilityRequestData) {
+    return this.httpClient.post<ApiResponse<any>>(
+      `${
+        GlobalConstant.RATE_API_URL +
+        GlobalConstant.RATE.ADD_RATES
+      }`, data,
       this.getHeaders()
     );
   }

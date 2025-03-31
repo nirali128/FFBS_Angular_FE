@@ -93,4 +93,10 @@ export class FieldComponent {
     this.page = 1;
     this.loadFields();
   }
+
+  handleRateAndAvailability(event: [string, boolean]) {
+    const [fieldId, isRateView] = event;
+    let url = '/field/' + (isRateView ? 'rate/' : 'availability/') + fieldId;
+    this.router.navigateByUrl(url);
+  }
 }

@@ -22,10 +22,18 @@
   </div>
 
   <div>
-    <button class="btn rounded-0" [ngClass]="{'btn-primary': isGridView, 'btn-light': !isGridView }" (click)="isGridView = true">
+    <button
+      class="btn rounded-0"
+      [ngClass]="{ 'btn-primary': isGridView, 'btn-light': !isGridView }"
+      (click)="isGridView = true"
+    >
       <mat-icon>{{ "grid_view" }}</mat-icon>
     </button>
-    <button class="btn rounded-0" [ngClass]="{'btn-primary': !isGridView, 'btn-light': isGridView }" (click)="isGridView = false">
+    <button
+      class="btn rounded-0"
+      [ngClass]="{ 'btn-primary': !isGridView, 'btn-light': isGridView }"
+      (click)="isGridView = false"
+    >
       <mat-icon>{{ "list" }}</mat-icon>
     </button>
   </div>
@@ -51,8 +59,11 @@
                 height="200"
               />
             </div>
-            <h4 *ngIf="col.labelType === 'title'" class="mb-0">
+            <h4 *ngIf="col.labelType === 'title'" class="mb-0 d-flex align-items-center">
               {{ item[col.key] }}
+              <button mat-icon-button [matMenuTriggerFor]="menuRef">
+                <mat-icon>more_vert</mat-icon>
+              </button>
             </h4>
             <span
               *ngIf="col.labelType === 'badge'"
@@ -87,17 +98,19 @@
             (buttonClick)="buttonClick(item)"
           >
           </app-button>
-          <app-button *ngIf="isAdmin"
-            class="ms-2"
-            buttonType="normal"
-            color="secondary"
-            text="Edit"
-            iconPosition="right"
-            (buttonClick)="edit(item)"
-          >
-          </app-button>
         </div>
       </div>
+      <mat-menu #menuRef="matMenu">
+        <button *ngIf="isAdmin" mat-menu-item (click)="edit(item)">
+          <mat-icon>edit</mat-icon> Edit
+        </button>
+        <button mat-menu-item (click)="rateAndAvailability(item, true)">
+          <mat-icon>attach_money</mat-icon> Add Rate
+        </button>
+        <button mat-menu-item (click)="rateAndAvailability(item, false)">
+          <mat-icon>event_available</mat-icon> Add Availability
+        </button>
+      </mat-menu>
     </div>
   </div>
 </div>
@@ -111,7 +124,7 @@
       <div *ngIf="col.isVisible && col.labelType === 'image'" class="me-3">
         <img
           [src]="item[col.key]"
-          class="rounded img-fluid"
+          class="rounded img-fluid height-150"
           width="250"
           alt="Field Image"
         />
@@ -129,7 +142,7 @@
             [ngClass]="item[col.key] ? 'available' : 'not-available'"
           >
             <span
-              class="badge px-3 py-2"
+              class="badge px-3 py-2 mt-4"
               [ngClass]="item[col.key] ? 'bg-success' : 'bg-danger'"
             >
               {{ item[col.key] ? "Available" : "Not Available" }}
@@ -160,15 +173,26 @@
         (buttonClick)="buttonClick(item)"
       >
       </app-button>
-      <app-button *ngIf="isAdmin"
-        class="mt-2"
-        buttonType="normal"
-        color="secondary"
-        text="Edit"
-        iconPosition="right"
-        (buttonClick)="edit(item)"
-      >
-      </app-button>
+
+      
     </div>
+    <div class="position-absolute top-0 end-0 m-2">
+      <button mat-icon-button [matMenuTriggerFor]="menuRef">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+    </div>
+
+    <!-- Material Menu -->
+    <mat-menu #menuRef="matMenu">
+      <button *ngIf="isAdmin" mat-menu-item (click)="edit(item)">
+        <mat-icon>edit</mat-icon> Edit
+      </button>
+      <button mat-menu-item (click)="rateAndAvailability(item, true)">
+        <mat-icon>attach_money</mat-icon> Add Rate
+      </button>
+      <button mat-menu-item (click)="rateAndAvailability(item, false)">
+        <mat-icon>event_available</mat-icon> Add Availability
+      </button>
+    </mat-menu>
   </div>
 </div>

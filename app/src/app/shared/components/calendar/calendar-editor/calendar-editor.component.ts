@@ -1,37 +1,34 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import dayjs from 'dayjs';
-import { MatTableModule } from '@angular/material/table';
 import { CommonModule } from '@angular/common';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { MatDialog } from '@angular/material/dialog';
-import { provideNativeDateAdapter } from '@angular/material/core';
-import { getFormattedTime } from '../../common/common';
+import { MatTableModule } from '@angular/material/table';
+import dayjs from 'dayjs';
+import { getFormattedTime } from '../../../common/common';
 import {
   FieldSlotRateData,
   SelectableSlot,
   CalendarSlot,
-} from '../../interfaces/field';
-import { convertSelectableSlotToDialogTable } from '../../mapper/mapper';
-import { ButtonComponent } from '../button/button.component';
-import { DialogComponent } from './dialog/dialog.component';
+} from '../../../interfaces/field';
+import { ButtonComponent } from '../../button/button.component';
+import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-calendar',
-  standalone: true,
+  selector: 'app-calendar-editor',
   imports: [
     MatTableModule,
     CommonModule,
     MatButtonToggleModule,
     ButtonComponent,
+    FormsModule
   ],
-  providers: [provideNativeDateAdapter()],
-  templateUrl: './calendar.component.html',
-  styleUrls: ['./calendar.component.scss'],
+  templateUrl: './calendar-editor.component.html',
+  styleUrl: './calendar-editor.component.scss',
 })
-export class CalendarComponent {
+export class CalendarEditorComponent {
   showTable: boolean = false;
   @Input() fieldSlotAvailability: FieldSlotRateData[];
   @Input() dayView: boolean = false;
+  @Input() isRateView: boolean = false;
 
   displayedDays: string[];
   @Output() selectedSlotsEvent = new EventEmitter<{
@@ -43,8 +40,8 @@ export class CalendarComponent {
   selectedSlots: { [key: string]: SelectableSlot[] } = {};
   displayedColumns: string[] = [];
   slots: CalendarSlot[];
+  rateInput: number | null = null; 
 
-  constructor(public dialog: MatDialog) {}
 
   ngOnChanges() {
     this.getDays();
@@ -168,7 +165,7 @@ export class CalendarComponent {
       booked: status === 'booked',
       past: status === 'past',
       closed: status === 'closed',
-      unavailable: status == 'unavailable'
+      unavailable: status == 'unavailable',
     };
   }
 
@@ -179,7 +176,7 @@ export class CalendarComponent {
       case 'selected':
         return slotStatus.rate;
       case 'available':
-        return slotStatus.rate ?? '-';
+        return this.isRateView ? slotStatus.rate ?? '-' : 'Available';
       case 'booked':
         return 'Booked';
       case 'past':
@@ -199,43 +196,21 @@ export class CalendarComponent {
   }
 
   bookNow() {
-    this.openDialog();
-  }
-
-  openDialog() {
-    let dialogData = convertSelectableSlotToDialogTable(
-      this.selectedSlots,
-      this.slots
-    );
-    const dialogRef = this.dialog.open(DialogComponent, {
-      data: dialogData,
-      width: '50%',
-    });
-    dialogRef.afterClosed().subscribe((item) => {
-      if (item) {
-        this.selectedSlotsEvent.emit(this.selectedSlots);
-      }
-    });
+    if (this.isRateView && this.rateInput !== null) {
+      this.updateSelectedSlotsRate(); 
+    } else {
+      this.updateSelectedSlotsAvailability();
+    }
   }
 
   removeAll() {
     this.selectedSlots = {};
   }
 
-  getSelectedSlotTotalPrice(): number {
-    let count = 0;
-    Object.values(this.selectedSlots).forEach((slots) => {
-      slots.forEach((x) => {
-        count += Number(x.rate);
-      });
-    });
-    return count;
-  }
-
   isAllSlotsSelected(day: string): boolean {
     const fieldSlot = this.fieldSlotAvailability.find((f) => f.date === day);
     if (!fieldSlot) return false;
-  
+
     return fieldSlot.slots.every(
       (slot) =>
         slot.availability &&
@@ -244,92 +219,117 @@ export class CalendarComponent {
         this.selectedSlots[`${day}-${slot.slotId}`]
     );
   }
-  
+
   toggleSelectAllSlots(day: string, event: Event) {
     const checked = (event.target as HTMLInputElement).checked;
-  
+
     if (checked) {
       this.selectAllSlotsForDay(day);
     } else {
       this.deselectAllSlotsForDay(day);
     }
   }
-  
+
   deselectAllSlotsForDay(day: string) {
     Object.keys(this.selectedSlots).forEach((key) => {
       if (key.startsWith(day)) {
         delete this.selectedSlots[key];
       }
     });
-  
+
     this.selectedSlots = { ...this.selectedSlots };
   }
 
   shouldShowCheckbox(day: string): boolean {
     const now = dayjs(); // Get current date and time
     const today = now.format('YYYY-MM-DD');
-  
+
     // Convert day string to a comparable format
     const dayFormatted = dayjs(day, 'DD-MM-YYYY').format('YYYY-MM-DD');
-  
+
     // Hide checkboxes for past days
     if (dayFormatted < today) {
       return false;
     }
-  
+
     // Find slot availability for the given day
     const fieldSlot = this.fieldSlotAvailability.find((f) => f.date === day);
-    
+
     if (!fieldSlot) return false;
-  
+
     // Check if at least one slot is available and not concluded/booked/unavailable
-    return fieldSlot.slots.some(slot => 
-      slot.availability &&
-      slot.status !== 'Closed' &&
-      slot.status !== 'Booked' &&
-      slot.status !== 'Time Concluded'
+    return fieldSlot.slots.some(
+      (slot) =>
+        slot.availability &&
+        slot.status !== 'Closed' &&
+        slot.status !== 'Booked' &&
+        slot.status !== 'Time Concluded'
     );
   }
-  
-  
+
   selectAllSlotsForDay(day: string) {
     // Find all available slots for the given day
     const fieldSlot = this.fieldSlotAvailability.find((f) => f.date === day);
-  
+
     if (!fieldSlot) return;
-  
+
     const dayDate = dayjs(day, 'YYYY-MM-DD', true);
     const todayDate = dayjs().format('YYYY-MM-DD');
     const now = dayjs(); // Get current time
     const isPastDay = dayDate.isBefore(this.today, 'day');
-  
+
     fieldSlot.slots.forEach((slot) => {
-      const slotDateTime = dayjs(`${day} ${slot.startTime}`, 'YYYY-MM-DD hh:mm A');
-  
+      const slotDateTime = dayjs(
+        `${day} ${slot.startTime}`,
+        'YYYY-MM-DD hh:mm A'
+      );
+
       if (
         slot.availability &&
         slot.status !== 'Closed' &&
         slot.status !== 'Booked' &&
-        !(isPastDay || day === todayDate && slotDateTime.isBefore(now)) // Ignore past time slots
+        !(isPastDay || (day === todayDate && slotDateTime.isBefore(now))) // Ignore past time slots
       ) {
         const key = `${day}-${slot.slotId}`;
-  
+
         if (!this.selectedSlots[key]) {
           this.selectedSlots[key] = [];
         }
-  
+
         const index = this.selectedSlots[key].findIndex(
           (selectedSlot) => selectedSlot.slotGuid === slot.slotId
         );
-  
+
         let rate = this.getSlotRate(day, slot.slotId);
-  
+
         if (index === -1) {
-          this.selectedSlots[key].push({ slotGuid: slot.slotId, date: day, rate });
+          this.selectedSlots[key].push({
+            slotGuid: slot.slotId,
+            date: day,
+            rate,
+          });
         }
       }
     });
-  
+
     this.selectedSlots = { ...this.selectedSlots };
-  }  
+  }
+
+  updateSelectedSlotsRate() {
+    Object.values(this.selectedSlots).forEach((slots) => {
+      slots.forEach((slot) => {
+        slot.rate = this.rateInput ?? slot.rate;
+      });
+    });
+    this.selectedSlotsEvent.emit(this.selectedSlots);
+  }
+
+  updateSelectedSlotsAvailability() {
+    Object.values(this.selectedSlots).forEach((slots) => {
+      slots.forEach((slot) => {
+        slot.availability = false;
+      });
+    });
+    this.selectedSlotsEvent.emit(this.selectedSlots);
+  }
 }
