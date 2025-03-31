@@ -9,6 +9,7 @@ import { InvoiceListComponent } from './pages/invoice-list/invoice-list.componen
 import { AuthGuard } from './shared/guards/auth.guard';
 import { AdminAuthGuard } from './shared/guards/admin-auth.guard';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
+import { Role } from './shared/enum/role';
 
 export const routes: Routes = [
     {path: '', pathMatch: 'full', redirectTo: 'register'},
@@ -31,7 +32,7 @@ export const routes: Routes = [
                 data: {
                     icon: 'desktop_windows',
                     title: 'Dashboard',
-                    visibleTo: ['Admin', 'Customer']
+                    visibleTo: [Role.Admin, Role.Customer]
                 },
                 loadChildren: () => import('./pages/dashboard/dashboard.routes')
             },
@@ -41,7 +42,7 @@ export const routes: Routes = [
                 data: {
                     icon: 'list',
                     title: 'Field',
-                    visibleTo: ['Admin', 'Customer']
+                    visibleTo: [Role.Admin, Role.Customer]
                 },
                 loadChildren: () => import('./pages/field/field.routes')
             },
@@ -51,7 +52,7 @@ export const routes: Routes = [
                 data: {
                     icon: 'list',
                     title: 'Booking',
-                    visibleTo: ['Admin', 'Customer']
+                    visibleTo: [Role.Admin, Role.Customer]
                 },
                 component: BookingListComponent
             },
@@ -65,7 +66,7 @@ export const routes: Routes = [
                 data: {
                     icon: 'list',
                     title: 'Invoice',
-                    visibleTo: ['Admin']
+                    visibleTo: [Role.Admin]
                 },
                 component: InvoiceListComponent,
                 canActivate: [AdminAuthGuard]
@@ -76,7 +77,7 @@ export const routes: Routes = [
                 data: {
                     icon: 'list',
                     title: 'User',
-                    visibleTo: ['Admin']
+                    visibleTo: [Role.Admin]
                 },
                 component: UserListComponent
             },
