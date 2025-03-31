@@ -47,8 +47,12 @@ import { AppSpinnerComponent } from '../shared/components/app-spinner/app-spinne
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.scss',
 })
-export class LayoutComponent implements OnInit {
-  routes!: Routes;
+export class LayoutComponent {
+  routes: Routes = routes
+    .filter((x) => x?.children && x?.children.length > 0)[0]
+    ?.children?.filter(
+      (r) => r.path && r.path !== '**' && r.path !== 'profile'
+    );
   actualRoute!: RouteData;
   isHandset$: Observable<boolean>;
   username!: string;
@@ -66,8 +70,20 @@ export class LayoutComponent implements OnInit {
   }
 
   ngOnInit() {
-    let arr = routes.filter((x) => x?.children && x?.children.length > 0);
-    this.routes = arr[0]?.children?.filter((r) => r.path && r.path !== '**' && r.path !== 'profile');
+    this.username = this.authService.getUsername();
+    this.routerSubscribe()
+  }
+
+  ngOnChanges() {
+    this.routerSubscribe();
+  }
+
+  routerSubscribe() {
+    const role = this.authService.getRole();
+
+    this.routes = this.routes.filter((route) => {
+      return route.data['visibleTo']?.includes(role);
+    });
     this.router.events.subscribe(() => {
       if (this.routes.length) {
         const data = this.routes.find(
@@ -76,7 +92,6 @@ export class LayoutComponent implements OnInit {
         this.actualRoute = { title: data.title, icon: data.icon };
       }
     });
-    this.username = this.authService.getUsername();
   }
 
   signOut() {
