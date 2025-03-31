@@ -5,6 +5,7 @@ import { AddFieldComponent } from './add-field/add-field.component';
 import { EditFieldComponent } from './edit-field/edit-field.component';
 import { CalendarEditorComponent } from '../../shared/components/calendar/calendar-editor/calendar-editor.component';
 import { FieldBookingRateAvailabilityComponent } from './booking/field-booking-rate-availability/field-booking-rate-availability.component';
+import { AdminAuthGuard } from '../../shared/guards/admin-auth.guard';
 
 
 export default [
@@ -18,18 +19,22 @@ export default [
     },
     {
         path: 'add',
-        component: AddFieldComponent
+        component: AddFieldComponent,
+        canActivate: [AdminAuthGuard]
     },
     {
         path: 'edit/:id',
-        component: EditFieldComponent
+        component: EditFieldComponent,
+        canActivate: [AdminAuthGuard]
     },
     {
         path: 'rate/:id',
-        component: FieldBookingRateAvailabilityComponent
+        component: FieldBookingRateAvailabilityComponent,
+        canActivate: [AdminAuthGuard]
     },
     {
         path: 'availability/:id',
-        component: FieldBookingRateAvailabilityComponent
+        component: FieldBookingRateAvailabilityComponent,
+        canActivate: [AdminAuthGuard]
     }
 ] as Routes;

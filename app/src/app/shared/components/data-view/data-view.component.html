@@ -61,7 +61,7 @@
             </div>
             <h4 *ngIf="col.labelType === 'title'" class="mb-0 d-flex align-items-center">
               {{ item[col.key] }}
-              <button mat-icon-button [matMenuTriggerFor]="menuRef">
+              <button *ngIf="isAdmin" mat-icon-button [matMenuTriggerFor]="menuRef">
                 <mat-icon>more_vert</mat-icon>
               </button>
             </h4>
@@ -176,7 +176,7 @@
 
       
     </div>
-    <div class="position-absolute top-0 end-0 m-2">
+    <div class="position-absolute top-0 end-0 m-2" *ngIf="isAdmin">
       <button mat-icon-button [matMenuTriggerFor]="menuRef">
         <mat-icon>more_vert</mat-icon>
       </button>
@@ -184,7 +184,7 @@
 
     <!-- Material Menu -->
     <mat-menu #menuRef="matMenu">
-      <button *ngIf="isAdmin" mat-menu-item (click)="edit(item)">
+      <button mat-menu-item (click)="edit(item)">
         <mat-icon>edit</mat-icon> Edit
       </button>
       <button mat-menu-item (click)="rateAndAvailability(item, true)">
