@@ -4,11 +4,16 @@ import { MatIconModule } from '@angular/material/icon';
 import { ColumnField } from '../../interfaces/data.view';
 import { FormsModule } from '@angular/forms';
 import { ButtonComponent } from '../button/button.component';
+import { MatMenuTrigger, MatMenu, MatMenuItem, MatMenuModule } from '@angular/material/menu';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-data-view',
   standalone: true,
-  imports: [CommonModule, MatIconModule, FormsModule, ButtonComponent],
+  imports: [CommonModule, MatIconModule, FormsModule, ButtonComponent, MatMenuTrigger,
+    MatMenuModule, MatButtonModule, MatIconModule,
+    MatMenu,
+      MatMenuItem],
   templateUrl: './data-view.component.html',
   styleUrl: './data-view.component.scss',
 })
@@ -23,6 +28,7 @@ export class DataViewComponent<T> {
   @Output() buttonEvent = new EventEmitter<string>();
   @Output() editEvent = new EventEmitter<string>();
   @Output() searchEvent = new EventEmitter<string>();
+  @Output() rateAndAvailabilityEvent = new EventEmitter<[string, boolean]>();
   @Input() isAdmin = false;
 
   onSearchChange() {
@@ -64,5 +70,9 @@ export class DataViewComponent<T> {
   }
   edit(item: T) {
     this.editEvent.emit((item as any).guid);
+  }
+
+  rateAndAvailability(item: T, isRateView: boolean) {
+    this.rateAndAvailabilityEvent.emit([(item as any).guid, isRateView])
   }
 }

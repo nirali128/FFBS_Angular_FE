@@ -65,6 +65,7 @@ export interface Booking {
     slotGuid: string;
     date: string;
     rate: number;
+    availability?: boolean 
   }
   
   export class FieldDetail {
@@ -155,6 +156,25 @@ export interface Booking {
   export interface BookingApproveReject {
     bookingId: string;
     status: string;
+  }
+
+  export interface FieldSlotAddRateAvailabilityRequestData {
+    fieldId: string;
+    rateType: string;
+    dates: FieldSlotDate[];
+  }
+  
+  export interface FieldSlotDate {
+    date: string;
+    dayId: string;
+    slots: SlotDetail[];
+  }
+  
+  export interface SlotDetail {
+    slotId: string;
+    oldRate?: number;
+    adjustedRate?: number; 
+    isAvailable?: boolean
   }
 
 export const FIELD_COLUMNS: ColumnField<FieldsDetailList>[] = [

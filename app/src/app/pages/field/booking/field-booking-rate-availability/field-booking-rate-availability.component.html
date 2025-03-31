@@ -1,0 +1,66 @@
+<div class="container mt-4">
+  <h2 class="col-12 fw-bold d-flex justify-content-between">
+    Modify Field {{ isRateView ? 'Rate' : 'Availability' }} 
+    <app-button
+      class="calendar-button"
+      [buttonType]="'normal'"
+      [text]="'Back'"
+      [color]="'secondary'"
+      (buttonClick)="navigate()"
+    >
+    </app-button>
+  </h2>
+
+  <div class="card p-3 mt-3">
+    <div class="d-flex justify-content-between align-items-center">
+      <div>
+        <mat-form-field class="mb-0">
+          <mat-label>Choose a {{ dayView ? "" : "start" }} date</mat-label>
+          <input
+            matInput
+            [(ngModel)]="startDate"
+            [matDatepicker]="picker"
+            [max]="maxDate"
+            (dateChange)="startDateChange($event)"
+          />
+          <mat-datepicker-toggle
+            matIconSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+
+        <mat-form-field *ngIf="!dayView" class="ms-2">
+          <mat-label>Choose a end date</mat-label>
+          <input
+            matInput
+            [matDatepicker]="endDatePicker"
+            [min]="minimumStartDate"
+            [max]="maxDate"
+            (dateChange)="endDateChange($event)"
+          />
+          <mat-datepicker-toggle
+            matIconSuffix
+            [for]="endDatePicker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #endDatePicker></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-slide-toggle
+          [(ngModel)]="dayView"
+          (change)="toggleChange($event)"
+          >{{ toggleSlideLabel }}</mat-slide-toggle
+        >
+      </div>
+    </div>
+
+    <app-calendar-editor
+      *ngIf="fieldSlot && fieldSlot.length"
+      [fieldSlotAvailability]="fieldSlot"
+      (selectedSlotsEvent)="selectedEvents($event)"
+      [dayView]="dayView"
+      [isRateView]="isRateView"
+    ></app-calendar-editor>
+  </div>
+</div>

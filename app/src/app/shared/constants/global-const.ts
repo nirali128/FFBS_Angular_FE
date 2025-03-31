@@ -68,9 +68,11 @@ export class GlobalConstant {
 
   public static readonly AVAILABILITY = {
     GET_FIELD_SLOTS_AVAILABILITY: "/fetch-field-slots-availability",
+    MODIFY_FIELD_SLOTS_AVAILABILITY: "/modify-field-slot-availability",
   }
 
   public static readonly RATE = {
     GET_RATES: "/fetch-rates",
+    ADD_RATES: "/add-rate-adjustment",
   }
 }

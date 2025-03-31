@@ -1,0 +1,26 @@
+
+.field-description {
+  font-size: 1rem;
+  color: #666;
+}
+
+.icon {
+  font-size: 1.2rem;
+  margin-right: 5px;
+  vertical-align: middle;
+}
+
+.height-400 {
+  height: 400px !important;
+}
+
+::ng-deep {
+  .mat-datepicker-content {
+    background-color: #fff !important;
+  }
+
+  .mat-calendar-body-disabled {
+    cursor: not-allowed !important;
+    color: #cfcccc !important;
+  }
+}

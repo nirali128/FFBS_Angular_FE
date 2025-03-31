@@ -15,7 +15,16 @@
           class="calendar-border"
           [ngClass]="{ 'width-200': !dayView }"
         >
-          {{ day | date : "EEEE" }}, <br />{{ day | date : "dd-MM-yyyy" }}
+          <div class="d-flex align-items-center justify-content-center">
+            <input *ngIf="shouldShowCheckbox(day)"
+              type="checkbox"
+              [checked]="isAllSlotsSelected(day)"
+              (change)="toggleSelectAllSlots(day, $event)"
+            />
+            <span class="ms-1">
+              {{ day | date : "EEEE" }}, <br />{{ day | date : "dd-MM-yyyy" }}
+            </span>
+          </div>
         </th>
       </tr>
     </thead>
