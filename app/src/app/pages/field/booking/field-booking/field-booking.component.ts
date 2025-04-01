@@ -153,6 +153,7 @@ export class FieldBookingComponent {
       this.generateFieldSlotRate();
     });
 
+    if(!this.isAdmin)
     this.bookingService
       .getAllBookingByFieldIdUserId(this.fieldId)
       .subscribe((res) => {
