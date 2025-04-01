@@ -63,7 +63,6 @@
           <div class="d-flex">
             <app-button
               buttonType="icon"
-              color="primary"
               icon="visibility"
               (buttonClick)="openViewDialog(element.bookingId)"
             >
@@ -73,7 +72,6 @@
               class="ms-1"
               *ngIf="element.status !== 'Cancelled'"
               buttonType="icon"
-              color="danger"
               icon="delete"
               (buttonClick)="deleteBooking(element.bookingId)"
             >

@@ -14,7 +14,7 @@ export class ButtonComponent {
   @Input() public text: string = '';
   @Input() public type: string = 'button';
   @Input() public buttonType: 'normal' | 'outline' | 'icon' | 'flat' | 'text-icon' = 'normal';
-  @Input() public color = 'primary';
+  @Input() public color = '';
   @Input() public icon: string = 'delete';
   @Input() public iconPosition: 'left' | 'right' = 'left';
   @Input() public disable: boolean = false;
