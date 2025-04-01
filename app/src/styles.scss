@@ -36,3 +36,7 @@ body {
 .error-messages.visible {
   visibility: visible;
 }
+
+label.star:hover {
+  transform: none !important;
+}

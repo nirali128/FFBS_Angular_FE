@@ -48,16 +48,10 @@ export class FeedbackListComponent {
         sort: true,
       },
       {
-        name: 'action',
-        label: 'Action',
-        type: 'button',
-        sort: false,
-        arr: [
-          {
-            name: GlobalConstant.DELETE,
-            src: 'visibility',
-          },
-        ],
+        name: 'rating',
+        label: 'Rating',
+        type: 'rating',
+        sort: false
       },
     ];
   }
