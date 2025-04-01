@@ -1,5 +1,5 @@
-<div class="container pt-5">
-  <h2 class="col-12 fw-bold d-flex justify-content-between">Edit User Profile</h2>
+<div class="container mt-4">
+  <h2 class="col-12 mb-4 fw-bold d-flex justify-content-between">Edit User Profile</h2>
   <form [formGroup]="profileForm" class="p-4 rounded shadow bg-white">
     <div class="row">
       <!-- Avatar Upload Section -->
@@ -24,6 +24,9 @@
           hidden
         />
       </div>
+      <mat-error class="mb-3" *ngIf="profileForm.get('avatar').touched && getFormControl('avatar').hasError('required')">
+        Avatar is required
+      </mat-error>
 
       <!-- Form Fields -->
       <div class="col-md-6">

@@ -7,7 +7,6 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { InputComponent } from '../../../shared/components/input/input.component';
-import { NgxEditorModule, Editor, Toolbar } from 'ngx-editor';
 import { ButtonComponent } from '../../../shared/components/button/button.component';
 import {
   ValidationRules,
@@ -28,7 +27,6 @@ import { CommonModule } from '@angular/common';
 import { MatError } from '@angular/material/form-field';
 import { FieldDetailsFormConfig } from '../field.config';
 import { SnackbarConfig } from '../../../shared/constants/snackbar-config.const';
-import { SuccessMessages } from '../../../shared/constants/messages-const';
 import { SnackbarService } from '../../../shared/service/snackbar.service';
 
 @Component({
@@ -37,7 +35,6 @@ import { SnackbarService } from '../../../shared/service/snackbar.service';
     InputComponent,
     ButtonComponent,
     ReactiveFormsModule,
-    NgxEditorModule,
     TextareaComponent,
     ImageUploadComponent,
     CheckboxComponent,

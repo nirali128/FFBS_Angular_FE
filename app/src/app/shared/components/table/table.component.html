@@ -7,8 +7,6 @@
   
   <div class="d-flex justify-content-end" [ngClass]="{'col-4': !addFormLink}">
       <input type="search" (input)="enableSearchBtn()" (keydown.enter)="onSearch()" id="searchValue" [(ngModel)]="searchVal" (keyup)="enableSearchBtn()" placeholder="Search Here..." class="search-input form-control w-15">
-      &nbsp;
-      <button mat-raised-button class="btn btn-success btnClass" [disabled]="!searchEnabled && previousFilterValue  == ''" (click)="onSearch()">Search</button>
   </div>
   
   <table matSort mat-table [dataSource]="dataSource">
