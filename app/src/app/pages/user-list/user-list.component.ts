@@ -78,9 +78,7 @@ export class UserListComponent {
     this.userService.getPaginatedUsers(filterRequest).subscribe((res) => {
       if (res.success) {
         this.filterRequest = filterRequest;
-        this.dataSource = res.data.map((item) => {
-          return { ...item, isActive: true };
-        });
+        this.dataSource = res.data;
         this.totalCount = res.pagination.totalItems;
       }
     });

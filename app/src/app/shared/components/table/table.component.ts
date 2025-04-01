@@ -41,7 +41,7 @@ export class TableComponent<T> {
   }
   @Input() addFormLink!:string;
   
-  @Output() onDelete = new EventEmitter<number>();
+  @Output() onDelete = new EventEmitter<T>();
   @Output() onToggle = new EventEmitter<T>();
   @Output() onView = new EventEmitter<T>();
   @Output() onEdit = new EventEmitter<T>();
@@ -70,14 +70,14 @@ export class TableComponent<T> {
     }
   }
 
-  delete(id: number) {
+  delete(element: T) {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       data: this.dialogData
     });
 
     dialogRef.afterClosed().subscribe(dialogResult => {
       if (dialogResult) {
-        this.onDelete.emit(id)
+        this.onDelete.emit(element)
       }
     });
   }

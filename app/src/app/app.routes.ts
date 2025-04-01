@@ -10,6 +10,7 @@ import { AuthGuard } from './shared/guards/auth.guard';
 import { AdminAuthGuard } from './shared/guards/admin-auth.guard';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { Role } from './shared/enum/role';
+import { FeedbackListComponent } from './pages/feedback/list/feedback-list.component';
 
 export const routes: Routes = [
     {path: '', pathMatch: 'full', redirectTo: 'register'},
@@ -80,6 +81,16 @@ export const routes: Routes = [
                     visibleTo: [Role.Admin]
                 },
                 component: UserListComponent
+            },
+            {
+                path: 'feedback-list',
+                title: 'Feedback',
+                data: {
+                    icon: 'list',
+                    title: 'Feedback',
+                    visibleTo: [Role.Admin, Role.Customer]
+                },
+                component: FeedbackListComponent
             },
             {path: '**', component: NotFoundComponent},
             {
