@@ -90,4 +90,21 @@ export class BookingService {
       this.getHeaders()
     );
   }
+
+  getAllBookingByFieldIdUserId(fieldId: string) {
+    let httpParams = new HttpParams()
+      .set('fieldId', fieldId)
+      .set('userId', this.authService.getUserId())
+    return this.httpClient.get<
+      ApiResponse<BookingDetailsResponseDto[]>
+    >(
+      `${
+        GlobalConstant.BOOKING_API_URL + GlobalConstant.BOOKING.GET_BOOKING_BY_FIELDID_USERID
+      }`,
+      {
+        ...this.getHeaders(),
+        params: httpParams,
+      }
+    );
+  }
 }

@@ -17,7 +17,7 @@ import { MatIcon } from '@angular/material/icon';
 import { ApiResponse } from '../../../../shared/interfaces/api.response';
 
 import dayjs from 'dayjs';
-import { forkJoin } from 'rxjs';
+import { catchError, forkJoin, of } from 'rxjs';
 import {
   FormControl,
   FormsModule,
@@ -42,6 +42,7 @@ import { UserService } from '../../../../shared/service/user.service';
 import { DropdownOption } from '../../../../shared/interfaces/dropdown.options';
 import { mapUserToDropdown } from '../../../../shared/utility/utilitty';
 import { SelectComponent } from '../../../../shared/components/select/select.component';
+import { FilterRequest } from '../../../../shared/interfaces/filter-request';
 
 @Component({
   selector: 'app-field-booking',
@@ -57,7 +58,7 @@ import { SelectComponent } from '../../../../shared/components/select/select.com
     MatSlideToggleModule,
     FormsModule,
     ButtonComponent,
-    SelectComponent
+    SelectComponent,
   ],
   templateUrl: './field-booking.component.html',
   styleUrl: './field-booking.component.scss',
@@ -80,6 +81,7 @@ export class FieldBookingComponent {
   isAdmin: boolean = false;
   userFormControl: FormControl = new FormControl('', [Validators.required]);
   userOptions: DropdownOption[] = [];
+  fieldBookings: any;
 
   constructor(
     public fieldService: FieldService,
@@ -95,8 +97,11 @@ export class FieldBookingComponent {
     });
     this.maxDate = dayjs().add(2, 'month').toDate();
     this.isAdmin = this.authService.getRole() == Role.Admin ? true : false;
-    this.userService.getPaginatedUsers().subscribe((res) => {
-      if(res.success) {
+    let filterRequest: FilterRequest = {
+      search: Role.Customer,
+    };
+    this.userService.getPaginatedUsers(filterRequest).subscribe((res) => {
+      if (res.success) {
         this.userOptions = mapUserToDropdown(res.data);
       }
     });
@@ -112,26 +117,10 @@ export class FieldBookingComponent {
       });
   }
 
-  startDateChange(event: any) {
-    if (event.value) {
-      this.startDate = event.value;
-      this.generateDateRange();
-      this.minimumStartDate = new Date(this.startDate);
-      this.minimumStartDate.setDate(this.startDate.getDate() + 1);
-    }
-  }
-
-  endDateChange(event: any) {
-    if (event.value) {
-      this.endDate = event.value;
-      this.generateDateRange();
-    }
-  }
-
   generateDateRange() {
     let arr = [];
     let start = dayjs(this.startDate, 'YYYY-MM-DD');
-    if (this.startDate && this.endDate) {
+    if (this.startDate && this.endDate && !this.dayView) {
       const end = dayjs(this.endDate, 'YYYY-MM-DD');
       const dates: string[] = [];
 
@@ -160,8 +149,19 @@ export class FieldBookingComponent {
         this.fieldSlotAvailability = res.fieldSlotAvailability.data;
       if (res.day.success) this.days = res.day.data;
       if (res.closedDays.success) this.closedDays = res.closedDays.data;
+
       this.generateFieldSlotRate();
     });
+
+    this.bookingService
+      .getAllBookingByFieldIdUserId(this.fieldId)
+      .subscribe((res) => {
+        if (res.success) {
+          this.fieldBookings = res.data;
+        } else {
+          this.fieldBookings = [];
+        }
+      });
   }
 
   generateFieldSlotRate() {
@@ -204,15 +204,22 @@ export class FieldBookingComponent {
     }
   }
 
-  toggleChange(event: MatSlideToggleChange) {
-    this.dayView = event.checked;
-    this.toggleSlideLabel = this.dayView
-      ? 'Toggle for multiple days booking'
-      : 'Toggle for single day booking';
-    if (this.dayView) {
-      this.endDate = null;
+  selectedDaysEvent(event: [string[], boolean]) {
+    const [dateArr, isDayView] = event;
+    if (dateArr.length && isDayView) {
+      this.startDate = new Date(dateArr[0]);
+    } else {
+      const selectedDate = dayjs(dateArr[0]);
+      const dayOfWeek = selectedDate.day();
+
+      // Calculate the Monday of the current week
+      const startOfWeek = selectedDate.subtract(dayOfWeek - 1, 'days');
+      const endOfWeek = startOfWeek.add(6, 'days');
+
+      this.startDate = startOfWeek.toDate();
+      this.endDate = endOfWeek.toDate();
     }
-    this.fieldSlot = [];
+    this.dayView = isDayView;
     this.generateDateRange();
   }
 
@@ -251,7 +258,9 @@ export class FieldBookingComponent {
     });
 
     const booking: Booking = {
-      userId: this.userFormControl.value,
+      userId: this.isAdmin
+        ? this.userFormControl.value
+        : this.authService.getUserId(),
       fieldId: this.fieldId,
       totalPrice: totalPrice,
       isLongTermBooking: true,
