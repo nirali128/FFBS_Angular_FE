@@ -6,7 +6,6 @@ import {
 } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NgxEditorModule } from 'ngx-editor';
 import { ButtonComponent } from '../../../shared/components/button/button.component';
 import { InputComponent } from '../../../shared/components/input/input.component';
 import {
@@ -40,7 +39,6 @@ import { SnackbarService } from '../../../shared/service/snackbar.service';
     ReactiveFormsModule,
     MatCardModule,
     TextareaComponent,
-    NgxEditorModule,
     ImageUploadComponent,
     CheckboxComponent,
     MultiSelectCheckboxComponent,

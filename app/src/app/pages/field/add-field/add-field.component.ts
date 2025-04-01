@@ -7,7 +7,6 @@ import {
 } from '@angular/forms';
 import { Router } from '@angular/router';
 import { InputComponent } from '../../../shared/components/input/input.component';
-import { NgxEditorModule, Editor, Toolbar } from 'ngx-editor';
 import { ButtonComponent } from '../../../shared/components/button/button.component';
 import {
   ValidationRules,
@@ -37,7 +36,6 @@ import { SnackbarService } from '../../../shared/service/snackbar.service';
     InputComponent,
     ButtonComponent,
     ReactiveFormsModule,
-    NgxEditorModule,
     TextareaComponent,
     ImageUploadComponent,
     CheckboxComponent,

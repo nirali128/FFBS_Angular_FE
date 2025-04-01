@@ -21,6 +21,7 @@ export class GlobalConstant {
   public static readonly RATE_API_URL = `${environment.baseUrl}/rate`;
   public static readonly USER_API_URL = `${environment.baseUrl}/user`;
   public static readonly INVOICE_API_URL = `${environment.baseUrl}/invoice`;
+  public static readonly FEEDBACK_API_URL = `${environment.baseUrl}/feedback`;
 
   public static readonly AUTH = {
     LOGIN: "/login",
@@ -51,6 +52,10 @@ export class GlobalConstant {
     APPROVE_REJECT_BOOKING: "/approve-or-reject",
     GET_ALL_BOOKINGS: "/get-all-bookings",
     DELETE_BOOKING: "/delete-booking"
+  }
+
+  public static readonly FEEDBACK = {
+    ADD_FEEDBACK: "/add-feedback"
   }
 
   public static readonly COMMON = {
