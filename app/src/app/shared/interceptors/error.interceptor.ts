@@ -29,7 +29,7 @@ export class ErrorInterceptor implements HttpInterceptor {
     return next.handle(request).pipe(
       catchError((error: HttpErrorResponse) => {
         if (request.url.includes(GlobalConstant.BOOKING.GET_BOOKING_BY_FIELDID_USERID)) {
-          return of(new HttpResponse({ body: { success: false, data: [], message: 'Error skipped.' } }));
+          return of(new HttpResponse({ body: { success: false, data: [] } }));
         }
 
         const message = error.error?.message;
