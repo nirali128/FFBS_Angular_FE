@@ -13,11 +13,13 @@
   
     <!-- Define dynamic columns -->
     <ng-container *ngFor="let column of displayedColumns" matColumnDef="{{column.name}}">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header class="text-capitalize" [attr.mat-sort-header]="column.sort ? '' : null">{{ column.label }}</th>
+      <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-capitalize" [attr.mat-sort-header]="column.sort ? '' : null">{{ column.label }}</th>
   
       <td mat-cell *matCellDef="let element">
         <!-- For showing data Columns -->
         <span *ngIf="column.type == 'label'">{{ element[column.name] ?? '-' }}</span>
+
+        <ngx-star-rating class="float-start" *ngIf="column.type == 'rating'" [(ngModel)]="element[column.name]" [disabled]="true"></ngx-star-rating>
   
         <!-- For IsActive Column -->
         <mat-slide-toggle *ngIf="column.type == 'switch'" class="switch-color" (change)="toggle(element)"
@@ -28,18 +30,18 @@
           <ng-container *ngFor="let item of column.arr">
   
             <button class="btn" *ngIf="item.name == 'view'" mat-icon-button (click)="view(element)">
-              <mat-icon *ngIf="item.src"  color="primary" [fontIcon]="item.src"></mat-icon>
+              <mat-icon *ngIf="item.src"  [fontIcon]="item.src"></mat-icon>
             </button>
             <!-- For Edit button -->
             <button class="btn" *ngIf="item.name == 'edit'" mat-icon-button (click)="edit(element)">
-              <mat-icon *ngIf="item.src" color="primary" [fontIcon]="item.src"></mat-icon>
+              <mat-icon *ngIf="item.src" [fontIcon]="item.src"></mat-icon>
             </button>
   
             <!-- For Delete button -->
             <app-button *ngIf="item.name == 'delete'" 
             buttonType="icon"
             [icon]="item.src"
-            (buttonClick)="delete(element.id)"
+            (buttonClick)="delete(element)"
           ></app-button>
             
           </ng-container>

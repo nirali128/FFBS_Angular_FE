@@ -24,20 +24,11 @@ import { MatIcon } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { NgxStarRatingModule } from 'ngx-star-rating';
 
 @Component({
   selector: 'app-table',
-  imports: [
-    MatTableModule,
-    ButtonComponent,
-    MatPaginatorModule,
-    CommonModule,
-    MatIcon,
-    FormsModule,
-    RouterModule,
-    MatSortModule,
-    MatSlideToggleModule,
-  ],
+  imports: [MatTableModule, ButtonComponent, MatPaginatorModule, CommonModule, MatIcon, FormsModule, RouterModule, MatSlideToggleModule, NgxStarRatingModule, MatSortModule,],
   templateUrl: './table.component.html',
   styleUrl: './table.component.scss',
 })
@@ -57,11 +48,11 @@ export class TableComponent<T> {
   @Input() paginationOptions: number[] = GlobalConstant.paginationOptions;
   @Input() totalCount: number = 0;
   @Input() dialogData: iDialogField = {
-    message: 'Do you want to delete this record?',
-  };
-  @Input() addFormLink!: string;
-
-  @Output() onDelete = new EventEmitter<number>();
+    message: "Do you want to delete this record?"
+  }
+  @Input() addFormLink!:string;
+  
+  @Output() onDelete = new EventEmitter<T>();
   @Output() onToggle = new EventEmitter<T>();
   @Output() onView = new EventEmitter<T>();
   @Output() onEdit = new EventEmitter<T>();
@@ -90,14 +81,14 @@ export class TableComponent<T> {
     }
   }
 
-  delete(id: number) {
+  delete(element: T) {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
       data: this.dialogData,
     });
 
     dialogRef.afterClosed().subscribe((dialogResult) => {
       if (dialogResult) {
-        this.onDelete.emit(id);
+        this.onDelete.emit(element)
       }
     });
   }

@@ -93,56 +93,6 @@
           [options]="userOptions"
           [formControl]="userFormControl"
         ></app-select>
-    <!-- <div class="d-flex justify-content-between align-items-center">
-      <div class="d-flex">
-        <app-select *ngIf="isAdmin"
-          label="User"
-          placeholder="Select user"
-          [options]="userOptions"
-          [formControl]="userFormControl"
-        ></app-select>
-        <div class="ms-1">
-        <mat-form-field class="mb-0">
-          <mat-label>Choose a {{ dayView ? "" : "start" }} date</mat-label>
-          <input
-            matInput
-            [(ngModel)]="startDate"
-            [matDatepicker]="picker"
-            [max]="maxDate"
-            (dateChange)="startDateChange($event)"
-          />
-          <mat-datepicker-toggle
-            matIconSuffix
-            [for]="picker"
-          ></mat-datepicker-toggle>
-          <mat-datepicker #picker></mat-datepicker>
-        </mat-form-field>
-
-        <mat-form-field *ngIf="!dayView" class="ms-2">
-          <mat-label>Choose a end date</mat-label>
-          <input
-            matInput
-            [matDatepicker]="endDatePicker"
-            [min]="minimumStartDate"
-            [max]="maxDate"
-            (dateChange)="endDateChange($event)"
-          />
-          <mat-datepicker-toggle
-            matIconSuffix
-            [for]="endDatePicker"
-          ></mat-datepicker-toggle>
-          <mat-datepicker #endDatePicker></mat-datepicker>
-        </mat-form-field>
-      </div>
-      </div>
-      <div>
-        <mat-slide-toggle
-          [(ngModel)]="dayView"
-          (change)="toggleChange($event)"
-          >{{ toggleSlideLabel }}</mat-slide-toggle
-        >
-      </div>
-    </div> -->
 
     <app-calendar
       *ngIf="(isAdmin && userFormControl.value || !isAdmin)"

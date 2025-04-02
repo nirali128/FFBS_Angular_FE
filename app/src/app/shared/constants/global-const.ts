@@ -56,7 +56,9 @@ export class GlobalConstant {
   }
 
   public static readonly FEEDBACK = {
-    ADD_FEEDBACK: "/add-feedback"
+    ADD_FEEDBACK: "/add-feedback",
+    GET_ALL_FEEDBACK: "/get-all-feedback",
+    DELETE_FEEDBACK: "/delete-feedback",
   }
 
   public static readonly COMMON = {
