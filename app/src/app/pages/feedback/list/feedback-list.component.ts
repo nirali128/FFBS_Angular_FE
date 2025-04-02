@@ -7,6 +7,8 @@ import { iTableField } from '../../../shared/interfaces/table-fields';
 import { GlobalConstant } from '../../../shared/constants/global-const';
 import { SnackbarService } from '../../../shared/service/snackbar.service';
 import { SnackbarConfig } from '../../../shared/constants/snackbar-config.const';
+import { AuthService } from '../../../shared/service/authentication.service';
+import { Role } from '../../../shared/enum/role';
 
 @Component({
   selector: 'app-feedback-list',
@@ -21,7 +23,7 @@ export class FeedbackListComponent {
   isAdmin: boolean = false;
   displayedColumns!: iTableField[];
 
-  constructor(public readonly feedbackService: FeedbackService, public readonly snackBarService: SnackbarService) {
+  constructor(public readonly feedbackService: FeedbackService, public readonly snackBarService: SnackbarService, public readonly authService: AuthService) {
     this.displayedColumns = [
       {
         name: 'bookingNumber',
@@ -53,10 +55,25 @@ export class FeedbackListComponent {
         type: 'rating',
         sort: false
       },
+      {
+        name: 'action',
+        label: 'Action',
+        type: 'button',
+        sort: false,
+        arr: [
+          {
+            name: GlobalConstant.DELETE,
+            src: 'delete',
+          },
+        ],
+      },
     ];
+    this.isAdmin = this.authService.getRole() == Role.Admin ? true : false; 
   }
 
   getAll(filterRequest: FilterRequest) {
+    if(!this.isAdmin)
+      filterRequest.search = this.authService.getUsername().split(' ')[1];
     this.feedbackService
       .getPaginatedFeedbacks(filterRequest)
       .subscribe((res) => {

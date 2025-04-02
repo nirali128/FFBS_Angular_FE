@@ -40,7 +40,7 @@
 
 <div class="row" *ngIf="isGridView">
   <div class="col-md-4 mb-3" *ngFor="let item of filteredItems()">
-    <div class="card shadow-sm p-3">
+    <div class="card shadow-sm height-600 p-3">
       <div class="card-body row">
         <div
           *ngFor="let col of columns"
@@ -73,7 +73,7 @@
             </h4>
             <span
               *ngIf="col.labelType === 'badge'"
-              class="badge px-3 py-2"
+              class="badge px-3 py-2 float-end"
               [ngClass]="item[col.key] ? 'bg-success' : 'bg-danger'"
             >
               {{ item[col.key] ? "Available" : "Not Available" }}

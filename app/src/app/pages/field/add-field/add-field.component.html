@@ -85,7 +85,7 @@
         <app-image-upload
           (filesUploaded)="onFilesUploaded($event)"
         ></app-image-upload>
-        <mat-error class="error" *ngIf="submitted && files && !files.length">At least 1 image is required</mat-error>
+        <mat-error class="error-messages visible" *ngIf="submitted && files && !files.length">At least 1 image is required</mat-error>
       </div>
     </div>
     <div class="form-actions text-center mt-4 col-4 d-flex">

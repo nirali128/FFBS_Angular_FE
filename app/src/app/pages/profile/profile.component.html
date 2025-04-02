@@ -24,8 +24,8 @@
           hidden
         />
       </div>
-      <mat-error class="mb-3" *ngIf="profileForm.get('avatar').touched && getFormControl('avatar').hasError('required')">
-        Avatar is required
+      <mat-error class="mb-3 error-messages visible" *ngIf="profileForm.get('avatar').touched && getFormControl('avatar').hasError('required')">
+        This field is required
       </mat-error>
 
       <!-- Form Fields -->
@@ -80,11 +80,11 @@
             [for]="picker"
           ></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
-          <mat-error class="mt-1" *ngIf="getFormControl('dob').hasError('required')">
-            Date of Birth is required
+          <mat-error class="mt-1 error-messages" *ngIf="getFormControl('dob').hasError('required')">
+            This field is required
           </mat-error>
-          <mat-error class="mt-1" *ngIf="getFormControl('dob').hasError('minAge')">
-            Minimum age should be 14 years old
+          <mat-error class="mt-1 error-messages" *ngIf="getFormControl('dob').hasError('minAge')">
+            Minimum age should be 18 years old
           </mat-error>
         </mat-form-field>
       </div>

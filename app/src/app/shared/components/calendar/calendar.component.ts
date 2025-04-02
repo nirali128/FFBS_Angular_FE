@@ -14,6 +14,8 @@ import {
 import { convertSelectableSlotToDialogTable } from '../../mapper/mapper';
 import { ButtonComponent } from '../button/button.component';
 import { DialogComponent } from './dialog/dialog.component';
+import { AuthService } from '../../service/authentication.service';
+import { Role } from '../../enum/role';
 
 @Component({
   selector: 'app-calendar',
@@ -45,8 +47,11 @@ export class CalendarComponent {
   displayedColumns: string[] = [];
   slots: CalendarSlot[];
   @Output() selectedDaysEvent = new EventEmitter<[string[], boolean]>();
+  isAdmin: boolean = false;
 
-  constructor(public dialog: MatDialog) {}
+  constructor(public dialog: MatDialog, public readonly authService: AuthService) {
+    this.isAdmin = this.authService.getRole() == Role.Admin ? true : false;
+  }
 
   ngAfterViewInit() {
     this.selectedDaysEvent.emit([[this.currentDate.format('YYYY-MM-DD')], this.dayView])
@@ -195,7 +200,7 @@ export class CalendarComponent {
         return { status: 'past' };
       }
 
-      if (availability && !status) {
+      if (availability && (!status || status === 'Cancelled')) {
         return { status: 'available', rate: rate?.toString() };
       }
 

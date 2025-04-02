@@ -20,13 +20,13 @@
       ></ngx-star-rating>
     </div>
     <mat-error
-      class="mt-1"
+      class="mt-1 error-messages visible"
       *ngIf="
         getFormControl('rating').touched &&
         getFormControl('rating').hasError('required')
       "
     >
-      Rating is required
+      This field is required
     </mat-error>
   </form>
 </mat-dialog-content>

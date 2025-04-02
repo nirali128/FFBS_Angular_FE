@@ -21,6 +21,8 @@
     (rateAndAvailabilityEvent)="handleRateAndAvailability($event)"
   ></app-data-view>
 
+  <p *ngIf="!fields || !fields.length">No Data</p>
+
   <mat-paginator
   [length]="totalItems"
   [pageSize]="pageSize"

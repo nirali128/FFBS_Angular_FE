@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { GlobalConstant } from '../../constants/global-const';
 import { MatDialog } from '@angular/material/dialog';
-import { iDialogField } from '../../interfaces/dialog-fields';
+import { DialogResponse, iDialogField } from '../../interfaces/dialog-fields';
 import { FilterRequest } from '../../interfaces/filter-request';
 import { iTableField } from '../../interfaces/table-fields';
 import { ConfirmDialogComponent } from '../dialog/dialog.component';
@@ -86,8 +86,8 @@ export class TableComponent<T> {
       data: this.dialogData,
     });
 
-    dialogRef.afterClosed().subscribe((dialogResult) => {
-      if (dialogResult) {
+    dialogRef.afterClosed().subscribe((dialogResult: DialogResponse) => {
+      if (dialogResult.confirmed) {
         this.onDelete.emit(element)
       }
     });

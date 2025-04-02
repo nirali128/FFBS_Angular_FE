@@ -13,8 +13,12 @@
   
     <!-- Define dynamic columns -->
     <ng-container *ngFor="let column of displayedColumns" matColumnDef="{{column.name}}">
-      <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-capitalize" [attr.mat-sort-header]="column.sort ? '' : null">{{ column.label }}</th>
-  
+      <ng-container *ngIf="!column.sort">
+        <th mat-header-cell *matHeaderCellDef  class="text-capitalize">{{ column.label }}</th>
+      </ng-container>
+      <ng-container *ngIf="column.sort">
+        <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-capitalize">{{ column.label }}</th>
+      </ng-container>
       <td mat-cell *matCellDef="let element">
         <!-- For showing data Columns -->
         <span *ngIf="column.type == 'label'">{{ element[column.name] ?? '-' }}</span>

@@ -5,10 +5,6 @@ import { FilterRequest } from '../../shared/interfaces/filter-request';
 import { iTableField } from '../../shared/interfaces/table-fields';
 import { InvoiceService } from '../../shared/service/invoice.service';
 import { Router } from '@angular/router';
-import { ConfirmDialogComponent } from '../../shared/components/dialog/dialog.component';
-import { SnackbarConfig } from '../../shared/constants/snackbar-config.const';
-import { iDialogField } from '../../shared/interfaces/dialog-fields';
-import { User } from '../../shared/interfaces/user';
 import { SnackbarService } from '../../shared/service/snackbar.service';
 import { GlobalConstant } from '../../shared/constants/global-const';
 
@@ -42,7 +38,7 @@ export class InvoiceListComponent {
         name: 'invoiceDate',
         label: 'Invoice Date',
         type: 'label',
-        sort: true,
+        sort: false,
       },
       {
         name: 'amount',

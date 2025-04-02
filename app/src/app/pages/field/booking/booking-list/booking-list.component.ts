@@ -17,7 +17,7 @@ import { SnackbarService } from '../../../../shared/service/snackbar.service';
 import { SnackbarConfig } from '../../../../shared/constants/snackbar-config.const';
 import { SuccessMessages } from '../../../../shared/constants/messages-const';
 import { ConfirmDialogComponent } from '../../../../shared/components/dialog/dialog.component';
-import { iDialogField } from '../../../../shared/interfaces/dialog-fields';
+import { DialogResponse, iDialogField } from '../../../../shared/interfaces/dialog-fields';
 import { AuthService } from '../../../../shared/service/authentication.service';
 import { FeedbackService } from '../../../../shared/service/feedback.service';
 import { Role } from '../../../../shared/enum/role';
@@ -27,6 +27,7 @@ import { FeedbackRatingDialogComponent } from './feedback-rating-dialog/feedback
 import { AddFeedback } from '../../../../shared/interfaces/feedback';
 import { PaginationRequest } from '../../../../shared/interfaces/api.response';
 import { FilterRequest } from '../../../../shared/interfaces/filter-request';
+
 
 @Component({
   selector: 'app-booking-list',
@@ -110,6 +111,7 @@ export class BookingListComponent {
   announceSortChange(sortState: Sort) {
     this.filterRequest.sortBy = sortState.active;
     this.filterRequest.sortOrder = sortState.direction;
+    this.loadBookings();
   }
 
   applyFilter(): void {
@@ -183,8 +185,8 @@ export class BookingListComponent {
       data: this.dialogData,
     });
 
-    dialogRef.afterClosed().subscribe((dialogResult) => {
-      if (dialogResult) {
+    dialogRef.afterClosed().subscribe((dialogResult: DialogResponse) => {
+      if (dialogResult.confirmed) {
         this.bookingService.deleteBooking(bookingId).subscribe((res) => {
           if(res.success) {
             this.snackBarService.show(

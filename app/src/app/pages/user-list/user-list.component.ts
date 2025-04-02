@@ -6,13 +6,14 @@ import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmDialogComponent } from '../../shared/components/dialog/dialog.component';
 import {
-  DialogRepsone,
+  DialogResponse,
   iDialogField,
 } from '../../shared/interfaces/dialog-fields';
 import { SnackbarService } from '../../shared/service/snackbar.service';
 import { SnackbarConfig } from '../../shared/constants/snackbar-config.const';
 import { UserService } from '../../shared/service/user.service';
 import { User, BlockUser } from '../../shared/interfaces/user';
+import { Role } from '../../shared/enum/role';
 
 @Component({
   selector: 'app-user-list',
@@ -75,6 +76,7 @@ export class UserListComponent {
   }
 
   getAll(filterRequest: FilterRequest) {
+    filterRequest.search = Role.Customer;
     this.userService.getPaginatedUsers(filterRequest).subscribe((res) => {
       if (res.success) {
         this.filterRequest = filterRequest;
@@ -93,7 +95,7 @@ export class UserListComponent {
       data: dialogData,
     });
 
-    dialogRef.afterClosed().subscribe((dialogResult: DialogRepsone) => {
+    dialogRef.afterClosed().subscribe((dialogResult: DialogResponse) => {
       if (dialogResult.reason && dialogResult.confirmed) {
         let data: BlockUser = {
           reason: dialogResult.reason,

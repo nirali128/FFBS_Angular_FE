@@ -8,9 +8,9 @@
         [placeholder]="'Enter your reason...'"
         [formControl]="reasonControl"
       ></app-textarea>
-      <mat-error
+      <mat-error class="error-messages visible"
         *ngIf="(submitted || reasonControl.touched) && reasonControl.hasError"
-        >Reason is required</mat-error
+        >This field is required</mat-error
       >
     </div>
   </mat-dialog-content>
