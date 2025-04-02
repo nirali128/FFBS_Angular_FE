@@ -27,7 +27,6 @@ import { CommonModule } from '@angular/common';
 import { forkJoin } from 'rxjs';
 import { MatError } from '@angular/material/form-field';
 import { FieldDetailsFormConfig } from '../field.config';
-import { SuccessMessages } from '../../../shared/constants/messages-const';
 import { SnackbarConfig } from '../../../shared/constants/snackbar-config.const';
 import { SnackbarService } from '../../../shared/service/snackbar.service';
 

@@ -40,3 +40,7 @@ body {
 label.star:hover {
   transform: none !important;
 }
+
+.mat-mdc-menu-content, .mat-mdc-menu-content .mat-mdc-menu-item .mat-mdc-menu-item-text {
+  background-color: white !important;
+}

@@ -41,7 +41,7 @@ export const routes: Routes = [
                 path:'field',
                 title: 'Field',
                 data: {
-                    icon: 'list',
+                    icon: 'sports_soccer',
                     title: 'Field',
                     visibleTo: [Role.Admin, Role.Customer]
                 },
@@ -51,7 +51,7 @@ export const routes: Routes = [
                 path:'booking-list',
                 title: 'Booking',
                 data: {
-                    icon: 'list',
+                    icon: 'event',
                     title: 'Booking',
                     visibleTo: [Role.Admin, Role.Customer]
                 },
@@ -65,7 +65,7 @@ export const routes: Routes = [
                 path:'invoice-list',
                 title: 'Invoice',
                 data: {
-                    icon: 'list',
+                    icon: 'receipt_long',
                     title: 'Invoice',
                     visibleTo: [Role.Admin]
                 },
@@ -76,7 +76,7 @@ export const routes: Routes = [
                 path: 'user-list',
                 title: 'User',
                 data: {
-                    icon: 'list',
+                    icon: 'person',
                     title: 'User',
                     visibleTo: [Role.Admin]
                 },
