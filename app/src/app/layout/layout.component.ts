@@ -80,17 +80,8 @@ export class LayoutComponent {
 
   routerSubscribe() {
     const role = this.authService.getRole();
-
     this.routes = this.routes.filter((route) => {
       return route.data['visibleTo']?.includes(role);
-    });
-    this.router.events.subscribe(() => {
-      if (this.routes.length) {
-        const data = this.routes.find(
-          (r) => r.path === this.route.snapshot.firstChild?.routeConfig?.path
-        ) as RouteData;
-        this.actualRoute = { title: data.title, icon: data.icon };
-      }
     });
   }
 

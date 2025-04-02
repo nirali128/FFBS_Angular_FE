@@ -59,6 +59,7 @@ export const routes: Routes = [
             },
             {
                 path: 'profile',
+                title: 'Profile',
                 component: ProfileComponent
             },
             {

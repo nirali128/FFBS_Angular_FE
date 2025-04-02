@@ -9,7 +9,6 @@ export class AccessAuthGuard implements CanActivate {
   constructor(private authService: AuthService, private router: Router) {}
 
   canActivate(route: ActivatedRouteSnapshot): boolean {
-    debugger
     const role = this.authService.getRole();
     const allowedRoles: string[] = route.data['visibleTo'];
     if (allowedRoles && allowedRoles.includes(role)) {
