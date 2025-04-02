@@ -14,7 +14,7 @@
     <!-- Define dynamic columns -->
     <ng-container *ngFor="let column of displayedColumns" matColumnDef="{{column.name}}">
       <ng-container *ngIf="!column.sort">
-        <th mat-header-cell *matHeaderCellDef  class="text-capitalize">{{ column.label }}</th>
+        <th mat-header-cell *matHeaderCellDef  class="text-capitalize" [ngClass]="{'ps-84': column.type == 'rating'}">{{ column.label }}</th>
       </ng-container>
       <ng-container *ngIf="column.sort">
         <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-capitalize">{{ column.label }}</th>
@@ -42,7 +42,7 @@
             </button>
   
             <!-- For Delete button -->
-            <app-button *ngIf="item.name == 'delete'" 
+            <app-button *ngIf="item.name == 'delete'" class="float-start"
             buttonType="icon"
             [icon]="item.src"
             (buttonClick)="delete(element)"

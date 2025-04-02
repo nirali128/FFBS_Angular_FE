@@ -63,6 +63,7 @@ export class BookingListComponent {
   isAdmin: boolean = false;
   private filterSubject = new Subject<void>();
   filterRequest: FilterRequest;
+  totalCount: number;
 
   constructor(
     private readonly bookingService: BookingService,
@@ -103,7 +104,7 @@ export class BookingListComponent {
               .join(', ')
             };
           });
-          this.paginator.length = response.pagination.totalItems;
+          this.totalCount = response.pagination.totalItems;
         }
       });
   }
