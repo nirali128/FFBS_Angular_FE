@@ -1,0 +1,14 @@
+<div class="container mt-4">
+    <h2>All Discounts</h2>
+    <app-button *ngIf="isAdmin"
+      buttonType="text-icon"
+      text="Add"
+      icon="add"
+      color="primary"
+      (buttonClick)="navigateToAddField()"
+    >
+    </app-button>
+    <app-table (onPagination)="getAll($event)" [data]="dataSource" [displayedColumns]="displayedColumns"
+      [totalCount]="totalCount">
+    </app-table>
+</div>

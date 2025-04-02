@@ -94,6 +94,17 @@ export const routes: Routes = [
                 canActivate: [AccessAuthGuard],
                 component: FeedbackListComponent
             },
+            {
+                path: 'discount',
+                title: 'Discount',
+                data: {
+                    icon: 'sell',
+                    title: 'Discount',
+                    visibleTo: [Role.Admin]
+                },
+                canActivate: [AccessAuthGuard],
+                loadChildren: () => import('./pages/discount/discount.routes')
+            },
             {path: '**', component: NotFoundComponent},
             {
                 path: '',
