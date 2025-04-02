@@ -86,7 +86,7 @@ export const routes: Routes = [
                 path: 'feedback-list',
                 title: 'Feedback',
                 data: {
-                    icon: 'list',
+                    icon: 'feedback',
                     title: 'Feedback',
                     visibleTo: [Role.Admin, Role.Customer]
                 },
