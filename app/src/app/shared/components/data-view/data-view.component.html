@@ -40,7 +40,7 @@
 
 <div class="row" *ngIf="isGridView">
   <div class="col-md-4 mb-3" *ngFor="let item of filteredItems()">
-    <div class="card shadow-sm height-700 p-3">
+    <div class="card shadow-sm height-630 p-3">
       <div class="card-body row">
         <div
           *ngFor="let col of columns"
@@ -83,7 +83,7 @@
               <p>{{ item[col.key] }}</p>
             </div>
 
-            <div  *ngIf="col.labelType == 'rating'" class="d-flex align-items-center mb-1">
+            <div  *ngIf="col.labelType == 'rating'" class="d-flex align-items-center" [ngClass]="{'mb-2': item[col.key] == 0.00}">
               <strong class="pe-2">{{ col.label }}:</strong>
               <ngx-star-rating *ngIf="item[col.key] != 0.00" [(ngModel)]="item[col.key]" [disabled]="true"></ngx-star-rating>
               <span *ngIf="item[col.key] == 0.00">No rating</span>
@@ -135,7 +135,7 @@
       <div *ngIf="col.isVisible && col.labelType === 'image'" class="me-3">
         <img
           [src]="item[col.key]"
-          class="rounded img-fluid height-150"
+          class="rounded img-fluid height-180"
           width="250"
           alt="Field Image"
         />
@@ -162,6 +162,12 @@
 
           <div *ngIf="col.labelType === 'description'">
             <p>{{ item[col.key] }}</p>
+          </div>
+
+          <div  *ngIf="col.labelType == 'rating'" class="d-flex align-items-center" [ngClass]="{'my-2': item[col.key] == 0.00}">
+            <strong class="pe-2">{{ col.label }}:</strong>
+            <ngx-star-rating *ngIf="item[col.key] != 0.00" [(ngModel)]="item[col.key]" [disabled]="true"></ngx-star-rating>
+            <span *ngIf="item[col.key] == 0.00">No rating</span>
           </div>
 
           <div *ngIf="col.labelType === 'list'">
