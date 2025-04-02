@@ -1,37 +1,36 @@
 <div class="d-flex justify-content-between align-items-center mb-3">
-  <div>
-    <div class="d-flex align-items-center flex-grow">
+  <div class="d-flex align-items-center flex-grow col-11">
+    <input
+      type="search"
+      id="searchValue"
+      [(ngModel)]="searchQuery"
+      (ngModelChange)="onSearchChange()"
+      placeholder="Search Here..."
+      class="search-input form-control w-15"
+    />
+    <div class="ms-2 form-check col-9">
       <input
-        type="text"
-        class="form-control w-100"
-        placeholder="Search by field name"
-        [(ngModel)]="searchQuery"
-        (ngModelChange)="onSearchChange()"
+        class="form-check-input"
+        type="checkbox"
+        [(ngModel)]="showAvailableOnly"
       />
-      <div class="ms-2 form-check w-100 d-flex align-items-center">
-        <input
-          class="form-check-input"
-          type="checkbox"
-          [(ngModel)]="showAvailableOnly"
-        />
-        <label class="form-check-label" for="availableOnly"
-          >Show Available Fields Only</label
-        >
-      </div>
+      <label class="form-check-label" for="availableOnly"
+        >Show Available Fields Only</label
+      >
     </div>
   </div>
 
   <div>
     <button
       class="btn rounded-0"
-      [ngClass]="{ 'btn-primary': isGridView, 'btn-light': !isGridView }"
+      [ngClass]="{ 'btn-primary': isGridView, 'btn-outline-secondary': !isGridView }"
       (click)="isGridView = true"
     >
       <mat-icon>{{ "grid_view" }}</mat-icon>
     </button>
     <button
       class="btn rounded-0"
-      [ngClass]="{ 'btn-primary': !isGridView, 'btn-light': isGridView }"
+      [ngClass]="{ 'btn-primary': !isGridView, 'btn-outline-secondary': isGridView }"
       (click)="isGridView = false"
     >
       <mat-icon>{{ "list" }}</mat-icon>
@@ -59,9 +58,16 @@
                 height="200"
               />
             </div>
-            <h4 *ngIf="col.labelType === 'title'" class="mb-0 d-flex align-items-center">
+            <h4
+              *ngIf="col.labelType === 'title'"
+              class="mb-0 d-flex align-items-center"
+            >
               {{ item[col.key] }}
-              <button *ngIf="isAdmin" mat-icon-button [matMenuTriggerFor]="menuRef">
+              <button
+                *ngIf="isAdmin"
+                mat-icon-button
+                [matMenuTriggerFor]="menuRef"
+              >
                 <mat-icon>more_vert</mat-icon>
               </button>
             </h4>
@@ -173,8 +179,6 @@
         (buttonClick)="buttonClick(item)"
       >
       </app-button>
-
-      
     </div>
     <div class="position-absolute top-0 end-0 m-2" *ngIf="isAdmin">
       <button mat-icon-button [matMenuTriggerFor]="menuRef">

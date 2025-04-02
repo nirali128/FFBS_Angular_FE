@@ -1,5 +1,51 @@
 <div class="col-12 d-flex justify-content-between">
-    <div></div>
+  <div class="d-flex justify-content-between align-items-center">
+    <app-button
+      class="calendar-button"
+      [buttonType]="'icon'"
+      [color]="'primary'"
+      [icon]="'chevron_left'"
+      (buttonClick)="navigate(-1)"
+    >
+    </app-button>
+    <app-button
+      class="calendar-button"
+      [buttonType]="'normal'"
+      [color]="'primary'"
+      [text]="'Today'"
+      [disable]="isTodayButtonDisabled()"
+      (buttonClick)="goToToday()"
+    >
+    </app-button>
+    <app-button
+      class="calendar-button"
+      [buttonType]="'icon'"
+      [color]="'primary'"
+      [icon]="'chevron_right'"
+      (buttonClick)="navigate(1)"
+    >
+    </app-button>
+  </div>
+
+  <div class="d-flex justify-content-between align-items-center">
+    <app-button
+      class="calendar-button"
+      [buttonType]="'normal'"
+      [color]="dayView ? 'primary' : 'secondary'"
+      [text]="'Day'"
+      (buttonClick)="toggleView(true)"
+    >
+    </app-button>
+
+    <app-button
+      class="calendar-button"
+      [buttonType]="'normal'"
+      [color]="!dayView ? 'primary' : 'secondary'"
+      [text]="'Week'"
+      (buttonClick)="toggleView(false)"
+    >
+    </app-button>
+  </div>
   </div>
   <div
     *ngIf="fieldSlotAvailability && slots"
@@ -51,7 +97,7 @@
   </div>
 
   <div *ngIf="isRateView && getSelectedSlotCount()" class="col-4 mt-3">
-    <label for="rateInput">Enter Rate:</label>
+    <label for="rateInput" class="fw-bold mb-1">Enter Rate:</label>
     <input
       id="rateInput"
       type="number"
@@ -81,7 +127,7 @@
       <app-button
         [buttonType]="'normal'"
         [color]="'danger'"
-        [text]="'Save changes'"
+        [text]=" isRateView ? 'Save changes': 'Make unavailable'"
         [disable]="(getSelectedSlotCount() && isRateView && !rateInput) || !getSelectedSlotCount()"
         (buttonClick)="bookNow()"
       >

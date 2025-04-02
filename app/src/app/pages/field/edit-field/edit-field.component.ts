@@ -6,7 +6,6 @@ import {
 } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NgxEditorModule } from 'ngx-editor';
 import { ButtonComponent } from '../../../shared/components/button/button.component';
 import { InputComponent } from '../../../shared/components/input/input.component';
 import {
@@ -28,7 +27,6 @@ import { CommonModule } from '@angular/common';
 import { forkJoin } from 'rxjs';
 import { MatError } from '@angular/material/form-field';
 import { FieldDetailsFormConfig } from '../field.config';
-import { SuccessMessages } from '../../../shared/constants/messages-const';
 import { SnackbarConfig } from '../../../shared/constants/snackbar-config.const';
 import { SnackbarService } from '../../../shared/service/snackbar.service';
 
@@ -40,7 +38,6 @@ import { SnackbarService } from '../../../shared/service/snackbar.service';
     ReactiveFormsModule,
     MatCardModule,
     TextareaComponent,
-    NgxEditorModule,
     ImageUploadComponent,
     CheckboxComponent,
     MultiSelectCheckboxComponent,

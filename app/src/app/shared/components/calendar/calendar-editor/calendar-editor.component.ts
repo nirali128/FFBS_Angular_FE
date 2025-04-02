@@ -27,7 +27,7 @@ import { FormsModule } from '@angular/forms';
 export class CalendarEditorComponent {
   showTable: boolean = false;
   @Input() fieldSlotAvailability: FieldSlotRateData[];
-  @Input() dayView: boolean = false;
+  dayView: boolean = false;
   @Input() isRateView: boolean = false;
 
   displayedDays: string[];
@@ -40,13 +40,51 @@ export class CalendarEditorComponent {
   selectedSlots: { [key: string]: SelectableSlot[] } = {};
   displayedColumns: string[] = [];
   slots: CalendarSlot[];
-  rateInput: number | null = null; 
+  rateInput: number | null = null;
+  @Output() selectedDaysEvent = new EventEmitter<[string[], boolean]>();
 
+  ngAfterViewInit() {
+    this.selectedDaysEvent.emit([[this.currentDate.format('YYYY-MM-DD')], this.dayView])
+  }
 
   ngOnChanges() {
+    this.removeAll();
     this.getDays();
     this.getSlots();
   }
+
+  isTodayButtonDisabled(): boolean {
+      if (this.dayView) {
+        return this.currentDate.isSame(dayjs(), 'day');
+      } else {
+        const startOfCurrentWeek = dayjs().startOf('week').add(1, 'day');
+        const startOfDisplayedWeek = this.currentDate
+          .startOf('week')
+          .add(1, 'day');
+  
+        return startOfDisplayedWeek.isSame(startOfCurrentWeek, 'day');
+      }
+    }
+  
+    goToToday() {
+      this.currentDate = dayjs();
+      this.selectedDaysEvent.emit([[this.currentDate.format('YYYY-MM-DD')], this.dayView])
+    }
+  
+    navigate(offset: number): void {
+      if (this.dayView) {
+        this.currentDate = this.currentDate.add(offset, 'day');
+      } else {
+        this.currentDate = this.currentDate.add(offset * 7, 'day');
+      }
+      this.selectedDaysEvent.emit([[this.currentDate.format('YYYY-MM-DD')], this.dayView])
+    }
+  
+    
+    toggleView(isDay: boolean): void {
+      this.dayView = isDay;
+      this.selectedDaysEvent.emit([[this.currentDate.format('YYYY-MM-DD')], this.dayView])
+    }
 
   getDays() {
     this.displayedDays = [];

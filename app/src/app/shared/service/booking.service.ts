@@ -50,7 +50,13 @@ export class BookingService {
     let httpParams = new HttpParams()
       .set('page', filterRequest.pageNumber)
       .set('pageSize', filterRequest.pageSize)
-      .set('search', filterRequest.search)
+
+      if(filterRequest.search)
+        httpParams = httpParams.set('search', filterRequest.search)
+
+      if(filterRequest.sortBy && filterRequest.sortOrder) {
+        httpParams = httpParams.set('sortBy', filterRequest.sortBy).set('sortOrder', filterRequest.sortOrder)
+      }
 
       if(this.authService.getRole() != Role.Admin) {
         httpParams = httpParams.set('userId', this.authService.getUserId());
@@ -88,6 +94,23 @@ export class BookingService {
         guid
       }`,
       this.getHeaders()
+    );
+  }
+
+  getAllBookingByFieldIdUserId(fieldId: string) {
+    let httpParams = new HttpParams()
+      .set('fieldId', fieldId)
+      .set('userId', this.authService.getUserId())
+    return this.httpClient.get<
+      ApiResponse<BookingDetailsResponseDto[]>
+    >(
+      `${
+        GlobalConstant.BOOKING_API_URL + GlobalConstant.BOOKING.GET_BOOKING_BY_FIELDID_USERID
+      }`,
+      {
+        ...this.getHeaders(),
+        params: httpParams,
+      }
     );
   }
 }
