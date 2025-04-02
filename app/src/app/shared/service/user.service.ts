@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { GlobalConstant } from '../constants/global-const';
-import { Observable } from 'rxjs';
+import { filter, Observable } from 'rxjs';
 import { ApiPaginatedResponse, ApiResponse } from '../interfaces/api.response';
 import { AuthService } from './authentication.service';
 import { BlockUser, User } from '../interfaces/user';
@@ -64,6 +64,10 @@ export class UserService {
 
     if (filterRequest && filterRequest.search) {
       httpParams = httpParams.set('search', filterRequest.search);
+    }
+
+    if(filterRequest.sortBy && filterRequest.sortOrder) {
+      httpParams = httpParams.set('sortBy', filterRequest.sortBy).set('sortOrder', filterRequest.sortOrder)
     }
 
     return this.httpClient.get<ApiPaginatedResponse<User[]>>(

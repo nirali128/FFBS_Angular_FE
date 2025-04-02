@@ -1,12 +1,22 @@
-import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { GlobalConstant } from '../../constants/global-const';
 import { MatDialog } from '@angular/material/dialog';
 import { iDialogField } from '../../interfaces/dialog-fields';
 import { FilterRequest } from '../../interfaces/filter-request';
 import { iTableField } from '../../interfaces/table-fields';
 import { ConfirmDialogComponent } from '../dialog/dialog.component';
-import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
+import {
+  MatPaginator,
+  MatPaginatorModule,
+  PageEvent,
+} from '@angular/material/paginator';
+import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { ButtonComponent } from '../button/button.component';
 import { CommonModule } from '@angular/common';
@@ -17,13 +27,23 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 @Component({
   selector: 'app-table',
-  imports: [MatTableModule, ButtonComponent, MatPaginatorModule, CommonModule, MatIcon, FormsModule, RouterModule, MatSlideToggleModule],
+  imports: [
+    MatTableModule,
+    ButtonComponent,
+    MatPaginatorModule,
+    CommonModule,
+    MatIcon,
+    FormsModule,
+    RouterModule,
+    MatSortModule,
+    MatSlideToggleModule,
+  ],
   templateUrl: './table.component.html',
-  styleUrl: './table.component.scss'
+  styleUrl: './table.component.scss',
 })
 export class TableComponent<T> {
   columns!: string[];
-  dataSource = new MatTableDataSource<T>;
+  dataSource = new MatTableDataSource<T>();
   filterRequest!: FilterRequest;
   pageSize!: number;
   pageIndex!: number;
@@ -37,10 +57,10 @@ export class TableComponent<T> {
   @Input() paginationOptions: number[] = GlobalConstant.paginationOptions;
   @Input() totalCount: number = 0;
   @Input() dialogData: iDialogField = {
-    message: "Do you want to delete this record?"
-  }
-  @Input() addFormLink!:string;
-  
+    message: 'Do you want to delete this record?',
+  };
+  @Input() addFormLink!: string;
+
   @Output() onDelete = new EventEmitter<number>();
   @Output() onToggle = new EventEmitter<T>();
   @Output() onView = new EventEmitter<T>();
@@ -55,11 +75,11 @@ export class TableComponent<T> {
   ngOnInit() {
     this.filterRequest = {
       pageSize: this.showPagination ? this.paginationOptions[0] : -1,
-      pageNumber: this.showPagination ? 1 : -1
-    }
-    this.pageEmit(this.filterRequest)
+      pageNumber: this.showPagination ? 1 : -1,
+    };
+    this.pageEmit(this.filterRequest);
     if (this.displayedColumns) {
-      this.columns = this.displayedColumns.map(column => column.name);
+      this.columns = this.displayedColumns.map((column) => column.name);
     }
   }
 
@@ -72,18 +92,18 @@ export class TableComponent<T> {
 
   delete(id: number) {
     const dialogRef = this.dialog.open(ConfirmDialogComponent, {
-      data: this.dialogData
+      data: this.dialogData,
     });
 
-    dialogRef.afterClosed().subscribe(dialogResult => {
+    dialogRef.afterClosed().subscribe((dialogResult) => {
       if (dialogResult) {
-        this.onDelete.emit(id)
+        this.onDelete.emit(id);
       }
     });
   }
 
   toggle(element: T) {
-    this.onToggle.emit(element)
+    this.onToggle.emit(element);
   }
 
   view(element: T) {
@@ -94,8 +114,14 @@ export class TableComponent<T> {
     this.onEdit.emit(element);
   }
 
+  announceSortChange(sortState: Sort) {
+    this.filterRequest.sortBy = sortState.active;
+    this.filterRequest.sortOrder = sortState.direction;
+    this.pageEmit(this.filterRequest);
+  }
+
   onPageChange(event: PageEvent) {
-    if(event.pageSize != this.filterRequest.pageSize) {
+    if (event.pageSize != this.filterRequest.pageSize) {
       event.pageIndex = 0;
     }
     this.pageSize = event.pageSize;
@@ -115,7 +141,7 @@ export class TableComponent<T> {
       this.filterRequest.search = searchValue;
       this.filterRequest.pageNumber = 1;
       this.pageIndex = 0;
-      
+
       this.pageEmit(this.filterRequest);
     }
     this.previousFilterValue = searchValue;

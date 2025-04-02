@@ -14,6 +14,7 @@ import {
   SlotByField,
 } from '../interfaces/field';
 import { AuthService } from './authentication.service';
+import { FilterRequest } from '../interfaces/filter-request';
 
 @Injectable({
   providedIn: 'root',
@@ -33,13 +34,18 @@ export class FieldService {
 
   constructor(private httpClient: HttpClient, public authService: AuthService) {}
 
-  getAllFields(params: PaginationRequest): Observable<ApiPaginatedResponse<FieldsDetailList[]>> {
+  getAllFields(params: FilterRequest): Observable<ApiPaginatedResponse<FieldsDetailList[]>> {
     let httpParams = new HttpParams()
-      .set('page', params.page)
+      .set('page', params.pageNumber)
       .set('pageSize', params.pageSize)
-      .set('search', params.search)
-      .set('sortBy', params.sortBy)
-      .set('sortOrder', params.sortOrder);
+
+      if(params.search)
+        httpParams = httpParams.set('search', params.search)
+
+      if(params.sortBy && params.sortOrder) {
+        httpParams = httpParams.set('sortBy', params.sortBy)
+        httpParams = httpParams.set('sortOrder', params.sortOrder);
+      }
     return this.httpClient.get<ApiPaginatedResponse<FieldsDetailList[]>>(
       `${GlobalConstant.FIELD_API_URL + GlobalConstant.FIELD.GET_ALL_FIELDS}`,  { 
         ...this.getHeaders(),
