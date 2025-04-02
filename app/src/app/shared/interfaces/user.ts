@@ -23,4 +23,5 @@ export interface ResetPassword {
 export interface BlockUser {
   userId: string;
   reason: string;
+  isActive: boolean;
 }

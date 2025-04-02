@@ -6,7 +6,7 @@
   </button>
   
   <div class="d-flex justify-content-end col-3">
-      <input type="search" (input)="enableSearchBtn()" (keydown.enter)="onSearch()" id="searchValue" [(ngModel)]="searchVal" (keyup)="enableSearchBtn()" placeholder="Search Here..." class="search-input form-control w-15">
+      <input type="search" (input)="onSearch()" (keydown.enter)="onSearch()" id="searchValue" [(ngModel)]="searchVal" (keyup)="onSearch()" placeholder="Search Here..." class="search-input form-control w-15">
   </div>
   
   <table matSort mat-table [dataSource]="dataSource" (matSortChange)="announceSortChange($event)">

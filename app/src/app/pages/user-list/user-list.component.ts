@@ -68,7 +68,7 @@ export class UserListComponent {
       },
       {
         name: 'isActive',
-        label: 'IsActive',
+        label: 'Block/Unblock',
         type: 'switch',
         sort: false,
       },
@@ -87,7 +87,9 @@ export class UserListComponent {
   }
 
   toggle(element: User) {
+    const title = "Reason for " + (element.isActive ? "unblocking" : "blocking");
     let dialogData: iDialogField = {
+      title: title,
       requiresReason: true,
       btnCancelText: 'Cancel',
     };
@@ -100,6 +102,7 @@ export class UserListComponent {
         let data: BlockUser = {
           reason: dialogResult.reason,
           userId: element.userId,
+          isActive: element.isActive
         };
         this.userService.blockUser(data).subscribe((res) => {
           if (res.success) {
@@ -116,11 +119,11 @@ export class UserListComponent {
                 icon: 'warning_amber',
               })
             );
-            element.isActive = true;
+            element.isActive = !element.isActive;
           }
         });
       } else {
-        element.isActive = true;
+        element.isActive = !element.isActive;
       }
     });
   }
