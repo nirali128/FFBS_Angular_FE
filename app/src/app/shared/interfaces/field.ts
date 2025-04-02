@@ -82,6 +82,7 @@ export interface Booking {
     isActive: boolean;
     closeDays: string[]; 
     documents: FieldDocument[];
+    averageRating: number;
   }
 
   export class FieldDocument {

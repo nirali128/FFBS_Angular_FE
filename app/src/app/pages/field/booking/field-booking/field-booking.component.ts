@@ -43,6 +43,7 @@ import { DropdownOption } from '../../../../shared/interfaces/dropdown.options';
 import { mapUserToDropdown } from '../../../../shared/utility/utilitty';
 import { SelectComponent } from '../../../../shared/components/select/select.component';
 import { FilterRequest } from '../../../../shared/interfaces/filter-request';
+import { NgxStarRatingModule } from 'ngx-star-rating';
 
 @Component({
   selector: 'app-field-booking',
@@ -59,6 +60,7 @@ import { FilterRequest } from '../../../../shared/interfaces/filter-request';
     FormsModule,
     ButtonComponent,
     SelectComponent,
+    NgxStarRatingModule,
   ],
   templateUrl: './field-booking.component.html',
   styleUrl: './field-booking.component.scss',
