@@ -19,9 +19,12 @@ import { SuccessMessages } from '../../../../shared/constants/messages-const';
 import { ConfirmDialogComponent } from '../../../../shared/components/dialog/dialog.component';
 import { iDialogField } from '../../../../shared/interfaces/dialog-fields';
 import { AuthService } from '../../../../shared/service/authentication.service';
+import { FeedbackService } from '../../../../shared/service/feedback.service';
 import { Role } from '../../../../shared/enum/role';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
 import { debounceTime, Subject } from 'rxjs';
+import { FeedbackRatingDialogComponent } from './feedback-rating-dialog/feedback-rating-dialog.component';
+import { AddFeedback } from '../../../../shared/interfaces/feedback';
 import { PaginationRequest } from '../../../../shared/interfaces/api.response';
 import { FilterRequest } from '../../../../shared/interfaces/filter-request';
 
@@ -64,7 +67,8 @@ export class BookingListComponent {
     private readonly bookingService: BookingService,
     private dialog: MatDialog,
     public readonly snackBarService: SnackbarService,
-    public readonly authService: AuthService
+    public readonly authService: AuthService,
+    public readonly feedbackService: FeedbackService
   ) {
     this.isAdmin = this.authService.getRole() === Role.Admin ? true: false;
   }
@@ -151,6 +155,27 @@ export class BookingListComponent {
         }
         this.loadBookings()
       });
+  }
+
+  openFeedbackDialog(bookingId: string) {
+    const dialogRef = this.dialog.open(FeedbackRatingDialogComponent, {
+      width: '400px',
+      data: { bookingId }
+    });
+  
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.feedbackService.addFeedback(result as AddFeedback).subscribe((res) => {
+          if(res.success) {
+            this.snackBarService.show(
+              new SnackbarConfig({
+                message: res.message,
+              })
+            );
+          }
+        })
+      }
+    });
   }
 
   deleteBooking(bookingId: string): void {

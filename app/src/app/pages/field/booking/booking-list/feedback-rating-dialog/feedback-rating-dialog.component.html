@@ -1,0 +1,49 @@
+<h2
+  mat-dialog-title
+  class="bg-primary text-white py-2 px-3 rounded-top d-flex align-items-center"
+>
+  Feedback & Ratings
+</h2>
+<mat-dialog-content class="py-4">
+  <form [formGroup]="feedbackForm">
+    <app-textarea
+      label="Feedback"
+      [formControl]="getFormControl('feedbackText')"
+      placeholder="Enter Feedback"
+      formControlName="feedbackText"
+    ></app-textarea>
+    <div class="d-flex align-items-center">
+      <span class="fs-6">Rating:</span>
+      <ngx-star-rating
+        formControlName="rating"
+        [id]="'rating'"
+      ></ngx-star-rating>
+    </div>
+    <mat-error
+      class="mt-1"
+      *ngIf="
+        getFormControl('rating').touched &&
+        getFormControl('rating').hasError('required')
+      "
+    >
+      Rating is required
+    </mat-error>
+  </form>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <app-button
+    type="submit"
+    [text]="'Submit'"
+    [color]="'primary'"
+    (buttonClick)="submitFeedback()"
+  >
+  </app-button>
+  <app-button
+    class="ms-1"
+    [text]="'Cancel'"
+    [color]="'secondary'"
+    (buttonClick)="closeDialog()"
+  >
+  </app-button>
+</mat-dialog-actions>

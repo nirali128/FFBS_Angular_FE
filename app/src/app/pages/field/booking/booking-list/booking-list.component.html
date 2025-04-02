@@ -67,7 +67,6 @@
               (buttonClick)="openViewDialog(element.bookingId)"
             >
             </app-button>
-
             <app-button
               class="ms-1"
               *ngIf="element.status !== 'Cancelled'"
@@ -76,6 +75,13 @@
               (buttonClick)="deleteBooking(element.bookingId)"
             >
             </app-button>
+            <app-button
+              class="ms-1"
+              buttonType="icon"
+              icon="rate_review"
+              *ngIf="element.status === 'Completed' && !isAdmin"
+              (buttonClick)="openFeedbackDialog(element.bookingId)"
+            ></app-button>
           </div>
         </td>
       </ng-container>
