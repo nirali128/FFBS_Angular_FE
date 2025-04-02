@@ -11,7 +11,7 @@ import { MatError } from '@angular/material/form-field';
 @Component({
   selector: 'app-confirm-dialog',
   standalone: true,
-  imports: [MatDialogModule, ButtonComponent, CommonModule, TextareaComponent, MatError],
+  imports: [MatDialogModule, ButtonComponent, CommonModule, TextareaComponent],
   templateUrl: './dialog.component.html',
   styleUrls: ['./dialog.component.scss']
 })

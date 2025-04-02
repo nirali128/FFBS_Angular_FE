@@ -96,7 +96,7 @@ export class ProfileComponent {
         [Validators.required, Validators.pattern(ValidationPatterns.PHONE)],
       ],
       dob: ['', [Validators.required, minAgeValidator(18)]],
-      avatar: [null, Validators.required],
+      avatar: [null],
     });
   }
 

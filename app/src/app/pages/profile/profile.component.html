@@ -80,10 +80,10 @@
             [for]="picker"
           ></mat-datepicker-toggle>
           <mat-datepicker #picker></mat-datepicker>
-          <mat-error class="mt-1 error-messages" *ngIf="getFormControl('dob').hasError('required')">
+          <mat-error class="mt-1 error-messages visible" *ngIf="getFormControl('dob').hasError('required')">
             This field is required
           </mat-error>
-          <mat-error class="mt-1 error-messages" *ngIf="getFormControl('dob').hasError('minAge')">
+          <mat-error class="mt-1 error-messages visible" *ngIf="getFormControl('dob').hasError('minAge')">
             Minimum age should be 18 years old
           </mat-error>
         </mat-form-field>
@@ -99,6 +99,7 @@
       ></app-button>
       <app-button
         class="ms-1"
+        type="submit"
         color="primary"
         [text]="'Submit'"
         [buttonType]="'normal'"
