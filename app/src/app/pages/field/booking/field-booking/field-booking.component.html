@@ -2,7 +2,6 @@
   <h2 class="col-12 fw-bold d-flex justify-content-between">
     Field Booking
     <app-button
-      class="calendar-button"
       [buttonType]="'normal'"
       [text]="'Back'"
       [color]="'secondary'"
@@ -88,7 +87,13 @@
   </div>
 
   <div class="card p-3 mt-3">
-    <div class="d-flex justify-content-between align-items-center">
+    <app-select *ngIf="isAdmin" class="col-4"
+          label="User"
+          placeholder="Select user"
+          [options]="userOptions"
+          [formControl]="userFormControl"
+        ></app-select>
+    <!-- <div class="d-flex justify-content-between align-items-center">
       <div class="d-flex">
         <app-select *ngIf="isAdmin"
           label="User"
@@ -137,13 +142,14 @@
           >{{ toggleSlideLabel }}</mat-slide-toggle
         >
       </div>
-    </div>
+    </div> -->
 
     <app-calendar
-      *ngIf="fieldSlot && fieldSlot.length && (isAdmin && userFormControl.value || !isAdmin)"
+      *ngIf="(isAdmin && userFormControl.value || !isAdmin)"
+      [fieldBookings]="fieldBookings"
+      (selectedDaysEvent)="selectedDaysEvent($event)"
       [fieldSlotAvailability]="fieldSlot"
       (selectedSlotsEvent)="selectedEvents($event)"
-      [dayView]="dayView"
     ></app-calendar>
   </div>
 </div>

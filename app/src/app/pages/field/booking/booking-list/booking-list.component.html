@@ -3,11 +3,11 @@
   <!-- Search Bar -->
   <div class="mb-3 col-3 d-flex">
     <input
-      type="text"
+      type="search"
       [(ngModel)]="searchKey"
       (ngModelChange)="applyFilter()"
-      placeholder="Search by field name or address"
-      class="form-control"
+      placeholder="Search Here..."
+      class="search-input form-control w-15"
     />
     <app-button
       *ngIf="searchKey"
@@ -21,7 +21,7 @@
 
   <!-- Table -->
   <div class="table-responsive">
-    <table mat-table [dataSource]="dataSource" matSort>
+    <table mat-table [dataSource]="dataSource" matSort (matSortChange)="announceSortChange($event)">
       <!-- Field Name Column -->
       <ng-container matColumnDef="fieldName">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Field Name</th>

@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, input, Input, Output } from '@angular/core';
 import dayjs from 'dayjs';
 import { MatTableModule } from '@angular/material/table';
 import { CommonModule } from '@angular/common';
@@ -31,7 +31,8 @@ import { DialogComponent } from './dialog/dialog.component';
 export class CalendarComponent {
   showTable: boolean = false;
   @Input() fieldSlotAvailability: FieldSlotRateData[];
-  @Input() dayView: boolean = false;
+  dayView: boolean = false;
+  @Input() fieldBookings: any;
 
   displayedDays: string[];
   @Output() selectedSlotsEvent = new EventEmitter<{
@@ -43,12 +44,29 @@ export class CalendarComponent {
   selectedSlots: { [key: string]: SelectableSlot[] } = {};
   displayedColumns: string[] = [];
   slots: CalendarSlot[];
+  @Output() selectedDaysEvent = new EventEmitter<[string[], boolean]>();
 
   constructor(public dialog: MatDialog) {}
 
+  ngAfterViewInit() {
+    this.selectedDaysEvent.emit([[this.currentDate.format('YYYY-MM-DD')], this.dayView])
+  }
+
   ngOnChanges() {
+    this.removeAll()
     this.getDays();
     this.getSlots();
+  }
+
+  isSlotBookedByUser(day: string, slot: CalendarSlot): boolean {
+    return this.fieldBookings && this.fieldBookings.some((booking: any) => {
+      return booking.bookingDetails.some((detail: any) => {
+        const formattedBookingDate = detail.bookingDate.split('T')[0];
+        // Check if the booking's date matches and the slot is in the booking's slots array
+        return formattedBookingDate == day && 
+        detail.slots.some((slotDetail: any) => slotDetail === slot.slotId);
+      });
+    });
   }
 
   getDays() {
@@ -73,6 +91,39 @@ export class CalendarComponent {
         this.slots.push(data);
       });
     }
+  }
+
+  isTodayButtonDisabled(): boolean {
+    if (this.dayView) {
+      return this.currentDate.isSame(dayjs(), 'day');
+    } else {
+      const startOfCurrentWeek = dayjs().startOf('week').add(1, 'day');
+      const startOfDisplayedWeek = this.currentDate
+        .startOf('week')
+        .add(1, 'day');
+
+      return startOfDisplayedWeek.isSame(startOfCurrentWeek, 'day');
+    }
+  }
+
+  goToToday() {
+    this.currentDate = dayjs();
+    this.selectedDaysEvent.emit([[this.currentDate.format('YYYY-MM-DD')], this.dayView])
+  }
+
+  navigate(offset: number): void {
+    if (this.dayView) {
+      this.currentDate = this.currentDate.add(offset, 'day');
+    } else {
+      this.currentDate = this.currentDate.add(offset * 7, 'day');
+    }
+    this.selectedDaysEvent.emit([[this.currentDate.format('YYYY-MM-DD')], this.dayView])
+  }
+
+  
+  toggleView(isDay: boolean): void {
+    this.dayView = isDay;
+    this.selectedDaysEvent.emit([[this.currentDate.format('YYYY-MM-DD')], this.dayView])
   }
 
   handleSlotClick(slotGuid: string, date: string) {
@@ -162,10 +213,13 @@ export class CalendarComponent {
       (selectedSlot) => selectedSlot.slotGuid === slot.slotId
     );
 
+    const isBookedByUser = this.isSlotBookedByUser(day, slot); 
+
     return {
       selected: isSelected,
       available: !isSelected && status === 'available',
-      booked: status === 'booked',
+      userBooked: isBookedByUser,
+      booked: status === 'booked' && !isBookedByUser,
       past: status === 'past',
       closed: status === 'closed',
       unavailable: status == 'unavailable'

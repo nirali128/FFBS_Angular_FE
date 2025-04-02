@@ -12,6 +12,7 @@ import { MatPaginator, MatPaginatorModule, PageEvent } from '@angular/material/p
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../shared/service/authentication.service';
 import { Role } from '../../shared/enum/role';
+import { FilterRequest } from '../../shared/interfaces/filter-request';
 
 @Component({
   selector: 'app-field',
@@ -51,8 +52,8 @@ export class FieldComponent {
   }
 
   loadFields(): void {
-    const params: PaginationRequest = {
-      page: this.page,
+    const params: FilterRequest = {
+      pageNumber: this.page,
       pageSize: this.pageSize,
       search: this.searchQuery,
       sortBy: this.sortBy,

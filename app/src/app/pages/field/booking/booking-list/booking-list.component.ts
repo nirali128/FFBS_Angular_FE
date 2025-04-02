@@ -5,7 +5,7 @@ import {
 } from '../../../../shared/interfaces/field';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatSort, MatSortModule, Sort } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { BookingService } from '../../../../shared/service/booking.service';
 import { BookingDetailsDialogComponent } from './booking-details-dialog/booking-details-dialog.component';
@@ -25,6 +25,8 @@ import { ButtonComponent } from '../../../../shared/components/button/button.com
 import { debounceTime, Subject } from 'rxjs';
 import { FeedbackRatingDialogComponent } from './feedback-rating-dialog/feedback-rating-dialog.component';
 import { AddFeedback } from '../../../../shared/interfaces/feedback';
+import { PaginationRequest } from '../../../../shared/interfaces/api.response';
+import { FilterRequest } from '../../../../shared/interfaces/filter-request';
 
 @Component({
   selector: 'app-booking-list',
@@ -59,6 +61,7 @@ export class BookingListComponent {
   @ViewChild(MatSort) sort!: MatSort;
   isAdmin: boolean = false;
   private filterSubject = new Subject<void>();
+  filterRequest: FilterRequest;
 
   constructor(
     private readonly bookingService: BookingService,
@@ -78,14 +81,14 @@ export class BookingListComponent {
   }
 
   loadBookings(): void {
-    const filterRequest = {
+    this.filterRequest = {
       pageNumber: this.paginator ? this.paginator.pageIndex + 1 : 1,
       pageSize: this.paginator ? this.paginator.pageSize : 10,
-      search: this.searchKey,
+      search: this.searchKey
     };
 
     this.bookingService
-      .getPaginatedBookings(filterRequest)
+      .getPaginatedBookings(this.filterRequest)
       .subscribe((response) => {
         if (response.success) {
           this.bookingData = response.data;
@@ -102,6 +105,11 @@ export class BookingListComponent {
           this.paginator.length = response.pagination.totalItems;
         }
       });
+  }
+
+  announceSortChange(sortState: Sort) {
+    this.filterRequest.sortBy = sortState.active;
+    this.filterRequest.sortOrder = sortState.direction;
   }
 
   applyFilter(): void {

@@ -61,7 +61,6 @@ export class FieldBookingRateAvailabilityComponent {
   fieldSlotRate: FieldSlotRateData[];
   fieldSlot: FieldSlotRateData[];
   dayView: boolean = false;
-  toggleSlideLabel: string = 'Toggle for single day booking';
   minimumStartDate: Date;
   closedDays: Day[];
   isRateView: boolean = false;
@@ -90,26 +89,10 @@ export class FieldBookingRateAvailabilityComponent {
       });
   }
 
-  startDateChange(event: any) {
-    if (event.value) {
-      this.startDate = event.value;
-      this.generateDateRange();
-      this.minimumStartDate = new Date(this.startDate);
-      this.minimumStartDate.setDate(this.startDate.getDate() + 1);
-    }
-  }
-
-  endDateChange(event: any) {
-    if (event.value) {
-      this.endDate = event.value;
-      this.generateDateRange();
-    }
-  }
-
   generateDateRange() {
     let arr = [];
     let start = dayjs(this.startDate, 'YYYY-MM-DD');
-    if (this.startDate && this.endDate) {
+    if (this.startDate && this.endDate && !this.dayView) {
       const end = dayjs(this.endDate, 'YYYY-MM-DD');
       const dates: string[] = [];
 
@@ -182,53 +165,69 @@ export class FieldBookingRateAvailabilityComponent {
     }
   }
 
-  toggleChange(event: MatSlideToggleChange) {
-    this.dayView = event.checked;
-    this.toggleSlideLabel = this.dayView
-      ? 'Toggle for multiple days booking'
-      : 'Toggle for single day booking';
-    if (this.dayView) {
-      this.endDate = null;
+  selectedDaysEvent(event: [string[], boolean]) {
+    const [dateArr, isDayView] = event;
+    if (dateArr.length && isDayView) {
+      this.startDate = new Date(dateArr[0]);
+    } else {
+      const selectedDate = dayjs(dateArr[0]);
+      const dayOfWeek = selectedDate.day();
+
+      // Calculate the Monday of the current week
+      const startOfWeek = selectedDate.subtract(dayOfWeek - 1, 'days');
+      const endOfWeek = startOfWeek.add(6, 'days');
+
+      this.startDate = startOfWeek.toDate();
+      this.endDate = endOfWeek.toDate();
     }
-    this.fieldSlot = [];
+    this.dayView = isDayView;
     this.generateDateRange();
   }
 
   selectedEvents(items: { [key: string]: SelectableSlot[] }) {
     if (!items || Object.keys(items).length === 0) return;
 
-    const datesMap = new Map<string, { date: string; dayId: string | null; slots: any[] }>();
+    const datesMap = new Map<
+      string,
+      { date: string; dayId: string | null; slots: any[] }
+    >();
 
-  Object.values(items).forEach((slots) => {
-    const bookingDate = slots[0].date;
-    const day = this.days.find((d) => d.description === dayjs(bookingDate).format('dddd'));
+    Object.values(items).forEach((slots) => {
+      const bookingDate = slots[0].date;
+      const day = this.days.find(
+        (d) => d.description === dayjs(bookingDate).format('dddd')
+      );
 
-    if (!datesMap.has(bookingDate)) {
-      datesMap.set(bookingDate, {
-        date: bookingDate,
-        dayId: day?.guid || null,
-        slots: [],
+      if (!datesMap.has(bookingDate)) {
+        datesMap.set(bookingDate, {
+          date: bookingDate,
+          dayId: day?.guid || null,
+          slots: [],
+        });
+      }
+
+      slots.forEach((item) => {
+        const fieldSlotData = this.fieldSlot.find(
+          (slotData) => slotData.date === bookingDate
+        );
+        const matchingSlot = fieldSlotData?.slots.find(
+          (slot) => slot.slotId === item.slotGuid
+        );
+
+        const slotData = this.isRateView
+          ? {
+              slotId: item.slotGuid,
+              oldRate: parseFloat((matchingSlot?.rate ?? 0).toString()),
+              adjustedRate: parseFloat(item.rate.toString()),
+            }
+          : {
+              slotId: item.slotGuid,
+              isAvailable: item.availability,
+            };
+
+        datesMap.get(bookingDate)?.slots.push(slotData);
       });
-    }
-
-    slots.forEach((item) => {
-      const fieldSlotData = this.fieldSlot.find((slotData) => slotData.date === bookingDate);
-      const matchingSlot = fieldSlotData?.slots.find((slot) => slot.slotId === item.slotGuid);
-
-      const slotData = this.isRateView
-        ? {
-            slotId: item.slotGuid,
-            oldRate: parseFloat((matchingSlot?.rate ?? 0).toString()),
-            adjustedRate: parseFloat(item.rate.toString()),
-          }
-        : {
-            slotId: item.slotGuid,
-            isAvailable: item.availability,
-          };
-
-      datesMap.get(bookingDate)?.slots.push(slotData);
     });
-  });
 
     const requestData = {
       fieldId: this.fieldId,

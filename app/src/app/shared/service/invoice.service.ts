@@ -41,6 +41,10 @@ export class InvoiceService {
       httpParams = httpParams.set('search', filterRequest.search);
     }
 
+    if(filterRequest.sortBy && filterRequest.sortOrder) {
+      httpParams = httpParams.set('sortBy', filterRequest.sortBy).set('sortOrder', filterRequest.sortOrder)
+    }
+
     return this.httpClient.get<ApiPaginatedResponse<InvoiceList[]>>(
       `${
         GlobalConstant.INVOICE_API_URL + GlobalConstant.INVOICE.GET_ALL_INVOICE

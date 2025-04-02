@@ -51,6 +51,7 @@ export class GlobalConstant {
     GET_BOOKING_BY_ID: "/get-booking-by-id",
     APPROVE_REJECT_BOOKING: "/approve-or-reject",
     GET_ALL_BOOKINGS: "/get-all-bookings",
+    GET_BOOKING_BY_FIELDID_USERID: "/get-booking-by-field-and-user",
     DELETE_BOOKING: "/delete-booking"
   }
 
