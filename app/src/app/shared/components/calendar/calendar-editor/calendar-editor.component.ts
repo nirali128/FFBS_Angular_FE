@@ -8,6 +8,7 @@ import {
   FieldSlotRateData,
   SelectableSlot,
   CalendarSlot,
+  NewSlot,
 } from '../../../interfaces/field';
 import { ButtonComponent } from '../../button/button.component';
 import { FormsModule } from '@angular/forms';
@@ -121,9 +122,9 @@ export class CalendarEditorComponent {
       (slot) => slot.slotGuid === slotGuid
     );
 
-    let rate = this.getSlotRate(date, slotGuid);
+    let slotData = this.getSlotData(date, slotGuid);
     if (index === -1) {
-      this.selectedSlots[key].push({ slotGuid, date, rate });
+      this.selectedSlots[key].push({ slotGuid, date, rate: slotData.rate, availability: !slotData.availability });
     } else {
       this.selectedSlots[key].splice(index, 1);
     }
@@ -131,10 +132,10 @@ export class CalendarEditorComponent {
     this.selectedSlots = { ...this.selectedSlots };
   }
 
-  getSlotRate(date: string, slotGuid: string): number {
+  getSlotData(date: string, slotGuid: string): NewSlot {
     const fieldSlot = this.fieldSlotAvailability.find((f) => f.date == date);
     const slotData = fieldSlot?.slots.find((s) => s.slotId === slotGuid);
-    return slotData.rate;
+    return slotData;
   }
 
   getFormattedTimeString(timeString: string): string {
@@ -179,7 +180,7 @@ export class CalendarEditorComponent {
         return { status: 'past' };
       }
 
-      if (availability && !status) {
+      if (availability && (!status || status == "Cancelled")) {
         return { status: 'available', rate: rate?.toString() };
       }
 
@@ -203,7 +204,7 @@ export class CalendarEditorComponent {
       booked: status === 'booked',
       past: status === 'past',
       closed: status === 'closed',
-      unavailable: status == 'unavailable',
+      unavailable: !isSelected && status == 'unavailable',
     };
   }
 
@@ -338,13 +339,14 @@ export class CalendarEditorComponent {
           (selectedSlot) => selectedSlot.slotGuid === slot.slotId
         );
 
-        let rate = this.getSlotRate(day, slot.slotId);
+        let slotData = this.getSlotData(day, slot.slotId);
 
         if (index === -1) {
           this.selectedSlots[key].push({
             slotGuid: slot.slotId,
             date: day,
-            rate,
+            rate: slotData.rate,
+            availability: slotData.availability
           });
         }
       }
@@ -363,11 +365,12 @@ export class CalendarEditorComponent {
   }
 
   updateSelectedSlotsAvailability() {
-    Object.values(this.selectedSlots).forEach((slots) => {
-      slots.forEach((slot) => {
-        slot.availability = false;
-      });
-    });
+    // Object.values(this.selectedSlots).forEach((slots) => {
+    //   slots.forEach((slot) => {
+    //     let availability = !slot.availability;
+    //     slot.availability = availability;
+    //   });
+    // });
     this.selectedSlotsEvent.emit(this.selectedSlots);
   }
 }

@@ -81,6 +81,11 @@
       <!-- Table Rows -->
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let element; columns: displayedColumns"></tr>
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell py-2 text-center h5" [attr.colspan]="6">
+          No data
+        </td>
+      </tr>
     </table>
   </div>
 
