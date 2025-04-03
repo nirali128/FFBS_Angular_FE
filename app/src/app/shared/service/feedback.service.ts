@@ -64,7 +64,7 @@ export class FeedbackService {
       `${
         GlobalConstant.FEEDBACK_API_URL +
         GlobalConstant.FEEDBACK.DELETE_FEEDBACK +
-        '?bookingId=' +
+        '?feedbackId=' +
         guid
       }`,
       this.getHeaders()

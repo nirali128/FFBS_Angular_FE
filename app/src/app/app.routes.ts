@@ -89,7 +89,7 @@ export const routes: Routes = [
                 data: {
                     icon: 'feedback',
                     title: 'Feedback',
-                    visibleTo: [Role.Customer]
+                    visibleTo: [Role.Admin, Role.Customer]
                 },
                 canActivate: [AccessAuthGuard],
                 component: FeedbackListComponent

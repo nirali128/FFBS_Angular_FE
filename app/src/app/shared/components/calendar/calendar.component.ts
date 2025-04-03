@@ -194,7 +194,7 @@ export class CalendarComponent {
 
       if (
         availability &&
-        !status &&
+        (!status || status === 'Cancelled')  &&
         (isPastDay || (isToday && parsedTime.isBefore(now)))
       ) {
         return { status: 'past' };
@@ -234,13 +234,16 @@ export class CalendarComponent {
   getSlotDisplayText(day: string, slot: CalendarSlot): string {
     const slotStatus = this.getSlotStatus(day, slot);
 
+    const fieldSlot = this.fieldSlotAvailability.find((f) => f.date === day);
+    const slotData = fieldSlot?.slots.find((s) => s.slotId === slot.slotId);
+
     switch (slotStatus.status) {
       case 'selected':
         return slotStatus.rate;
       case 'available':
         return slotStatus.rate ?? '-';
       case 'booked':
-        return 'Booked';
+        return slotData.status == 'Pending' && !this.isAdmin ? "Pending" : (slotData.status == 'Completed' && !this.isAdmin ? 'Completed' : 'Booked');
       case 'past':
         return 'Time Concluded';
       case 'closed':
