@@ -22,6 +22,7 @@ export class GlobalConstant {
   public static readonly USER_API_URL = `${environment.baseUrl}/user`;
   public static readonly INVOICE_API_URL = `${environment.baseUrl}/invoice`;
   public static readonly FEEDBACK_API_URL = `${environment.baseUrl}/feedback`;
+  public static readonly DISCOUNT_API_URL = `${environment.baseUrl}/discount`;
 
   public static readonly AUTH = {
     LOGIN: "/login",
@@ -70,6 +71,11 @@ export class GlobalConstant {
 
   public static readonly INVOICE = {
     GET_ALL_INVOICE: "/get-all-invoices"
+  }
+
+  public static readonly DISCOUNT = {
+    ADD_DISCOUNT: "/add-discounts",
+    Get_ALL_DISCOUNTS_DETAIL: "/get-all-discounts-detail"
   }
 
   public static readonly paginationOptions = [5, 10, 20];

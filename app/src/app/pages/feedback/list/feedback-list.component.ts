@@ -49,6 +49,18 @@ export class FeedbackListComponent {
         type: 'rating',
         sort: false
       },
+      {
+        name: 'action',
+        label: 'Action',
+        type: 'button',
+        sort: false,
+        arr: [
+          {
+            name: GlobalConstant.DELETE,
+            src: 'delete',
+          },
+        ],
+      },
     ];
     this.isAdmin = this.authService.getRole() == Role.Admin ? true : false; 
 
