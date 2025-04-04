@@ -53,7 +53,8 @@
         <th mat-header-cell *matHeaderCellDef class="ps-5">Actions</th>
         <td mat-cell *matCellDef="let element">
           <div class="d-flex">
-            <app-button
+            <app-button [ngClass]="{'ps-4': !((element.status === 'Completed' && !isAdmin) || element.status !== 'Cancelled' && element.status !== 'Completed') }"
+            color="outline"
               buttonType="icon"
               icon="visibility"
               (buttonClick)="openViewDialog(element.bookingId)"
@@ -61,7 +62,7 @@
             </app-button>
             <app-button
               class="ms-1"
-              *ngIf="element.status !== 'Cancelled'"
+              *ngIf="element.status !== 'Cancelled' && element.status !== 'Completed'"
               buttonType="icon"
               icon="delete"
               (buttonClick)="deleteBooking(element.bookingId)"
@@ -81,6 +82,11 @@
       <!-- Table Rows -->
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let element; columns: displayedColumns"></tr>
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell py-2 text-center h5" [attr.colspan]="6">
+          No data
+        </td>
+      </tr>
     </table>
   </div>
 

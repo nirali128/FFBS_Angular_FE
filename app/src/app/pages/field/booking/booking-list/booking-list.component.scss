@@ -1,0 +1,6 @@
+::ng-deep {
+    .btn:first-child:active, .btn:focus-visible {
+        border: none !important;
+        box-shadow: none !important;
+    }
+}

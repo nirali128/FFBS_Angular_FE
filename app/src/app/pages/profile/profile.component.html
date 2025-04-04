@@ -1,10 +1,11 @@
 <div class="container mt-4">
   <h2 class="col-12 mb-4 fw-bold d-flex justify-content-between">Edit User Profile</h2>
+  <div class="container">
   <form [formGroup]="profileForm" class="p-4 rounded shadow bg-white">
     <div class="row">
       <!-- Avatar Upload Section -->
       <div class="col-12 text-center mb-3">
-        <div class="avatar-preview" (click)="fileInput.click()">
+        <div class="avatar-preview container" (click)="fileInput.click()">
           <img
             *ngIf="profileForm.get('avatar')?.value"
             [src]="profileForm.get('avatar')?.value"
@@ -115,4 +116,5 @@
       </app-button>
     </div>
   </form>
+</div>
 </div>
