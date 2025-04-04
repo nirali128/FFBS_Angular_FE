@@ -44,6 +44,8 @@ import { mapUserToDropdown } from '../../../../shared/utility/utilitty';
 import { SelectComponent } from '../../../../shared/components/select/select.component';
 import { FilterRequest } from '../../../../shared/interfaces/filter-request';
 import { NgxStarRatingModule } from 'ngx-star-rating';
+import { MatDialog } from '@angular/material/dialog';
+import { FieldReviewDialogComponent } from './field-review-dialog/field-review-dialog.component';
 
 @Component({
   selector: 'app-field-booking',
@@ -86,13 +88,14 @@ export class FieldBookingComponent {
   fieldBookings: any;
 
   constructor(
-    public fieldService: FieldService,
-    public bookingService: BookingService,
+    private readonly fieldService: FieldService,
+    private readonly bookingService: BookingService,
     private route: ActivatedRoute,
-    private authService: AuthService,
-    private snackbarService: SnackbarService,
+    private readonly authService: AuthService,
+    private readonly snackbarService: SnackbarService,
     private router: Router,
-    private readonly userService: UserService
+    private readonly userService: UserService,
+    private dialog: MatDialog
   ) {
     this.route.params.subscribe((params) => {
       this.fieldId = params['id'];
@@ -155,16 +158,16 @@ export class FieldBookingComponent {
       this.generateFieldSlotRate();
     });
 
-    if(!this.isAdmin)
-    this.bookingService
-      .getAllBookingByFieldIdUserId(this.fieldId)
-      .subscribe((res) => {
-        if (res.success) {
-          this.fieldBookings = res.data;
-        } else {
-          this.fieldBookings = [];
-        }
-      });
+    if (!this.isAdmin)
+      this.bookingService
+        .getAllBookingByFieldIdUserId(this.fieldId)
+        .subscribe((res) => {
+          if (res.success) {
+            this.fieldBookings = res.data;
+          } else {
+            this.fieldBookings = [];
+          }
+        });
   }
 
   generateFieldSlotRate() {
@@ -282,5 +285,12 @@ export class FieldBookingComponent {
 
   navigate() {
     this.router.navigateByUrl('field');
+  }
+
+  openDialog() {
+    this.dialog.open(FieldReviewDialogComponent, {
+      data: this.fieldId,
+      width: '50%',
+    });
   }
 }

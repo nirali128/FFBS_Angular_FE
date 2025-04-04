@@ -1,0 +1,23 @@
+<h2 mat-dialog-title class="bg-primary text-white p-3">User Feedback</h2>
+<div mat-dialog-content class="p-3">
+  <div *ngIf="feedbackList && feedbackList.length > 0; else noReviews">
+    <div *ngFor="let feedback of feedbackList" class="d-flex align-items-center mb-3">
+        {{feedback.avatar}}
+      <img
+        [src]="feedback.avatar || 'https://avatars.githubusercontent.com/u/583231?v=4'"
+        alt="Avatar"
+        class="rounded-circle me-3"
+        width="40"
+        height="40"
+      />
+      <p class="mb-0">{{ feedback.feedbackText }}</p>
+    </div>
+  </div>
+
+  <ng-template #noReviews>
+    <p class="text-center text-muted">No reviews available.</p>
+  </ng-template>
+</div>
+<div mat-dialog-actions class="text-end p-3">
+  <button mat-button class="btn btn-secondary" (click)="closeDialog()">Close</button>
+</div>
