@@ -33,12 +33,6 @@ export class FeedbackListComponent {
         sort: true,
       },
       {
-        name: 'userName',
-        label: 'User Name',
-        type: 'label',
-        sort: true,
-      },
-      {
         name: 'fieldName',
         label: 'Field Name',
         type: 'label',
@@ -70,11 +64,34 @@ export class FeedbackListComponent {
       },
     ];
     this.isAdmin = this.authService.getRole() == Role.Admin ? true : false; 
-    if(!this.isAdmin)
-      this.userId = this.authService.getUserId();
+
+    if(this.isAdmin) {
+      this.displayedColumns.splice(1, 0, {
+        name: 'userName',
+        label: 'User Name',
+        type: 'label',
+        sort: true,
+      });
+    } else {
+      this.displayedColumns.push({
+        name: 'action',
+        label: 'Action',
+        type: 'button',
+        sort: false,
+        arr: [
+          {
+            name: GlobalConstant.DELETE,
+            src: 'delete',
+          },
+        ],
+      },
+    )
+    }
   }
 
   getAll(filterRequest: FilterRequest) {
+    if(!this.isAdmin)
+      this.userId = this.authService.getUserId();
     this.feedbackService
       .getPaginatedFeedbacks(filterRequest, undefined, this.userId)
       .subscribe((res) => {
@@ -87,7 +104,7 @@ export class FeedbackListComponent {
   }
 
   onDelete(element: FeedbackList) {
-    this.feedbackService.deleteFeedback(element.bookingId).subscribe((res) => {
+    this.feedbackService.deleteFeedback(element.feedbackId).subscribe((res) => {
       if (res.success) {
         this.snackBarService.show(
           new SnackbarConfig({
