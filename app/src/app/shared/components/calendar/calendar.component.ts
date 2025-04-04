@@ -14,6 +14,8 @@ import {
 import { convertSelectableSlotToDialogTable } from '../../mapper/mapper';
 import { ButtonComponent } from '../button/button.component';
 import { DialogComponent } from './dialog/dialog.component';
+import { AuthService } from '../../service/authentication.service';
+import { Role } from '../../enum/role';
 
 @Component({
   selector: 'app-calendar',
@@ -45,8 +47,11 @@ export class CalendarComponent {
   displayedColumns: string[] = [];
   slots: CalendarSlot[];
   @Output() selectedDaysEvent = new EventEmitter<[string[], boolean]>();
+  isAdmin: boolean = false;
 
-  constructor(public dialog: MatDialog) {}
+  constructor(public dialog: MatDialog, public readonly authService: AuthService) {
+    this.isAdmin = this.authService.getRole() == Role.Admin ? true : false;
+  }
 
   ngAfterViewInit() {
     this.selectedDaysEvent.emit([[this.currentDate.format('YYYY-MM-DD')], this.dayView])
@@ -189,13 +194,13 @@ export class CalendarComponent {
 
       if (
         availability &&
-        !status &&
+        (!status || status === 'Cancelled')  &&
         (isPastDay || (isToday && parsedTime.isBefore(now)))
       ) {
         return { status: 'past' };
       }
 
-      if (availability && !status) {
+      if (availability && (!status || status === 'Cancelled')) {
         return { status: 'available', rate: rate?.toString() };
       }
 
@@ -229,13 +234,16 @@ export class CalendarComponent {
   getSlotDisplayText(day: string, slot: CalendarSlot): string {
     const slotStatus = this.getSlotStatus(day, slot);
 
+    const fieldSlot = this.fieldSlotAvailability.find((f) => f.date === day);
+    const slotData = fieldSlot?.slots.find((s) => s.slotId === slot.slotId);
+
     switch (slotStatus.status) {
       case 'selected':
         return slotStatus.rate;
       case 'available':
         return slotStatus.rate ?? '-';
       case 'booked':
-        return 'Booked';
+        return slotData.status == 'Pending' && !this.isAdmin ? "Pending" : (slotData.status == 'Completed' && !this.isAdmin ? 'Completed' : 'Booked');
       case 'past':
         return 'Time Concluded';
       case 'closed':

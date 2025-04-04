@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { ButtonComponent } from '../button/button.component';
 import { MatMenuTrigger, MatMenu, MatMenuItem, MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
+import { NgxStarRatingModule } from 'ngx-star-rating';
 
 @Component({
   selector: 'app-data-view',
@@ -13,6 +14,8 @@ import { MatButtonModule } from '@angular/material/button';
   imports: [CommonModule, MatIconModule, FormsModule, ButtonComponent, MatMenuTrigger,
     MatMenuModule, MatButtonModule, MatIconModule,
     MatMenu,
+    FormsModule,
+    NgxStarRatingModule,
       MatMenuItem],
   templateUrl: './data-view.component.html',
   styleUrl: './data-view.component.scss',

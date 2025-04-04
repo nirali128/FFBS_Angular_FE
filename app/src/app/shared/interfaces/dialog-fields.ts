@@ -6,7 +6,7 @@ export interface iDialogField {
     requiresReason? :boolean
 }
 
-export interface DialogRepsone {
+export interface DialogResponse {
     confirmed: boolean;
     reason?: string;
 }

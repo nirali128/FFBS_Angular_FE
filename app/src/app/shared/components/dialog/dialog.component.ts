@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
-import { DialogRepsone as DialogResponse, iDialogField } from '../../interfaces/dialog-fields';
+import { DialogResponse as DialogResponse, iDialogField } from '../../interfaces/dialog-fields';
 import { ButtonComponent } from '../button/button.component';
 import { CommonModule } from '@angular/common';
 import { FormControl, Validators } from '@angular/forms';
@@ -11,7 +11,7 @@ import { MatError } from '@angular/material/form-field';
 @Component({
   selector: 'app-confirm-dialog',
   standalone: true,
-  imports: [MatDialogModule, ButtonComponent, CommonModule, TextareaComponent, MatError],
+  imports: [MatDialogModule, ButtonComponent, CommonModule, TextareaComponent],
   templateUrl: './dialog.component.html',
   styleUrls: ['./dialog.component.scss']
 })

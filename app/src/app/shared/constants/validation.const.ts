@@ -32,7 +32,7 @@ export const ErrorLabel = {
 }
 
 export const ValidationErrors: Record<string, string | ((error: any, label?: string) => string)> = {
-  required: (label = 'This field') => label.toLowerCase() === ErrorLabel.Role ? ErrorMessages.ROLE_SELECTION : `${label} is required`,
+  required: (label = 'This field') => label.toLowerCase() === ErrorLabel.Role ? ErrorMessages.ROLE_SELECTION : `This field is required`,
   minlength: (error) => `Minimum length of ${error.requiredLength} characters`,
   maxlength: (error) => `Maximum length of ${error.requiredLength} characters`,
   min: (error) => `Min value is ${error.min}.`,

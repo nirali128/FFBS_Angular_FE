@@ -7,7 +7,7 @@ import { ProfileComponent } from './pages/profile/profile.component';
 import { UserListComponent } from './pages/user-list/user-list.component';
 import { InvoiceListComponent } from './pages/invoice-list/invoice-list.component';
 import { AuthGuard } from './shared/guards/auth.guard';
-import { AdminAuthGuard } from './shared/guards/admin-auth.guard';
+import { AccessAuthGuard } from './shared/guards/access-auth.guard';
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import { Role } from './shared/enum/role';
 import { FeedbackListComponent } from './pages/feedback/list/feedback-list.component';
@@ -59,6 +59,7 @@ export const routes: Routes = [
             },
             {
                 path: 'profile',
+                title: 'Profile',
                 component: ProfileComponent
             },
             {
@@ -70,7 +71,7 @@ export const routes: Routes = [
                     visibleTo: [Role.Admin]
                 },
                 component: InvoiceListComponent,
-                canActivate: [AdminAuthGuard]
+                canActivate: [AccessAuthGuard]
             },
             {
                 path: 'user-list',
@@ -90,6 +91,7 @@ export const routes: Routes = [
                     title: 'Feedback',
                     visibleTo: [Role.Admin, Role.Customer]
                 },
+                canActivate: [AccessAuthGuard],
                 component: FeedbackListComponent
             },
             {path: '**', component: NotFoundComponent},

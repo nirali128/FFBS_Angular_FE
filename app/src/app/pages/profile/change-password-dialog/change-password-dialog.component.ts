@@ -50,7 +50,7 @@ export class ChangePasswordDialogComponent {
       {
         oldPassword: ['', [Validators.required, Validators.pattern(ValidationPatterns.PASSWORD)]],
         password: ['', [Validators.required, Validators.pattern(ValidationPatterns.PASSWORD)]],
-        confirmPassword: ['', [Validators.required]],
+        confirmPassword: ['', Validators.required],
       },
       { validator: passwordMatchValidator }
     );
@@ -83,6 +83,8 @@ export class ChangePasswordDialogComponent {
         }
       });
     } else {
+      this.changePasswordForm.controls['password'].setErrors({required: true});
+      this.changePasswordForm.controls['confirmPassword'].setErrors({required: true});
       this.changePasswordForm.markAllAsTouched();
     }
   }

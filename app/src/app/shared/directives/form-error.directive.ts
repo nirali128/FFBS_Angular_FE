@@ -48,7 +48,6 @@ export class FormErrorsDirective implements OnChanges {
         }
         return errorMessage(errorValue, this.label);
       }
-
       return errorMessage;
     });
   }

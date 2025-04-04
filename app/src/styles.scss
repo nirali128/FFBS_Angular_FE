@@ -41,6 +41,10 @@ label.star:hover {
   transform: none !important;
 }
 
-.mat-mdc-menu-content, .mat-mdc-menu-content .mat-mdc-menu-item .mat-mdc-menu-item-text {
+.mat-mdc-menu-content, .mat-mdc-menu-content .mat-mdc-menu-item .mat-mdc-menu-item-text, .mat-mdc-menu-item:not([disabled]):hover {
   background-color: white !important;
+}
+
+mat-error {
+  font-size: 0.715rem !important;
 }

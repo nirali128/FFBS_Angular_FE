@@ -7,6 +7,8 @@ import { iTableField } from '../../../shared/interfaces/table-fields';
 import { GlobalConstant } from '../../../shared/constants/global-const';
 import { SnackbarService } from '../../../shared/service/snackbar.service';
 import { SnackbarConfig } from '../../../shared/constants/snackbar-config.const';
+import { AuthService } from '../../../shared/service/authentication.service';
+import { Role } from '../../../shared/enum/role';
 
 @Component({
   selector: 'app-feedback-list',
@@ -21,17 +23,11 @@ export class FeedbackListComponent {
   isAdmin: boolean = false;
   displayedColumns!: iTableField[];
 
-  constructor(public readonly feedbackService: FeedbackService, public readonly snackBarService: SnackbarService) {
+  constructor(public readonly feedbackService: FeedbackService, public readonly snackBarService: SnackbarService, public readonly authService: AuthService) {
     this.displayedColumns = [
       {
         name: 'bookingNumber',
         label: 'Booking Number',
-        type: 'label',
-        sort: true,
-      },
-      {
-        name: 'userName',
-        label: 'User Name',
         type: 'label',
         sort: true,
       },
@@ -54,9 +50,35 @@ export class FeedbackListComponent {
         sort: false
       },
     ];
+    this.isAdmin = this.authService.getRole() == Role.Admin ? true : false; 
+
+    if(this.isAdmin) {
+      this.displayedColumns.splice(1, 0, {
+        name: 'userName',
+        label: 'User Name',
+        type: 'label',
+        sort: true,
+      });
+    } else {
+      this.displayedColumns.push({
+        name: 'action',
+        label: 'Action',
+        type: 'button',
+        sort: false,
+        arr: [
+          {
+            name: GlobalConstant.DELETE,
+            src: 'delete',
+          },
+        ],
+      },
+    )
+    }
   }
 
   getAll(filterRequest: FilterRequest) {
+    if(!this.isAdmin)
+      filterRequest.search = this.authService.getUsername().split(' ')[1];
     this.feedbackService
       .getPaginatedFeedbacks(filterRequest)
       .subscribe((res) => {
@@ -69,7 +91,7 @@ export class FeedbackListComponent {
   }
 
   onDelete(element: FeedbackList) {
-    this.feedbackService.deleteFeedback(element.bookingId).subscribe((res) => {
+    this.feedbackService.deleteFeedback(element.feedbackId).subscribe((res) => {
       if (res.success) {
         this.snackBarService.show(
           new SnackbarConfig({

@@ -82,6 +82,12 @@
             <strong>Rules:</strong> {{ field.rulesPolicies }}
           </li>
         </ul>
+
+        <div  class="d-flex align-items-center" [ngClass]="{'mb-2': field.averageRating == 0.00}">
+          <strong class="pe-2">Rating: </strong>
+          <ngx-star-rating *ngIf="field.averageRating != 0.00" [(ngModel)]="field.averageRating" [disabled]="true"></ngx-star-rating>
+          <span *ngIf="field.averageRating == 0.00">No rating</span>
+        </div>
       </div>
     </div>
   </div>

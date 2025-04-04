@@ -90,7 +90,7 @@
           [uploadedFiles]="uploadedFiles"
           (filesUploaded)="onFilesUploaded($event)"
         ></app-image-upload>
-        <mat-error class="error" *ngIf="showError()"
+        <mat-error class="error-messages visible" *ngIf="showError()"
           >At least 1 image is required</mat-error
         >
       </div>

@@ -12,6 +12,7 @@ export interface FieldsDetailList {
     isActive: boolean;
     documentName?: string;
     documentDescription?: string;
+    averageRating: number;
 }
 
 export interface SlotByField {
@@ -81,6 +82,7 @@ export interface Booking {
     isActive: boolean;
     closeDays: string[]; 
     documents: FieldDocument[];
+    averageRating: number;
   }
 
   export class FieldDocument {
@@ -185,5 +187,6 @@ export const FIELD_COLUMNS: ColumnField<FieldsDetailList>[] = [
     { key: 'address', label: 'Address', icon: 'location_on', labelType: 'list', isVisible: true },
     { key: 'area', label: 'Area', icon: 'square_foot', labelType: 'list', isVisible: true },
     { key: 'phoneNumber', label: 'Phone', icon: 'phone', labelType: 'list', isVisible: true },
-    { key: 'rulesPolicies', label: 'Rules & Policies', icon: 'gavel', labelType: 'list', isVisible: true }
+    { key: 'rulesPolicies', label: 'Rules & Policies', icon: 'gavel', labelType: 'list', isVisible: true },
+    { key: 'averageRating', label: 'Rating', labelType: 'rating', isVisible: true }
 ];

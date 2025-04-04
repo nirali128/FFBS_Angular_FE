@@ -14,6 +14,7 @@ import { SnackbarService } from '../service/snackbar.service';
 import { SnackbarConfig } from '../constants/snackbar-config.const';
 import { ErrorMessages } from '../constants/messages-const';
 import { GlobalConstant } from '../constants/global-const';
+import { ApiResponse } from '../interfaces/api.response';
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
@@ -28,11 +29,22 @@ export class ErrorInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
     return next.handle(request).pipe(
       catchError((error: HttpErrorResponse) => {
+        const message = error.error?.message;
         if (request.url.includes(GlobalConstant.BOOKING.GET_BOOKING_BY_FIELDID_USERID)) {
-          return of(new HttpResponse({ body: { success: false, data: [] } }));
+
+          const apiResponse: ApiResponse<any> = {
+            success: false,
+            message: message,
+            data: []
+          };
+    
+          return of(new HttpResponse({ 
+            status: 200,
+            body: apiResponse 
+          }));
         }
 
-        const message = error.error?.message;
+        
         if (!error.error.success && message) {
           this.snackBarService.show(
             new SnackbarConfig({

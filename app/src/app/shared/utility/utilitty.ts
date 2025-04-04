@@ -72,6 +72,6 @@ export function mapDayToDropdown(day: Day[]): DropdownOption[] {
 export function mapUserToDropdown(day: User[]): DropdownOption[] {
   return day.filter(x => x.isActive).map((res) => ({
     value: res.userId,
-    label: res.firstName + res.lastName,
+    label: res.firstName + " " + res.lastName,
   }));
 }

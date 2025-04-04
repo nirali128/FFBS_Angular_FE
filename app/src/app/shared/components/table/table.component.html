@@ -6,15 +6,19 @@
   </button>
   
   <div class="d-flex justify-content-end col-3">
-      <input type="search" (input)="enableSearchBtn()" (keydown.enter)="onSearch()" id="searchValue" [(ngModel)]="searchVal" (keyup)="enableSearchBtn()" placeholder="Search Here..." class="search-input form-control w-15">
+      <input type="search" (input)="onSearch()" (keydown.enter)="onSearch()" id="searchValue" [(ngModel)]="searchVal" (keyup)="onSearch()" placeholder="Search Here..." class="search-input form-control w-15">
   </div>
   
   <table matSort mat-table [dataSource]="dataSource" (matSortChange)="announceSortChange($event)">
   
     <!-- Define dynamic columns -->
     <ng-container *ngFor="let column of displayedColumns" matColumnDef="{{column.name}}">
-      <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-capitalize" [attr.mat-sort-header]="column.sort ? '' : null">{{ column.label }}</th>
-  
+      <ng-container *ngIf="!column.sort">
+        <th mat-header-cell *matHeaderCellDef  class="text-capitalize" [ngClass]="{'ps-84': column.type == 'rating'}">{{ column.label }}</th>
+      </ng-container>
+      <ng-container *ngIf="column.sort">
+        <th mat-header-cell *matHeaderCellDef  mat-sort-header class="text-capitalize">{{ column.label }}</th>
+      </ng-container>
       <td mat-cell *matCellDef="let element">
         <!-- For showing data Columns -->
         <span *ngIf="column.type == 'label'">{{ element[column.name] ?? '-' }}</span>
@@ -38,7 +42,7 @@
             </button>
   
             <!-- For Delete button -->
-            <app-button *ngIf="item.name == 'delete'" 
+            <app-button *ngIf="item.name == 'delete'" class="float-start"
             buttonType="icon"
             [icon]="item.src"
             (buttonClick)="delete(element)"

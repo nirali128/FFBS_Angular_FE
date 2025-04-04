@@ -96,7 +96,7 @@ export class ProfileComponent {
         [Validators.required, Validators.pattern(ValidationPatterns.PHONE)],
       ],
       dob: ['', [Validators.required, minAgeValidator(18)]],
-      avatar: [null, Validators.required],
+      avatar: [null],
     });
   }
 
@@ -119,8 +119,8 @@ export class ProfileComponent {
   }
 
   onSubmit(): void {
-    if(this.isFormChanged()) {
-      if (this.profileForm.valid) {
+    if (this.profileForm.valid) {
+        if(this.isFormChanged()) {
         this.userService
           .editUser(this.profileForm.value as User)
           .subscribe((res) => {
@@ -131,12 +131,13 @@ export class ProfileComponent {
             }
           });
       } else {
-        this.profileForm.markAllAsTouched();
+        this.snackBarService.show(
+          new SnackbarConfig({status: 'error', message: "There were no changes made to the form.", icon: 'warning_amber', })
+        );
       }
-    } else {
-      this.snackBarService.show(
-        new SnackbarConfig({status: 'error', message: "There were no changes made to the form.", icon: 'warning_amber', })
-      );
+    }
+    else {
+      this.profileForm.markAllAsTouched();
     }
   }
 
