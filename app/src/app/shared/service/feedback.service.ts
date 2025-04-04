@@ -40,23 +40,39 @@ export class FeedbackService {
   }
 
   getPaginatedFeedbacks(
-    filterRequest: FilterRequest
+    filterRequest?: FilterRequest,
+    fieldId?: string,
+    userId?: string
   ): Observable<ApiPaginatedResponse<FeedbackList[]>> {
-    let httpParams = new HttpParams()
-      .set('page', filterRequest.pageNumber)
-      .set('pageSize', filterRequest.pageSize);
-    if (filterRequest.search)
-      httpParams = httpParams.set('search', filterRequest.search);
-    return this.httpClient.get<ApiPaginatedResponse<FeedbackList[]>>(
+    let httpParams = new HttpParams();
+
+    if (filterRequest) {
+      if (filterRequest.pageNumber && filterRequest.pageNumber)
+        httpParams = httpParams
+          .set('page', filterRequest.pageNumber)
+          .set('pageSize', filterRequest.pageSize);
+      if (filterRequest.search)
+        httpParams = httpParams.set('search', filterRequest.search);
+
+      if (filterRequest.sortBy && filterRequest.sortOrder) {
+        httpParams = httpParams
+          .set('sortBy', filterRequest.sortBy)
+          .set('sortOrder', filterRequest.sortOrder);
+      }
+    }
+
+    let url =
       `${
         GlobalConstant.FEEDBACK_API_URL +
         GlobalConstant.FEEDBACK.GET_ALL_FEEDBACK
-      }`,
-      {
-        ...this.getHeaders(),
-        params: httpParams,
-      }
-    );
+      }` +
+      (fieldId ? '?fieldId=' + fieldId : '') +
+      (userId ? (fieldId ? '&' : '?') + 'userId=' + userId : '');
+
+    return this.httpClient.get<ApiPaginatedResponse<FeedbackList[]>>(url, {
+      ...this.getHeaders(),
+      params: httpParams,
+    });
   }
 
   deleteFeedback(guid: string) {

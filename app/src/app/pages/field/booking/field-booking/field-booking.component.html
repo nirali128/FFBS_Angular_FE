@@ -88,6 +88,13 @@
           <ngx-star-rating *ngIf="field.averageRating != 0.00" [(ngModel)]="field.averageRating" [disabled]="true"></ngx-star-rating>
           <span *ngIf="field.averageRating == 0.00">No rating</span>
         </div>
+        <app-button class="w-25"
+          [buttonType]="'normal'"
+          [text]="'Show Reviews'"
+          [color]="'secondary'"
+          (buttonClick)="openDialog()"
+          >
+        </app-button>
       </div>
     </div>
   </div>

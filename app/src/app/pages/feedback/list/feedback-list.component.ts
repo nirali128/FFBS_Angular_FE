@@ -22,6 +22,7 @@ export class FeedbackListComponent {
   filterRequest!: FilterRequest;
   isAdmin: boolean = false;
   displayedColumns!: iTableField[];
+  userId: string;
 
   constructor(public readonly feedbackService: FeedbackService, public readonly snackBarService: SnackbarService, public readonly authService: AuthService) {
     this.displayedColumns = [
@@ -90,9 +91,9 @@ export class FeedbackListComponent {
 
   getAll(filterRequest: FilterRequest) {
     if(!this.isAdmin)
-      filterRequest.search = this.authService.getUsername().split(' ')[1];
+      this.userId = this.authService.getUserId();
     this.feedbackService
-      .getPaginatedFeedbacks(filterRequest)
+      .getPaginatedFeedbacks(filterRequest, undefined, this.userId)
       .subscribe((res) => {
         if (res.success) {
           this.filterRequest = filterRequest;

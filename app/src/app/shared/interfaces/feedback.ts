@@ -12,4 +12,5 @@ export interface FeedbackList {
   bookingNumber: string;
   userName: string;
   fieldName: string;
+  avatar?: string;
 }

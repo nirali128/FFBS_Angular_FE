@@ -41,6 +41,11 @@ label.star:hover {
   transform: none !important;
 }
 
+input.star-5:checked ~ label.star:before {
+  color: #fd4 !important;
+  text-shadow: none !important;
+}
+
 .mat-mdc-menu-content, .mat-mdc-menu-content .mat-mdc-menu-item .mat-mdc-menu-item-text, .mat-mdc-menu-item:not([disabled]):hover {
   background-color: white !important;
 }

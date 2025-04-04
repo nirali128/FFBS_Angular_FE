@@ -68,8 +68,6 @@ dataSource!: DiscountList[];
   }
 
   getAll(filterRequest: FilterRequest) {
-    if(!this.isAdmin)
-      filterRequest.search = this.authService.getUsername().split(' ')[1];
     this.discountService
       .getPaginatedDiscounts(filterRequest)
       .subscribe((res) => {
