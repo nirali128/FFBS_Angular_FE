@@ -118,6 +118,7 @@ export class FieldBookingComponent {
       .subscribe((res: ApiResponse<FieldDetail>) => {
         if (res.success) {
           this.field = res.data;
+          this.field.averageRating = Math.round(res.data.averageRating);
         }
       });
   }
